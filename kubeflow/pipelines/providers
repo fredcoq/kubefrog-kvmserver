@@ -1,0 +1,7 @@
+minio:
+  default:
+    endpoint: minio-service.kubeflow:9000
+    disableSSL: true
+    region: us-east-2
+    credentials:
+      fromEnv: true

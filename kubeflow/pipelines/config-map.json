@@ -1,0 +1,11 @@
+{
+"apiVersion": "v1",
+"kind": "ConfigMap",
+"metadata": {
+    "name": "kfp-launcher",
+    "namespace": "frederik-coquelet"
+},
+"data": {
+    "defaultPipelineRoot": "minio://mlpipeline/v2/artifcat"
+}
+}

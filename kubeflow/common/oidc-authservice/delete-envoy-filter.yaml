@@ -1,0 +1,6 @@
+$patch: delete
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: authn-filter
+  namespace: istio-system

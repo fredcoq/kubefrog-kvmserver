@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: wekan-cloud
+  namespace: wekan
+spec:
+  hosts:
+    - wekan.kubefrog.ai
+  http:
+    - route:
+        - destination:
+            host: release-name-wekan
+            port:
+              number: 8080
+  gateways:
+    - apps-network/apps-gateway-cloud

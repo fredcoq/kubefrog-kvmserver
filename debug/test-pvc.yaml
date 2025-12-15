@@ -1,0 +1,47 @@
+---  
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: test-pvc
+  name: test-pvc
+spec:
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: test-pvc
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: 'false'
+      labels:
+        app: test-pvc
+    spec:
+      volumes:
+        - name: test-pvc
+          persistentVolumeClaim:
+            claimName: test-pvc
+
+      containers:
+      - name: network-multitool
+        image: wbitt/network-multitool
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+          - mountPath: /data
+            name: test-pvc
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: test-pvc
+  namespace: default
+spec:
+    accessModes:
+      - ReadWriteOnce
+    storageClassName: rook-ceph-block-ssd
+    resources:
+      requests:
+        storage: 100Mi

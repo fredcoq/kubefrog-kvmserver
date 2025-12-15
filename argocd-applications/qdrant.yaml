@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: qdrant
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/fredcoq/kubefrog-local
+    targetRevision: HEAD
+    path: qdrant
+    
+      
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: qdrant
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+
+    

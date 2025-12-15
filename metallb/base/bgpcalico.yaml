@@ -1,0 +1,8 @@
+apiVersion: crd.projectcalico.org/v1
+kind: BGPConfiguration
+metadata:
+  name: metallb
+  namespace: calico-system
+spec:
+  serviceLoadBalancerIPs:
+  - cidr: 192.168.0.96/27

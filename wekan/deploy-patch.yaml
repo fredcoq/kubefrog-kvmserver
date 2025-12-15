@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-wekan
+spec:
+  template:
+    spec:
+      containers:
+        - name: wekan
+          env:
+            - name: MONGO_URL
+              value: mongodb://release-name-mongodb-0.release-name-mongodb-internal:27017/wekan

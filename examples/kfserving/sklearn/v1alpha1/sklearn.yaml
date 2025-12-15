@@ -1,0 +1,15 @@
+apiVersion: "serving.kubeflow.org/v1alpha2"
+kind: "InferenceService"
+metadata:
+  name: sklearn-iris
+  namespace: kubeflow-frederik
+  annotations:
+    sidecar.istio.io/inject: "false"
+    autoscaling.knative.dev/target: "500"
+    autoscaling.knative.dev/metric: "rps"
+spec:
+  default:
+    predictor:
+      serviceAccountName: default
+      sklearn:
+        storageUri: "s3://model/iris"

@@ -1,0 +1,23 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: mutate-gpu-toleration-daemonset
+spec:
+  mutateExistingOnPolicyUpdate: true
+  rules:
+    - name: mutate-gpu-toleration-daemonset
+      match:
+        any:
+        # AND across resources and selector
+        - resources:
+            # OR inside list of kinds
+            kinds:
+            - DaemonSet
+      mutate:
+        targets:
+        - apiVersion: apps/v1
+          kind: DaemonSet
+        patchesJson6902: |-
+          - op: add
+            path: "/spec/template/spec/tolerations/-"
+            value: {"key":"local-node","operator":"Exists","effect":"NoSchedule"}        

@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: monitoring
+resources:
+- https://github.com/jaegertracing/jaeger-operator/releases/download/v1.39.0/jaeger-operator.yaml
+
+patchesJson6902:
+  - path: certificate-patch.yaml
+    target:
+      version: v1
+      kind: Certificate
+      name: jaeger-operator-serving-cert
+  - path: webhook-patch.yaml
+    target:
+      version: v1
+      kind: ValidatingWebhookConfiguration
+      name: jaeger-operator-validating-webhook-configuration
+  - path: webhook-patch.yaml
+    target:
+      version: v1
+      kind: MutatingWebhookConfiguration
+      name: jaeger-operator-mutating-webhook-configuration

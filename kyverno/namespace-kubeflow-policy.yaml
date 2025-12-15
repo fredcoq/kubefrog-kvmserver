@@ -1,0 +1,22 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: mutate-kubeflow-namespace
+spec:
+  mutateExistingOnPolicyUpdate: true
+  rules:
+    - name: mutate-kubeflow-namespace
+      match:
+        resources:
+          kinds:
+          - Namespace
+          names:
+          - "kubeflow"
+      mutate:
+        targets:
+          - apiVersion: v1
+            kind: Namespace
+        patchStrategicMerge:
+          metadata:
+            labels:
+              cert-manager-tls: aws-secret

@@ -1,0 +1,22 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: druid-cloud
+  namespace: druid-cluster
+spec:
+  hosts:
+    - druid.kubefrog.ai
+  http:
+    - route:
+        - destination:
+            host: druid-druid-cluster-01-k8s-mm-routers
+            port:
+              number: 8088
+          headers:
+            response:
+              set:
+                Content-Security-Policy: "frame-ancestors https://odoo.kubefrog.ai https://kubefrog-web.kubefrog.ai http://192.168.0.47:31664"
+              remove:
+                - X-Frame-Options
+  gateways:
+    - apps-network/apps-gateway-cloud

@@ -1,0 +1,123 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+data:
+  application.resourceTrackingMethod: annotation+label
+  kustomize.buildOptions: --enable-helm
+  timeout.reconciliation: "300s"
+  repositories: |
+    - url: https://github.com/fredcoq/kubefrog-local
+      passwordSecret:
+        name: github-access
+        key: HTTPS_PASSWORD
+      usernameSecret:
+        name: github-access
+        key: HTTPS_USERNAME
+    - url: https://github.com/fredcoq/cloud-infra
+      passwordSecret:
+        name: github-access
+        key: HTTPS_PASSWORD
+      usernameSecret:
+        name: github-access
+        key: HTTPS_USERNAME
+
+    - url: https://github.com/PrefectHQ/prefect
+      passwordSecret:
+        name: github-access
+        key: HTTPS_PASSWORD
+      usernameSecret:
+        name: github-access
+        key: HTTPS_USERNAME
+
+    - url: https://harbor-core.kubefrog.fr/chartrepo/library
+      passwordSecret:
+        name: harbor-access
+        key: HTTPS_PASSWORD
+      usernameSecret:
+        name: harbor-access
+        key: HTTPS_USERNAME
+  #kustomize.version.v4.3.0: /custom-tools/kustomize_4_3_0
+  #kustomize.buildOptions.v4.3.0: --enable-helm
+  #kustomize.buildOptions.v5.4.3: --enable-helm
+  #kustomize.version.v5.4.3: /custom-tools/kustomize_5_4_3
+  resource.compareoptions: |
+    ignoreAggregatedRoles: true
+  resource.customizations.ignoreDifferences.all: |
+      jqPathExpressions:
+        - ".spec.template.spec.containers[]?.resources"
+        - ".spec.template.spec.initContainers[]?.resources"
+        - ".spec.template.spec.containers[]?.imagePullPolicy"
+        - ".spec.template.spec.initContainers[]?.imagePullPolicy"
+  resource.customizations.ignoreDifferences.batch_CronJob: |
+      jqPathExpressions:
+        - '.spec.jobTemplate.spec.template.spec.containers[]?.imagePullPolicy'
+        - '.spec.jobTemplate.spec.template.spec.containers[]?.resources'
+        - ".spec.jobTemplate.spec.template.spec.initContainers[]?.imagePullPolicy"
+        - ".spec.jobTemplate.spec.template.spec.initContainers[]?.resources"
+  resource.customizations.ignoreResourceUpdates.Deployment: |
+      jqPathExpressions:
+        - '.spec.template.spec.containers[]?.imagePullPolicy'
+        - '.spec.template.spec.containers[]?.resources'
+        - ".spec.template.spec.initContainers[]?.imagePullPolicy"
+        - ".spec.template.spec.initContainers[]?.resources"
+  resource.customizations.ignoreResourceUpdates.DaemonSet: |
+        jqPathExpressions:
+        - '.spec.template.spec.containers[]?.imagePullPolicy'
+        - '.spec.template.spec.containers[]?.resources'
+        - ".spec.template.spec.initContainers[]?.imagePullPolicy"
+        - ".spec.template.spec.initContainers[]?.resources"
+  resource.customizations: |
+    admissionregistration.k8s.io/MutatingWebhookConfiguration:
+      ignoreDifferences: |  # handle the resource mutation just after the resource syncing by argocd
+        jqPathExpressions:
+        - '.webhooks[]?.clientConfig.caBundle'
+        jsonPointers:
+        - /webhooks/0/rules  # handle the resource mutation managed by net-istio knative network add-on
+    admissionregistration.k8s.io/ValidatingWebhookConfiguration:
+      ignoreDifferences: |  # handle the resource mutation just after the resource syncing by argocd
+        jqPathExpressions:
+        - '.webhooks[]?.clientConfig.caBundle'
+        jsonPointers:       
+        - /webhooks/0/failurePolicy
+        - /webhooks/0/rules   # handle the resource mutation managed by net-istio knative network add-on
+    apiextensions.k8s.io/CustomResourceDefinition:
+      ignoreDifferences: |
+        jsonPointers:
+        - /spec/scope
+        - /spec/conversions/webhook/clientConfig/caBundle
+        - /spec/conversion/webhook/clientConfig/caBundle
+        jqPathExpressions:
+        - '.spec.versions[0].additionalPrinterColumns[]?.priority'
+    apps/DaemonSet: 
+       ignoreDifferences: |
+         jqPathExpressions:
+         - '.spec.template.spec.tolerations'
+    apps/Deployment: 
+       ignoreDifferences: |
+         jqPathExpressions:
+         - '.spec.template.spec.containers[]?.imagePullPolicy'
+         - '.spec.template.spec.containers[]?.resources'
+         - ".spec.template.spec.initContainers[]?.imagePullPolicy"
+         - ".spec.template.spec.initContainers[]?.resources"
+    apps/DaemonSet: 
+      ignoreDifferences: |
+        jqPathExpressions:
+        - '.spec.template.spec.containers[]?.imagePullPolicy'
+        - '.spec.template.spec.containers[]?.resources'
+        - ".spec.template.spec.initContainers[]?.imagePullPolicy"
+        - ".spec.template.spec.initContainers[]?.resources"
+    apps/StatefulSet: 
+      ignoreDifferences: |
+        jqPathExpressions:
+        - '.spec.template.spec.containers[]?.imagePullPolicy'
+        - '.spec.template.spec.containers[]?.resources'
+        - ".spec.template.spec.initContainers[]?.imagePullPolicy"
+        - ".spec.template.spec.initContainers[]?.resources"
+    batch/CronJob:  # handle the resource mutation managed by net-istio knative network add-on
+      ignoreDifferences: |
+        jqPathExpressions:
+        - '.spec.jobTemplate.spec.template.spec.containers[]?.imagePullPolicy'
+        - '.spec.jobTemplate.spec.template.spec.containers[]?.resources'
+        - ".spec.jobTemplate.spec.template.spec.initContainers[]?.imagePullPolicy"
+        - ".spec.jobTemplate.spec.template.spec.initContainers[]?.resources"

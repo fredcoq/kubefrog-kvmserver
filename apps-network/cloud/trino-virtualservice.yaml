@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: trino-cloud
+  namespace: trino
+spec:
+  hosts:
+    - trino.kubefrog.ai
+  http:
+    - route:
+        - destination:
+            host: trino
+            port:
+              number: 8080
+  gateways:
+    - apps-network/apps-gateway-cloud

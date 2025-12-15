@@ -1,0 +1,65 @@
+---  
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: minio-3
+  name: minio-3
+  namespace: default
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: minio-3
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: 'false'
+      labels:
+        app: minio-3
+    spec:
+      volumes:
+        - name: minio3-pv
+          persistentVolumeClaim:
+            claimName: minio3-pvc
+
+      containers:
+      - args:
+        - server
+        - /data
+        env:
+        - name: MINIO_ACCESS_KEY
+          value: minioadmin
+        - name: MINIO_SECRET_KEY
+          value: minioadmin
+        image: minio/minio:RELEASE.2020-10-18T21-54-12Z
+        imagePullPolicy: IfNotPresent
+        name: minio-3
+        ports:
+        - containerPort: 9000
+          protocol: TCP
+        volumeMounts:
+          - mountPath: /data
+            name: minio3-pv
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: minio-3
+  name: minio-service-3
+  namespace: druid-cluster
+spec:
+  ports:
+    - port: 9000
+      protocol: TCP
+      targetPort: 9000
+      nodePort: 30910
+  selector:
+    app: minio-3
+  type: NodePort

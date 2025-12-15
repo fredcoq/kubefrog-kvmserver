@@ -1,0 +1,28 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: gpu-node-selector
+spec:
+  mutateExistingOnPolicyUpdate: true
+  rules:
+    - name: gpu-node-selector
+      match:
+        any:
+        # AND across resources and selector
+        - resources:
+            # OR inside list of kinds
+            kinds:
+            - Pod
+            # OR inside list of kinds
+            namespaces:
+            - frederik-coquelet
+            names:
+            - "*gpu*"
+      mutate:
+        targets:
+        - apiVersion: v1
+          kind: Pod
+        patchStrategicMerge:
+          spec:
+            nodeSelector: 
+              nvidia.com/gpu: "true"

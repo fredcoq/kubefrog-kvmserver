@@ -1,0 +1,29 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: remove-gpu-limit
+spec:
+  mutateExistingOnPolicyUpdate: true
+  rules:
+    - name: remove-gpu-limit
+      match:
+        any:
+        # AND across resources and selector
+        - resources:
+            # OR inside list of kinds
+            kinds:
+            - Pod
+            # OR inside list of kinds
+            namespaces:
+            - frederik-coquelet
+            names:
+            - "training-cifar10-pipeline*"
+      mutate:
+        targets:
+        - apiVersion: v1
+          kind: Pod
+        patchesJson6902: |-
+          - op: remove
+            path: "/spec/containers/1/resources/limits/nvidia.com~1gpu"
+          - op: remove
+            path: "/spec/containers/1/resources/requests/nvidia.com~1gpu"

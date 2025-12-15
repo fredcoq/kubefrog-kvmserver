@@ -1,0 +1,19 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: feast-postgres-cluster
+  namespace: feast
+spec:
+  teamId: "feast"
+  volume:
+    size: 5Gi
+  numberOfInstances: 1
+  users:
+    feast:
+    - superuser
+    - createdb
+  databases:
+    feast_data: feast  # dbname: owner
+    feast_registry: feast
+  postgresql:
+    version: "15"

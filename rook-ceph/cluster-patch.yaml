@@ -1,0 +1,30 @@
+apiVersion: ceph.rook.io/v1
+kind: CephCluster
+metadata:
+  name: my-cluster
+  namespace: rook-ceph
+spec:
+  dataDirHostPath: /var/lib/rook
+  mon:
+    count: 1
+    allowMultiplePerNode: true
+  mgr:
+    count: 1
+    allowMultiplePerNode: true
+  network:
+    # enable host networking
+    provider: host
+  resources:
+    osd:
+      limits:
+        cpu: "4"
+        memory: "6Gi"
+      requests:
+        cpu: "0.5"
+        memory: "4Gi"
+  storage:
+    useAllDevices: false
+    deviceFilter: ^vd[b]
+    devices:
+      - name: vdb
+        deviceClass: nvme

@@ -1,0 +1,36 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- https://github.com/apache/camel-k/config/manager?ref=release-2.1.x
+- https://github.com/apache/camel-k/config/crd?ref=release-2.1.x
+- https://github.com/apache/camel-k/config/rbac?ref=release-2.1.x
+- integration-platform.yaml
+- docker-regcred.yaml
+- regcred.yaml
+
+patchesJson6902:
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: camel-k-operator
+  path: patch-watch-namespace-global.yaml
+- target:
+    group: rbac.authorization.k8s.io
+    version: v1
+    kind: RoleBinding
+    name: ".*"
+  path: patch-rolebinding-to-clusterrolebinding.yaml
+- target:
+    group: rbac.authorization.k8s.io
+    version: v1
+    kind: Role
+    name: ".*"
+  path: patch-role-to-clusterrole.yaml
+
+
+
+images:
+- name: docker.io/apache/camel-k
+  newName: docker.io/apache/camel-k
+  newTag: 2.1.0

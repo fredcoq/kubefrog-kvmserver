@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: prometheus-cloud
+  namespace: monitoring
+spec:
+  hosts:
+    - prometheus.kubefrog.ai
+  http:
+    - route:
+        - destination:
+            host: kube-prometheus-stack-prometheus
+            port:
+              number: 9090
+  gateways:
+    - apps-network/apps-gateway-cloud

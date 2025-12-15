@@ -1,0 +1,19 @@
+apiVersion: camel.apache.org/v1
+kind: IntegrationPlatform
+metadata:
+  name: camel-k
+  labels:
+    app: "camel-k"
+spec:
+  build:
+    registry:
+      address: registry.kubefrog.fr:5000
+
+      # secret: regcred
+      # ca: config-ca
+      insecure: true
+      # publishStrategy: buildah
+
+      
+
+       

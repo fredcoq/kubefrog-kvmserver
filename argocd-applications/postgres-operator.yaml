@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgres-operator
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/zalando/postgres-operator
+    path: charts/postgres-operator
+    targetRevision: v1.14.0
+    helm:
+     version: v3
+     parameters:
+   #    - name: image.tag
+   #      value: "v1.8.2-26-gacb3ffd7"
+       - name: infrastructure_roles_secrets_name
+         value: infra-access-postgres
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: postgres-operator
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

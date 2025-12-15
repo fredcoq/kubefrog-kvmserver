@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: grafana-cloud
+  namespace: kube-system
+  labels:
+    app: grafana
+spec:
+  hosts:
+    - grafana.kubefrog.ai
+  http:
+    - route:
+        - destination:
+            host: k8s-grafana #kube-prometheus-stack-grafana
+            port:
+              number: 80
+  gateways:
+    - apps-network/apps-gateway-cloud

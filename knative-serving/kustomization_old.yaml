@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- https://github.com/knative/operator/releases/download/knative-v1.7.2/operator.yaml
+
+- serving-core.yaml
+# serving-hpa.yaml
+# serving-default-domain.yaml
+- net-istio.yaml
+
+patchesStrategicMerge:
+- enable-self-signed-certificate.yaml
+- autoscaler-patch.yaml
+- domain-config.yaml
+- configmap-patch.yaml
+
+

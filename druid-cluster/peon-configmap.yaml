@@ -1,0 +1,38 @@
+kind: ConfigMap
+metadata:
+    name: druid-cluster-peons-config
+    namespace: druid-cluster
+apiVersion: v1
+data:
+    jvm.config: |-
+        -server
+        -XX:MaxDirectMemorySize=1000M
+        -Duser.timezone=UTC
+        -Dfile.encoding=UTF-8
+        -Dlog4j.debug
+        -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager
+        -Djava.io.tmpdir=/druid/data
+        -Xmx1024M
+        -Xms1024M
+    log4j2.xml: |-
+        <?xml version="1.0" encoding="UTF-8" ?>
+        <Configuration status="WARN">
+            <Appenders>
+                <Console name="Console" target="SYSTEM_OUT">
+                    <PatternLayout pattern="%d{ISO8601} %p [%t] %c - %m%n"/>
+                </Console>
+            </Appenders>
+            <Loggers>
+                <Root level="info">
+                    <AppenderRef ref="Console"/>
+                </Root>
+            </Loggers>
+        </Configuration>
+    runtime.properties: |
+        druid.port=8100
+        druid.service=druid/peon
+        druid.server.http.numThreads=5
+        druid.indexer.task.baseTaskDir=/druid/data
+        druid.indexer.runner.type=k8s
+        druid.peon.mode=remote
+        druid.indexer.task.encapsulatedTask=true

@@ -1,0 +1,25 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: camel-k-operator-kameletbinding-manager
+rules:
+- apiGroups: ["camel.apache.org"]
+  resources: ["kameletbindings"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["camel.apache.org"]
+  resources: ["kameletbindings/status"]
+  verbs: ["get", "update", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: camel-k-operator-kameletbinding-manager-binding
+subjects:
+- kind: ServiceAccount
+  name: camel-k-operator
+  namespace: camel-k
+roleRef:
+  kind: ClusterRole
+  name: camel-k-operator-kameletbinding-manager
+  apiGroup: rbac.authorization.k8s.io

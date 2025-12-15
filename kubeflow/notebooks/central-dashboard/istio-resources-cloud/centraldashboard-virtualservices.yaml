@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: centraldashboard-cloud
+  namespace: kubeflow
+spec:
+  gateways:
+  - kubeflow-gateway-cloud
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        prefix: /
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: centraldashboard.kubeflow.svc.cluster.local
+        port:
+          number: 80

@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ollama-gateway-certs-local
+  namespace: istio-system
+spec:
+  secretName: ollama-gateway-certs-local
+  secretTemplate:
+  issuerRef:
+    name: kubeflow-self-signing-issuer
+    kind: ClusterIssuer
+  commonName:  ollama.kubefrog.fr
+  dnsNames:
+   - ollama.kubefrog.fr
+

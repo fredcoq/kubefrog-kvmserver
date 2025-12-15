@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kfserving-6.1
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/fredcoq/kubefrog-local
+    targetRevision: HEAD
+    path: kubeflow/kfserving-6.1
+    
+      
+  ignoreDifferences:
+  - group: apiextensions.k8s.io
+    kind: CustomResourceDefinition
+    name: inferenceservices.serving.kubeflow.org
+    jsonPointers:
+    - /spec/preserveUnknownFields
+  destination:
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

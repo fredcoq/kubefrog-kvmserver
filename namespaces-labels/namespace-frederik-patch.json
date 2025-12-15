@@ -1,0 +1,7 @@
+[
+  {
+    "op": "add",
+    "path": "/metadata/annotations", 
+    "value": "cert-manager-tls: aws-secret"
+  }
+]

@@ -1,0 +1,23 @@
+apiVersion: "serving.kserve.io/v1alpha1"
+kind: ClusterStorageContainer
+metadata:
+  name: model-registry
+spec:
+  container:
+    name: storage-initializer
+    image: kubeflow/model-registry-storage-initializer:main-40df9c4
+    env:
+    - name: MODEL_REGISTRY_BASE_URL
+      value: model-registry-service.frederik-coquelet.svc.cluster.local:8080
+    - name: MODEL_REGISTRY_SCHEME
+      value: "http"
+    resources:
+      requests:
+        memory: 100Mi
+        cpu: 100m
+      limits:
+        memory: 1Gi
+        cpu: "1"
+  supportedUriFormats:
+    - prefix: model-registry://
+

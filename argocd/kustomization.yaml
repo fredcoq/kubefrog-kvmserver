@@ -1,0 +1,33 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: argocd
+
+resources:
+- namespace.yaml
+- https://github.com/argoproj/argo-cd/manifests/cluster-install?ref=v3.0.11
+# - argocd-ingress.yaml
+- argocd-gateway.yaml
+- argocd-virtualservice.yaml
+- argocd-authorizationpolicy.yaml
+- argocd-webhook-virtualservice.yaml
+# - argocd-repo-creds.yaml
+# - argocd-repositories.yaml
+- githubcred.yaml
+- harborcred.yaml
+- kubefrog-local-secret.yaml
+- kubefrog-ovh-secret.yaml
+- fredcoq-secret.yaml
+# - argocd-service-monitor.yaml
+patchesStrategicMerge:
+- configmap-knownhost-local-patch.yaml
+#- add-custom-kustomize.yaml
+- add-ressource-repo-server.yaml
+- argocd-cmd-params-cm-patch.yaml
+# - argocd-server-insecure-patch.yaml
+- configmap-patch.yaml
+- configmap-tls-certs-patch.yaml
+- github-webhook-secret.yaml
+
+# images:
+
+

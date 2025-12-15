@@ -1,0 +1,99 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: airflow
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://core.harbor.kubecloud.fr.nf/chartrepo/library
+    chart: airflow
+    targetRevision: 1.2.0
+    helm:
+      version: v3
+      valueFiles:
+      - values.yaml
+      values: |
+        common:
+          defaultAirflowRepository: core.harbor.kubecloud.fr.nf/library/airflow-custom
+          defaultAirflowTag: 6b2966eb802ee7a01c21d9ddc038e4338b3e7619
+        uid: 0
+        images:
+          airflow:
+            repository: core.harbor.kubecloud.fr.nf/library/airflow-custom
+            tag: abfdea82a68723641038756ad0750ec07e2d9b74
+        env: 
+          - name: AIRFLOW__CORE__LOAD_EXAMPLES
+            value: True
+        executor: KubernetesExecutor
+        postgresql:
+          enabled: true
+        flower:
+          enabled: false
+        redis:
+          enabled: false
+        statsd:
+          enabled: false
+        pgbouncer:
+          enabled: false
+        rbac:
+          create: true
+        ingress:
+          enabled: false
+          web:
+            annotations:
+              "kubernetes.io/ingress.class": "nginx"
+              "external-dns.alpha.kubernetes.io/hostname": "airflow.kubecloud.fr.nf"
+            path: "/"
+            host: "airflow.kubecloud.fr.nf"
+        dags:
+          persistence:
+            enabled: true
+            storageClassName: nfs-client
+
+          gitSync:
+            repo: https://github.com/fredcoq/airflow-dag.git
+            subPath: dag
+            maxFailures: 2
+            branch: main
+            credentialsSecret: github-access
+            enabled: true
+
+        migrateDatabaseJob:
+          jobAnnotations:
+            "argocd.argoproj.io/hook": Sync
+            "argocd.argoproj.io/sync-wave": "0"
+            "argocd.argoproj.io/hook-delete-policy": BeforeHookCreation,HookSucceeded
+        createUserJob:
+          jobAnnotations:
+            "argocd.argoproj.io/hook": Sync
+            "argocd.argoproj.io/sync-wave": "0"
+            "argocd.argoproj.io/hook-delete-policy": BeforeHookCreation,HookSucceeded             
+        logs:
+          persistence:
+            enabled: true
+            size: 2Gi
+            storageClassName: nfs-client  
+        web:
+          ## resource requests/limits for the airflow web Pod
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1Gi"
+        worker:
+          ## resource requests/limits for the airflow web Pod
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1Gi"
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: airflow
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+

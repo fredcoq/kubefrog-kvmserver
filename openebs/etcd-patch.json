@@ -1,0 +1,12 @@
+[
+  {
+    "op": "replace",
+    "path": "/spec/replicas",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/spec/template/spec/containers/0/env/21/value",
+    "value":  "prod-etcd-0=http://prod-etcd-0.prod-etcd-headless.openebs.svc.cluster.local:2380"
+  }
+]

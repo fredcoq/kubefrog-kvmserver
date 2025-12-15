@@ -1,0 +1,12 @@
+apiVersion: ec2.aws.upbound.io/v1beta1
+kind: Instance
+metadata:
+  name: i-032dd3037b4177c1d
+  annotations:
+    crossplane.io/external-name: "i-032dd3037b4177c1d"
+spec:
+  managementPolicies: ["*"]
+  forProvider:
+    region: us-east-1
+  providerConfigRef:
+    name: default

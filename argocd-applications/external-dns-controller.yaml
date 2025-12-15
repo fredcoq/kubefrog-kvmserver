@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: external-dns
+  namespace: argocd
+spec:
+  destination:
+    namespace: kube-system
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: external-dns
+    helm:
+      parameters:
+      - name: policy
+        value: sync
+      - name: domainFilters[0]
+        value: kubefrog.fr
+      - name: rbac.create
+        value: 'true'
+      - name: resources.limits.cpu
+        value: 100m
+      - name: resources.limits.memory
+        value: 300Mi
+      - name: resources.requests.cpu
+        value: 10m
+      - name: resources.requests.memory
+        value: 30Mi
+      - name: sources[0]
+        value: istio-gateway
+      - name: provider
+        value: cloudflare
+      - name: env[0].name
+        value: CF_API_TOKEN
+      - name: env[0].valueFrom.secretKeyRef.name
+        value: cloudflare-api-key
+      - name: env[0].valueFrom.secretKeyRef.key
+        value: apiKey
+
+    repoURL: https://kubernetes-sigs.github.io/external-dns
+    targetRevision: 1.15.0
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

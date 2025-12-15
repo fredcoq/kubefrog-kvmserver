@@ -1,0 +1,65 @@
+apiVersion: kiali.io/v1alpha1
+kind: Kiali
+metadata:
+  name: kiali
+  namespace: monitoring
+  annotations:
+    ansible.operator-sdk/verbosity: "1"
+spec:
+  istio_component_namespaces:
+    prometheus: monitoring
+    grafana: monitoring
+  istio_namespace: istio-system
+  auth:
+    strategy: openid
+    openid:
+      disable_rbac: true
+      client_id: kiali-client
+      issuer_uri: https://auth.kubefrog.fr/realms/kubeflow    
+      # username_claim: email
+      #authorization_endpoint: https://dex.kubefrog.fr/auth
+      # token_endpoint: https://dex.kubefrog.fr/token
+      # userinfo_endpoint: https://dex.kubefrog.fr/userinfo
+      # logout_endpoint: https://dex.kubefrog.fr/logout
+      # logout_redirect: https://kiali.kubefrog.fr
+      # ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      # insecure_skip_verify: false
+  server:
+    adress: "kiali.kubefrog.fr"
+    web_port: 443
+  api:
+    namespaces:
+
+  deployment:
+    accessible_namespaces: ["**"]
+    pod_annotations.sidecar:
+      istio.io/inject: "false"
+    ingress:
+      enabled: false
+    service_type: ClusterIP  
+    view_only_mode: false
+  # external services required for Kiali
+  external_services:
+    prometheus:
+        url: http://kube-prometheus-stack-prometheus.monitoring:9090
+    tracing:
+      use_grpc: false
+      in_cluster_url: http://simple-prod-query.monitoring:16686
+    grafana: 
+      url: https://grafana.kubefrog.fr
+      insecure_skip_verify: true
+      in_cluster_url: http://kube-prometheus-stack-grafana.monitoring
+      dashboards:
+        - name: Istio Service Dashboard
+          variables:
+            namespace: var-namespace
+            service: var-service
+        - name: Istio Workload Dashboard
+          variables:
+            namespace: var-namespace
+            workload: var-service
+        - name: Kubernetes / API server
+          variables:
+            var-datasource: var-namespace
+            var-cluster: ''
+            var-instance: All

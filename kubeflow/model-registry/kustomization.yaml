@@ -1,0 +1,45 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: frederik-coquelet
+resources:
+  - https://github.com/kubeflow/manifests/apps/model-registry/upstream/overlays/db?ref=v1.10.0
+  - https://github.com/kubeflow/manifests/apps/model-registry/upstream/options/istio?ref=v1.10.0
+  - https://github.com/kubeflow/manifests/apps/model-registry/upstream/options/ui/overlays/istio?ref=v1.10.0
+patchesStrategicMerge:
+  - model-registry-ui-vs-patch.yaml
+  - model-registry-vs-patch.yaml
+patchesJson6902:
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: model-registry-ui
+  patch: |-
+    - op: add
+      path: /spec/template/metadata/labels/app.architecture
+      value: kubeflow-front-end
+    - op: replace
+      path: /spec/template/spec/containers/0/args/0
+      value: --standalone-mode=true
+    - op: replace
+      path: /spec/template/spec/containers/0/image
+      value: docker.io/kubeflow/model-registry-ui:latest
+    - op: add
+      path: /spec/template/spec/containers/0/args/-
+      value: --dev-mode=false
+    - op: add
+      path: /spec/template/spec/containers/0/args/-
+      value: --log-level=debug
+- target:
+    version: v1alpha3
+    kind: VirtualService
+    name: model-registry
+  patch: |-
+    - op: replace
+      path: /spec/http/0/route/0/destination/host
+      value: model-registry-service.frederik-coquelet.svc.cluster.local        
+    - op: replace
+      path: /spec/http/1/route/0/destination/host
+      value: model-registry-service.frederik-coquelet.svc.cluster.local
+    - op: remove
+      path: /spec/http/1/match/2/uri/prefix

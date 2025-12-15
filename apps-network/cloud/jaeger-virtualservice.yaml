@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: jaeger-cloud
+  namespace: monitoring
+  labels:
+    app: jaeger
+spec:
+  hosts:
+    - jaeger.kubefrog.ai
+  http:
+    - route:
+        - destination:
+            host: simple-prod-query
+            port:
+              number: 16686
+  gateways:
+    - apps-network/apps-gateway-cloud

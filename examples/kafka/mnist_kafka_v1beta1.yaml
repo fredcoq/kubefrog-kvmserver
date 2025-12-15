@@ -1,0 +1,45 @@
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: mnist-production
+  namespace: model-production
+  annotations:
+    sidecar.istio.io/inject: "true"
+spec:
+  predictor:
+    serviceAccountName: sa-s3
+    minReplicas: 1
+    tensorflow:
+      resources:
+        limits:
+          cpu: 100m
+          memory: 1Gi
+        requests:
+          cpu: 100m
+          memory: 1Gi
+      runtimeVersion: 1.14.0
+      storageUri: s3://mnist
+    nodeSelector:
+        kubernetes.io/hostname: kubefrog
+    tolerations:
+    - key: "local-node"
+      operator: "Exists"
+      effect: "NoSchedule"
+  transformer:
+    containers:
+    - image: 192.168.0.200:45000/library/mnist-transformer:0.4
+      name: transformer
+      resources:
+        limits:
+          cpu: 100m
+          memory: 1Gi
+        requests:
+          cpu: 100m
+          memory: 1Gi
+    nodeSelector:
+        kubernetes.io/hostname: kubefrog
+    tolerations:
+    - key: "local-node"
+      operator: "Exists"
+      effect: "NoSchedule"
+    minReplicas: 1

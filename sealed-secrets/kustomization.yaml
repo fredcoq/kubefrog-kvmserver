@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- controller.yaml
+#- https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.16.0/controller.yaml
+
+#patchesStrategicMerge:
+#- update-status-patch.yaml
+#patchesJson6902:
+#- target:
+#    group: "apps"
+#    version: v1
+#    kind: Deployment
+#    name: sealed-secrets-controller
+#    - op: add
+#      path: "/spec/template/spec/containers/0/env"
+#      value:
+#        - name: SEALED_SECRETS_UPDATE_STATUS
+#          value: "1"
+namespace: kube-system

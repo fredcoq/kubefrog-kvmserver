@@ -1,0 +1,16 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: helloworld-python
+  namespace: frederik-coquelet
+spec:
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"
+    spec:
+      containers:
+        - image: core.harbor.82.66.198.32.nip.io/library/helloworld:latest
+          env:
+            - name: TARGET
+              value: "Python Sample v1"

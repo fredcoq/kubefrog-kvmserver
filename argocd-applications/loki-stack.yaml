@@ -1,0 +1,103 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: loki-stack
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    targetRevision: 2.8.4
+    chart: loki-stack
+    helm:
+      values : |
+        # This is a configuration to deploy Loki depending only on a storage solution
+        # for example, an S3-compatible API like MinIO.
+        # The ring configuration is based on the gossip memberlist and the index is shipped to storage
+        # via Single Store (boltdb-shipper)
+        loki:
+          isDefault: false
+          persistence:
+            enabled: true
+            accessModes:
+            - ReadWriteOnce
+            size: 10Gi
+            storageClassName: rook-ceph-block-ssd
+          
+          ingress:
+            enabled: false
+          config:
+            auth_enabled: false
+
+            server:
+              http_listen_port: 3100
+
+            distributor:
+              ring:
+                kvstore:
+                  store: memberlist
+
+            ingester:
+              lifecycler:
+                ring:
+                  kvstore:
+                    store: memberlist
+                  replication_factor: 1
+                final_sleep: 0s
+              chunk_idle_period: 5m
+              chunk_retain_period: 30s
+              wal:
+                dir: /data/loki/wal
+            memberlist:
+              abort_if_cluster_join_fails: false
+
+              # Expose this port on all distributor, ingester
+              # and querier replicas.
+              bind_port: 7946
+
+              # You can use a headless k8s service for all distributor,
+              # ingester and querier components.
+              join_members:
+              - loki-stack.monitoring.svc.cluster.local:7946
+
+              max_join_backoff: 1m
+              max_join_retries: 10
+              min_join_backoff: 1s
+
+            schema_config:
+              configs:
+              - from: 2023-12-01
+                store: boltdb-shipper
+                object_store: s3
+                schema: v11
+                index:
+                  prefix: index_
+                  period: 24h
+
+            storage_config:
+              boltdb_shipper:
+                active_index_directory: /data/loki/index
+                cache_location: /data/loki/index_cache
+                shared_store: s3
+
+              aws:
+                s3: s3://minioadmin:minioadmin@192.168.0.200:9000/loki-log-store
+                s3forcepathstyle: true
+
+            limits_config:
+              enforce_metric_name: false
+              reject_old_samples: true
+              reject_old_samples_max_age: 168h
+
+            compactor:
+              working_directory: /data/compactor
+              shared_store: s3
+              compaction_interval: 5m
+      
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

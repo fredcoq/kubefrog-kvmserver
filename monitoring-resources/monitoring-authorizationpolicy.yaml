@@ -1,0 +1,32 @@
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: monitoring-ingress-authorizationpolicy
+  namespace: istio-system
+spec:
+  action: ALLOW
+  selector:
+    matchLabels:
+      app: istio-ingressgateway
+      istio: ingressgateway
+  rules:
+  - to:
+    - operation:
+        hosts:
+        - grafana.82.66.198.32.nip.io
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: monitoring
+  namespace: monitoring
+spec:
+  action: ALLOW
+  rules:
+  - {}
+  # - from:
+  #   - source:
+  #       namespaces:
+  #       - auth
+  #       - istio-system

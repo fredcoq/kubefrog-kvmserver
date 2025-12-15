@@ -1,0 +1,50 @@
+apiVersion: operator.knative.dev/v1beta1
+kind: KnativeServing
+metadata:
+  name: knative-serving
+  namespace: knative-serving
+spec:
+  version: "1.14.1"
+  ingress:
+    istio:
+      enabled: true
+      knative-local-gateway:
+        selector:
+          istio: cluster-local-gateway
+  config:
+    istio:
+      local-gateway.knative-serving.knative-local-gateway: "knative-local-gateway.istio-system.svc.cluster.local"
+      gateway.kubeflow.kubeflow-gateway: istio-ingressgateway.istio-system.svc.cluster.local
+      
+    domain:
+      serving.kubefrog.fr: ''
+    deployment:
+      progressDeadline: 600s
+    autoscaler: 
+      container-concurrency-target-default: "100"
+      container-concurrency-target-percentage: "70"
+      requests-per-second-target-default: "100"
+      target-burst-capacity: "200"
+      stable-window: "60s"
+      panic-window-percentage: "10"
+      panic-threshold-percentage: "200"
+      enable-scale-to-zero: "true"
+      max-scale-up-rate: "2"
+      max-scale-down-rate: "2"
+      scale-to-zero-grace-period: "30s"
+      scale-to-zero-pod-retention-period: "0s"
+      pod-autoscaler-class: "kpa.autoscaling.knative.dev"
+      activator-capacity: "100.0"
+      initial-scale: "1"
+      allow-zero-initial-scale: "true"
+      max-scale: "5"
+      scale-down-delay: "0s"
+      max-scale-limit: "0"
+    features:
+      kubernetes.podspec-nodeselector: "enabled"
+      kubernetes.podspec-tolerations: "enabled"
+      kubernetes.podspec-affinity: "enabled"
+  controller-custom-certs:
+    name: kubeflow-ingressgateway-certs
+    type: Secret
+

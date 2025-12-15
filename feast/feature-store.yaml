@@ -1,0 +1,20 @@
+project: feast_workshop
+provider: local
+entity_key_serialization_version: 2
+registry:
+  registry_type: sql
+  path: postgresql://feast:iBlEubBaMNRds1mFHl3H2ANtChqT94iKm8XE7fmWav9LWs5vzH2kGxgdBddB91AA@feast-postgres-cluster.feast:5432/feast_registry
+  cache_ttl_seconds: 60
+online_store:
+  type: redis
+  connection_string: "feast-redis-master.feast:6379,password=s7CEiGoizG"
+  key_ttl_seconds: 604800
+offline_store:
+  type: postgres
+  host: feast-postgres-cluster.feast
+  port: 5432
+  database: feast_data
+  db_schema: public
+  user: feast
+  sslmode: None
+  password: iBlEubBaMNRds1mFHl3H2ANtChqT94iKm8XE7fmWav9LWs5vzH2kGxgdBddB91AA

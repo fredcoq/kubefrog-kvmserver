@@ -1,0 +1,18 @@
+
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: argocd-ingress-authorizationpolicy
+  namespace: istio-system
+spec:
+  action: ALLOW
+  rules:
+    - to:
+        - operation:
+            hosts:
+              - argocd.82.66.198.32.nip.io
+              - webhook.82.66.198.32.nip.io            
+  selector:
+    matchLabels:
+      app: istio-ingressgateway
+      istio: ingressgateway

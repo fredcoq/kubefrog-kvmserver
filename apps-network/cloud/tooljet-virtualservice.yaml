@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: tooljet-cloud
+  namespace: tooljet
+spec:
+  hosts:
+    - tooljet.kubefrog.ai
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: tooljet
+            port:
+              number: 3000
+  gateways:
+    - apps-network/apps-gateway-cloud

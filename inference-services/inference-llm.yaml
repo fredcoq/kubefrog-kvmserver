@@ -1,0 +1,20 @@
+apiVersion: "serving.kserve.io/v1beta1"
+kind: "InferenceService"
+metadata:
+  name: "qwen-llm"
+  namespace: "frederik-coquelet"
+spec:
+  predictor:
+    model:
+      modelFormat:
+        name: huggingface
+      storageUri: "hf://Qwen/Qwen2.5-0.5B-Instruct"
+      resources:
+        requests:
+          cpu: "1"
+          memory: 2Gi
+          nvidia.com/gpu: "1"
+        limits:
+          cpu: "1"
+          memory: 2Gi
+          nvidia.com/gpu: "1"

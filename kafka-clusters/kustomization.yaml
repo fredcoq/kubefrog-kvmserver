@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# namespace: knative-eventing
+resources:
+# - kafka-persistent-single-small-kraft.yaml
+- kafka-persistent-kraft.yaml
+- kafka-metrics.yaml
+namespace: kafka
+
+ 

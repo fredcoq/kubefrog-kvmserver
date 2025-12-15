@@ -1,0 +1,20 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: vmagent-k8s-victoria-metrics-k8s-stack
+  namespace: victoria-metrics
+spec:
+  template:
+    spec:
+      containers:
+      - name: config-reloader
+        requests:
+          cpu: 10m
+      - name: vmagent
+        requests:
+          cpu: 10m
+      initContainers:
+       - name: config-init
+         requests:
+           cpu: 10m
+        

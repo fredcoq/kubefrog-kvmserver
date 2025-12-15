@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: nvidia-gpu-operator
+helmCharts:
+  - name: gpu-operator
+    repo: https://nvidia.github.io/gpu-operator
+    version: v23.9.1
+    valuesInline:
+      sandboxWorkload:
+        enabled: "true"
+      devicePlugin:
+        config:
+          name: time-slicing-config
+          default: any
+      driver:
+        enabled: "false"
+      toolkit:
+        enabled: "false"
+      upgradeCRD:
+        enabled: "true"
+    releaseName: "prod"
+    namespace: nvidia-gpu-operator
+resources:
+  - time-slicing-cm.yaml
+

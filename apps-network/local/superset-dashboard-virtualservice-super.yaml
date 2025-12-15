@@ -1,0 +1,23 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: superset-dashboard-super
+  namespace: superset
+spec:
+  gateways:
+  - apps-network/apps-gateway
+  hosts:
+  - superset.kubefrog.ai
+  http:
+  - match:
+    - uri:
+        prefix: /web-dashboard
+    route:
+    - destination:
+        host: superset-dashboard-web-nginx
+        port:
+          number: 80
+            
+    rewrite:
+      uri: /
+

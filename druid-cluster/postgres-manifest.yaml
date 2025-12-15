@@ -1,0 +1,19 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: druid-postgres-cluster
+  namespace: druid-cluster
+spec:
+  teamId: "druid"
+  volume:
+    size: 5Gi
+  numberOfInstances: 2
+  users:
+    druid:
+    - superuser
+    - createdb
+    druid_user: []
+  databases:
+    druid: druid  # dbname: owner
+  postgresql:
+    version: "14"

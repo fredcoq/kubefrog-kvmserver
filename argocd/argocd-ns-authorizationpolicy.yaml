@@ -1,0 +1,14 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: argocd
+  namespace: argocd
+spec:
+  action: ALLOW
+  rules:
+  - {}
+  # - from:
+  #   - source:
+  #       namespaces:
+  #       - auth
+  #       - istio-system

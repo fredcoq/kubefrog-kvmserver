@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: litellm-config-file
+data:
+  config.yaml: |
+      model_list: 
+        - model_name: groq-gpt-oss-20b
+          litellm_params:
+            model: groq/openai/gpt-oss-20b
+            api_base: https://api.groq.com/openai/v1
+            api_key: os.environ/GROQ_API_KEY
+      litellm_settings:
+        callbacks: ["opik"]

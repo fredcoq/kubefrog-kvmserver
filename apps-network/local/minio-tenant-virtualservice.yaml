@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: minio
+  namespace: minio-tenant
+spec:
+  hosts:
+    - minio.kubefrog.fr
+  tls:
+    - match:
+      - port: 443
+        sniHosts:
+            - minio.kubefrog.fr
+      route:
+      - destination:
+            host: minio
+            port:
+              number: 443
+          
+  gateways:
+    - apps-network/apps-gateway-minio

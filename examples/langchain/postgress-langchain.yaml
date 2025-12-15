@@ -1,0 +1,19 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: langchain-postgres-cluster
+  namespace: frederik-coquelet    
+spec:
+  teamId: "langchain"
+  volume:
+    size: 5Gi
+    storageClass: openebs-hostpath
+  numberOfInstances: 1
+  users:
+    langchain:
+    - superuser
+    - createdb
+  databases:
+    langchain: langchain  # dbname: owner
+  postgresql:
+    version: "15"

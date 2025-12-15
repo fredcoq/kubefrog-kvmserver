@@ -1,0 +1,32 @@
+# patch virtual service model-registry-ui to set a header to the request
+# the header is kubeflow-userid: kubeflow-user@example.com
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: model-registry
+spec:
+  hosts:
+    - '*'
+  gateways:
+    - kubeflow/kubeflow-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /api/model_registry/
+      route:
+        - destination:
+            host: model-registry-service.frederik-coquelet.svc.cluster.local
+            port:
+              number: 8080
+    - match:
+        - port: 9090
+        - authority:
+            regex: model-registry-service(\..+)?(:9090)?
+        - uri:
+            prefix: /ml_metadata.MetadataStoreService/
+      route:
+        - destination:
+            host: model-registry-service.frederik-coquelet.svc.cluster.local
+            port:
+              number: 9090

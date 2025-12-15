@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: flowiseai
+
+helmCharts:
+  - name: redis
+    repo: https://charts.bitnami.com/bitnami
+    version: 19.0.1
+    valuesInline:
+      architecture: standalone
+      # Add your Redis chart values here
+  - name: flowise
+    repo: https://cowboysysop.github.io/charts/
+    version: 6.0.0
+    valuesInline:
+      persistence:
+        enabled: true
+        accessMode: "ReadWriteOnce"
+        size: "5Gi"
+      service:
+        type: "LoadBalancer"
+      postgresql:
+        enabled: true
+      # Add your Flowise chart values he
+
+
+
+  

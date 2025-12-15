@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: druid-toljet-cloud
+  namespace: druid-cluster
+spec:
+  hosts:
+    - tooljet.kubefrog.ai
+  gateways:
+    - apps-network/apps-gateway-cloud
+  http:
+    - match:
+        - uri:
+            prefix: /druid
+      route:
+        - destination:
+            host: druid-druid-cluster-01-k8s-mm-routers
+            port:
+              number: 8088
+      rewrite:
+        uri: /

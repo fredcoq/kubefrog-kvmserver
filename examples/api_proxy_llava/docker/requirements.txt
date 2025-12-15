@@ -1,0 +1,4 @@
+# bitsandbytes-cuda117
+Flask
+gunicorn
+requests

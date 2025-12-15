@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kiali
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://kiali.org/helm-charts
+    targetRevision: 1.73.1
+    chart: kiali-operator
+    helm:
+      parameters:
+      - name: cr.create
+        value: 'false'
+      - name: clusterRoleCreator
+        value: 'true'
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kiali-operator
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
+

@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: falco
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://falcosecurity.github.io/charts
+    targetRevision: 3.2.1
+    chart: falco
+    helm: 
+     parameters:
+     - name: driver.enabled
+       value: "true"
+     - name: driver.kind
+       value: module
+     - name: affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].key
+       value: kubernetes.io/hostname
+     - name: affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].operator
+       value: NotIn
+     - name: affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].values[0]
+       value: kubefrog
+     - name: affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].values[1]
+       value: ip-192-168-0-251
+    
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: falco
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

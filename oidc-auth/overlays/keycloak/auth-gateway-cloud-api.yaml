@@ -1,0 +1,33 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: auth-gateway-cloud
+  namespace: auth
+  annotations: {}
+    #external-dns.alpha.kubernetes.io/hostname: "*.kubefrog.fr"
+    #external-dns.alpha.kubernetes.io/target: "172.22.80.100"
+    #external-dns.alpha.kubernetes.io/ttl: "120"
+  labels: 
+    app: auth-gateway-cloud
+spec:
+  gatewayClassName: istio
+  addresses:
+  - type: IPAddress
+    value: 172.22.80.111
+  listeners:
+  - name: http
+    port: 80
+    protocol: HTTP
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+        - name: kubeflow-ingressgateway-certs-kubefrog
+    allowedRoutes:
+      namespaces:
+        from: All

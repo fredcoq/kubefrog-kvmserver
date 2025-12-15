@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: elastic
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    path: elastic
+    repoURL: https://github.com/fredcoq/kubefrog-local
+    targetRevision: HEAD
+    
+      
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: elastic
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true

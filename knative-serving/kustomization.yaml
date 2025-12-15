@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# namespace: knative-serving
+resources:
+# - https://github.com/knative/operator/releases/download/knative-v1.14.3/operator.yaml  
+# - https://raw.githubusercontent.com/knative-sandbox/monitoring/main/servicemonitor.yaml  
+- github.com/kubeflow/manifests/common/knative/knative-serving/overlays/gateways
+# - ./dashboard
+# - knative-serving-cr.yaml
+# - istio-authorization-policy.yaml
+patches:
+  - path: configmap-patch.yaml
+    target:
+      kind: ConfigMap
+      name: config-domain
+      namespace: knative-serving
+patchesStrategicMerge:
+   # - enable-self-signed-certificate.yaml
+  - configmap-feature-patch.yaml
+  - configmap-istio-patch.yaml
+  - configmap-autoscaler-patch.yaml
+
+      
+
+

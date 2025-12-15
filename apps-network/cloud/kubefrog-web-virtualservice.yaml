@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: kuebfrog-web-cloud
+  namespace: odoo
+spec:
+  hosts:
+    - kubefrog-web.kubefrog.ai
+  http:
+    - route:
+        - destination:
+            host: odoo
+            port:
+              number: 80
+  gateways:
+    - apps-network/apps-gateway-cloud

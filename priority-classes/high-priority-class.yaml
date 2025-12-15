@@ -1,0 +1,23 @@
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: high-priority
+value: 1000000
+globalDefault: false
+description: "priority class for critical worlkloads like admission controllers"
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: high-priority-lower-1
+value: 900000
+# This priority class is lower than the default high-priority class, allowing it to be
+# preempted by higher priority workloads.
+globalDefault: false
+description: "priority class for critical worlkloads like admission controllers"
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: very-low-priority
+value: -1000

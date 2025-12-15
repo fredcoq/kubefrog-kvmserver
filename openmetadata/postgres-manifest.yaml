@@ -1,0 +1,24 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: postgres-airflow
+  namespace: openmetadata
+spec:
+  # enableMasterLoadBalancer : true
+  teamId: "airflow-db"
+  volume:
+    size: 40Gi
+  numberOfInstances: 1
+  users:
+    airflow-user:
+    - superuser
+    - createdb
+  databases:
+    airflow_db: airflow-user  # dbname: owner
+
+  postgresql:
+    version: "17"
+  spiloFSGroup: 103
+
+
+

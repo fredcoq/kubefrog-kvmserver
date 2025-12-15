@@ -1,0 +1,21 @@
+apiVersion: data.fluid.io/v1alpha1
+kind: DataLoad
+metadata:
+  name: s3-dataload-thebloke-llama-2-7b-chat-gptq
+  namespace: frederik-coquelet
+spec:
+  dataset:
+    name: s3-data-llm-models
+    namespace: frederik-coquelet
+  # loadMetadata: true
+  target:
+    # # please update it accordingly
+    - path: /TheBloke_Llama-2-7b-Chat-GPTQ
+    # - path: /bloom-7b1
+      replicas: 1
+  nodeSelector:
+    kubernetes.io/hostname: ubuntu-gpu-wk
+  tolerations:
+    - key: "local-node"
+      operator: "Exists"
+      effect: "NoSchedule"

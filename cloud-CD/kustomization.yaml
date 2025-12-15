@@ -1,0 +1,171 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+# ---------------- secrets -----------------------
+- argocd-applications/apps-secrets.yaml
+- argocd-applications/apps-test-local.yaml
+- argocd-applications/apps-migration.yaml
+# ---------------- network and storage ressources ------------------
+- argocd-applications/metallb.yaml
+- argocd-applications/external-dns-controller.yaml
+# - argocd-applications/rook-ceph.yaml
+# - argocd-applications/nfs-provisioner.yaml
+- argocd-applications/openebs.yaml
+- argocd-applications/sealed-secrets.yaml
+# - argocd-applications/nginx.yaml
+- argocd-applications/apps-network-cloud.yaml
+- argocd-applications/nvidia-device-plugin.yaml
+# argocd-applications/nvidia-gpu-operator.yaml
+
+# ----------------- CI/CD  -------------------------------
+- argocd-applications/argocd.yaml
+- argocd-applications/argo-events.yaml
+- argocd-applications/argo-workflows.yaml
+#------------------ cloud control plane ----------------------------
+#- argocd-applications/cross-plane.yaml
+
+# ----------------- workflow resources -----------------------------
+# argocd-applications/airflow.yaml
+- argocd-applications/airflow-secret.yaml
+# - argocd-applications/prefect.yaml
+
+# ------------------ policies --------------------------------------
+- argocd-applications/reflector.yaml
+# - argocd-applications/kubed.yaml
+- argocd-applications/namespaces-labels.yaml
+# - argocd-applications/kyverno.yaml
+- argocd-applications/kyverno-policies.yaml
+# ------------------ project-management ----------------------------
+- argocd-applications/wekan.yaml
+
+#--------------------apps-low-code----------------------------------
+#- argocd-applications/tooljet.yaml
+- argocd-applications/n8n.yaml
+
+# ------------------ private registry ------------------------------
+- argocd-applications/harbor.yaml
+
+# --------------- Istio and authentication environments ------------
+- argocd-applications/istio-cloud.yaml # Istio 1.10 setup
+- argocd-applications/istio-cloud-resources.yaml # Istio 1.10 setup
+- argocd-applications/istio-operator.yaml # Istio 1.10 setup
+- argocd-applications/oidc-auth-on-cluster-keycloak.yaml # Istio 1.10 setup
+# - argocd-applications/minio-operator.yaml
+
+# ---------------- API GATEWAY -------------------------------------
+- argocd-applications/apisix.yaml
+
+# ------------------- monitoring ----------------------------------
+- argocd-applications/metrics-server.yaml
+# ------------------- kubeflow ------------------------------------
+
+- argocd-applications/kubeflow-roles-namespaces.yaml
+- argocd-applications/cert-manager.yaml
+- argocd-applications/certificate.yaml
+- argocd-applications/knative-eventing.yaml
+- argocd-applications/knative-serving.yaml
+- argocd-applications/kafka.yaml
+- argocd-applications/kafka-clusters.yaml
+- argocd-applications/camel-k.yaml
+- argocd-applications/kafka-source.yaml
+- argocd-applications/pipelines.yaml
+- argocd-applications/kserve.yaml
+- argocd-applications/katib.yaml
+- argocd-applications/central-dashboard.yaml
+- argocd-applications/pod-defaults.yaml
+- argocd-applications/jupyter-web-app.yaml
+- argocd-applications/notebook-controller.yaml
+- argocd-applications/profile-controller_access-management.yaml
+- argocd-applications/tensorboard-controller.yaml
+- argocd-applications/tensorboards-web-app.yaml
+- argocd-applications/volumes-web-app.yaml
+- argocd-applications/training-operator.yaml
+#  argocd-applications/modeldb.yaml
+- argocd-applications/user-namespace.yaml
+- argocd-applications/model-registry.yaml
+
+# ---------------- Monitoring and logging ------------------------
+#- argocd-applications/monitoring-resources.yaml
+#- argocd-applications/kube-prometheus-stack.yaml
+#- argocd-applications/loki-stack.yaml
+#- argocd-applications/kiali.yaml
+#- argocd-applications/kiali-instance.yaml
+#- argocd-applications/elastic.yaml
+# argocd-applications/elastic-cluster.yaml
+#- argocd-applications/jaeger-operator.yaml
+#- argocd-applications/jaeger-cluster.yaml
+#- argocd-applications/cassandra-operator.yaml
+# argocd-applications/cassandra-cluster.yaml
+# - argocd-applications/cassandra-bitnami.yaml
+
+#- argocd-applications/skywalking-operator.yaml
+#- argocd-applications/opentelemetry-operator.yaml
+#------------------ security -----------------------
+#- argocd-applications/trivy-operator.yaml
+#- argocd-applications/falco.yaml
+# - argocd-applications/conjur-oss.yaml
+#- argocd-applications/vault.yaml
+# - argocd-applications/victoria-metrics.yaml
+# argocd-applications/grafana.yaml
+
+# ----------------- data visualization ---------------------------
+- argocd-applications/superset.yaml
+- argocd-applications/superset-dashboard-web.yaml
+- argocd-applications/superset-dashboard-web-pages.yaml
+
+# --------------------llm------------------------------------------
+- argocd-applications/ollama.yaml
+- argocd-applications/flowiseai.yaml
+- argocd-applications/opik.yaml
+# ----------------- data-lake data-processing --------------------
+# - argocd-applications/airbyte.yaml
+- argocd-applications/druid-operator.yaml
+- argocd-applications/nessie.yaml
+# - argocd-applications/polaris.yaml
+- argocd-applications/druid-cluster.yaml
+- argocd-applications/clickhouse.yaml
+- argocd-applications/hive-metastore.yaml
+- argocd-applications/spark-operator.yaml
+# - argocd-applications/trino.yaml
+
+# - argocd-applications/druid-cluster.yaml
+- argocd-applications/postgres-operator.yaml
+- argocd-applications/cloudnative-pg.yaml
+# argocd-applications/postgres-operator-ui.yaml
+# fetaure ingestion and management
+- argocd-applications/feast.yaml
+- argocd-applications/feast-redis.yaml
+- argocd-applications/flink-operator.yaml
+#- argocd-applications/ozone.yaml
+#- argocd-applications/apache-doris.yaml
+- argocd-applications/qdrant.yaml
+# - argocd-applications/fluid.yaml
+# - argocd-applications/alluxio.yaml
+- argocd-applications/minio-operator.yaml
+- argocd-applications/nfs-server.yaml
+# inference-services
+# - argocd-applications/inference-services.yaml
+# --------------------metadata-management-------------------------
+-  argocd-applications/openmetadata.yaml
+#  argocd-applications/openmetadata-deps.yaml
+#- argocd-applications/datahub.yaml
+#- argocd-applications/datahub-prerequisites.yaml
+# -----------------------------------------------------
+# customer interface
+# argocd-applications/wordpress.yaml
+- argocd-applications/label-studio.yaml
+
+# ------------------------erp--------------------------------------
+- argocd-applications/etcd-backup.yaml
+#- argocd-applications/odoo.yaml
+
+# ----------------- dapr ------------------------------------------
+# - argocd-applications/dapr.yaml
+
+#-------------------tool---------------------------------------
+#- argocd-applications/tool-box.yaml
+
+# ----------------- virtualization -------------------------------
+#- argocd-applications/kubevirt.yaml
+# - argocd-applications/containerized-data-importer.yaml

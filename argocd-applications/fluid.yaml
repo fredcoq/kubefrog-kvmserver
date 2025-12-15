@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: fluid
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://fluid-cloudnative.github.io/charts
+    targetRevision: 0.9.2
+    chart: fluid
+    helm:
+      version: v3
+      parameters:
+      - name: runtime.jindo.enabled
+        value: "false"
+      - name: runtime.jindo.worker.replicas
+        value: "1"
+      - name: runtime.alluxio.enabled
+        value: "true"
+      - name: runtime.alluxio.worker.replicas
+        value: "1"
+      - name: runtime.mountRoot
+        value: "/opt/runtime-mnt"
+      - name: csi.config.hostNetwork
+        value: "true"
+
+          
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: fluid-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - replace=true
+

@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: database-cloud
+  namespace: superset
+spec:
+  hosts:
+    - database.kubefrog.ai
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: superset-postgres-cluster
+        port:
+          number: 5432
+  gateways:
+    - apps-network/apps-gateway-cloud

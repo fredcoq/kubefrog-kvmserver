@@ -1,0 +1,86 @@
+{"apiVersion": "apps/v1",
+"kind": "Deployment",
+"metadata": {
+    "labels": {
+        "app": "ml-pipeline-ui-artifact-v2"
+    },
+    "name": "ml-pipeline-ui-artifact-v2",
+    "namespace": "frederik-coquelet",
+},
+"spec": {
+    "selector": {
+        "matchLabels": {
+            "app": "ml-pipeline-ui-artifact"
+        }
+    },
+    "template": {
+        "metadata": {
+            "labels": {
+                "app": "ml-pipeline-ui-artifact"
+            },
+            "annotations": 
+                {"sidecar.istio.io/inject": "false"
+            }
+        },
+        "spec": {
+            "containers": [{
+                "name":
+                    "ml-pipeline-ui-artifact",
+                "image": "ghcr.io/kubeflow/kfp-frontend:2.4.0",
+                "imagePullPolicy":
+                    "IfNotPresent",
+                "ports": [{
+                    "containerPort": 3000
+                }],
+                "env": [
+                    {
+                        "name": "MINIO_ACCESS_KEY",
+                        "valueFrom": {
+                            "secretKeyRef": {
+                                "key": "accesskey",
+                                "name": "mlpipeline-minio-artifact"
+                            }
+                        }
+                    },
+                    {
+                        "name": "MINIO_SECRET_KEY",
+                        "valueFrom": {
+                            "secretKeyRef": {
+                                "key": "secretkey",
+                                "name": "mlpipeline-minio-artifact"
+                            }
+                        }
+                    }
+                ],
+                "resources": {
+                    "requests": {
+                        "cpu": "10m",
+                        "memory": "70Mi"
+                    },
+                    "limits": {
+                        "cpu": "100m",
+                        "memory": "500Mi"
+                    }
+                },
+                "volumeMounts": [
+                    {
+                    "mountPath": "/server/",
+                    "name": "k8s-server-patch",
+                    "subPath": "k8s-helper.ts",
+                    
+                    }
+                ]
+                }
+            }],
+            
+            "serviceAccountName":"default-editor",
+            "volumes": [{
+                "name": "k8s-server-patch", 
+                "configMap": {
+                    "name": "k8s-server-patches"
+                    }
+                }]
+            
+        }
+        
+    }

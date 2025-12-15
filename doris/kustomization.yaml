@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: doris
+resources:
+  - https://raw.githubusercontent.com/selectdb/doris-operator/master/config/crd/bases/doris.selectdb.com_dorisclusters.yaml
+  - https://raw.githubusercontent.com/selectdb/doris-operator/master/config/operator/operator.yaml
+
+

@@ -1,0 +1,26 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: minio-tenant-cert
+  namespace: minio-tenant
+spec:
+  secretName: operator-ca-tls
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "kubeflow,minio-operator"  # Control destination namespaces
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true" # Auto create reflection for matching namespaces
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "kubeflow,minio-operator" # Control auto-reflection namespaces
+  issuerRef:
+    name: kubefrog-signing-issuer
+    kind: ClusterIssuer  
+
+  dnsNames:
+  - minio.minio-tenant
+  - minio.minio-tenant.svc
+  - minio.minio-tenant.svc.cluster.local 
+  - "*.minio.minio-tenant"
+  - "*.minio.minio-tenant.svc"
+  - "*.minio.minio-tenant.svc.cluster.local"
+
+  

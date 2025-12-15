@@ -1,0 +1,4 @@
+- op: replace
+  path: "/metadata/labels/app.kubernetes.io~1instance"
+  value: "ingress-nginx"
+ 

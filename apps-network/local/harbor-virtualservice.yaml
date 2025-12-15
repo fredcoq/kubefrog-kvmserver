@@ -1,0 +1,62 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: harbor-core-cloud
+  namespace: harbor
+spec:
+  hosts:
+    - harbor-core-local.kubefrog.fr
+  # Keep the rules order as the fisrt that mathches the host will be used 
+  # as the destination for the request.
+  # In this case / should be the last to be evaluated.
+  http:
+    - match:
+        - uri:
+            prefix: /c/
+      route:
+        - destination:
+            host: release-name-harbor-core
+            port:
+              number: 80
+    - match:
+        - uri:
+            prefix: /api/
+      route:
+        - destination:
+            host: release-name-harbor-core
+            port:
+              number: 80
+    - match:
+        - uri:
+            prefix: /service/
+      route:
+        - destination:
+            host: release-name-harbor-core
+            port:
+              number: 80
+    - match:
+        - uri:
+            prefix: /v2/
+      route:
+        - destination:
+            host: release-name-harbor-core
+            port:
+              number: 80
+    - match:
+        - uri:
+            prefix: /chartrepo/
+      route:
+        - destination:
+            host: release-name-harbor-core
+            port:
+              number: 80
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: release-name-harbor-portal
+            port:
+              number: 80
+  gateways:
+    - apps-network/apps-gateway-cloud

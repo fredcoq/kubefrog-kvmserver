@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: ollama-webui-cloud
+  namespace: ollama
+spec:
+  hosts:
+    - ollama-webui.kubefrog.ai
+  http:
+    - route:
+        - destination:
+            host: open-webui
+            port:
+              number: 80
+  gateways:
+    - apps-network/apps-gateway-cloud
+
+  
+

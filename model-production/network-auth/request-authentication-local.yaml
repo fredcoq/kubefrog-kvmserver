@@ -1,0 +1,24 @@
+apiVersion: security.istio.io/v1
+kind: RequestAuthentication
+metadata:
+  name: "jwt-local"
+  namespace: model-production
+spec:
+  #selector:
+  #  matchLabels:
+  #    serving.kserve.io/inferenceservice: mnist-production
+  #    component: transformer
+  jwtRules:
+  - issuer: "ISSUER"
+    jwks: |
+      {
+        "keys": [
+          {
+            "e": "AQAB",
+            "kty": "RSA",
+            "use": "sig",
+            "n": "vxfD-8mQ2gu5FHHm23JKyKK9ML87CcCtkXW3eTtYSv5GlMQPVFKk78-RA7roTSp1khQcbJeP0rEjgQRJMPZsisOlT2xtIIwJSEp7FueKVm1WkiFMHj9En3Ux0vJVKvqy4GTrRHCowqmddfuVzATYpTlGs0tx34GuwFZfGVyuzQ2Mg4jjFJN1V8rAeWb6L-SbCx9jirAa4lFbIPqtX16nir0-5kwgVUKRKTla6xY7xXBTWdflUQXONoRbfKeRCK5yG-0MNP73FoxNmnNjdaVChF1EQ0gdgO7umsz6gQt5B8c0ul4v7ZQpvQwpSch7Uf9xcR7iIW7A5adZSHyiNfLM5w",
+          }
+        ]
+      }
+

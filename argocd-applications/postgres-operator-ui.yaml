@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgres-operator-ui
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/zalando/postgres-operator
+    path: charts/postgres-operator-ui
+    helm:
+     version: v3
+     parameters:
+      - name: service.type
+        value: "NodePort"
+      - name: servie.nodePort 
+        value: "32200"
+        envs:
+  # IMPORTANT: While operator chart and UI chart are idendependent, this is the interface between
+  # UI and operator API. Insert the service name of the operator API here!
+      - name: envs.operatorApiUrl
+        value: "http://postgres-operator.postgres-operator:8080"
+      - name: envs.operatorClusterNameLabel
+        value: "cluster-name"
+      - name: envs.resourcesVisible
+        value: "True"
+      - name: envs.targetNamespace
+        value: "default"
+      - name: envs.teams
+        value: ["acid"]
+        
+        
+        
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: postgres-operator
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

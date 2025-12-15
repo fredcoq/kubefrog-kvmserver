@@ -1,0 +1,24 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kubefrog-selfsigned-ca
+  namespace: cert-manager
+spec:
+  isCA: true
+  commonName: kubefrog-selfsigned-ca
+  secretName: root-ca-tls
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "minio-tenant,minio-operator"  # Control destination namespaces
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true" # Auto create reflection for matching namespaces
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "minio-tenant,minio-operator" # Control auto-reflection namespaces
+  duration: 43800h0m0s # 5y
+  renewBefore: 360h0m0s # 15d
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: kubeflow-self-signing-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io

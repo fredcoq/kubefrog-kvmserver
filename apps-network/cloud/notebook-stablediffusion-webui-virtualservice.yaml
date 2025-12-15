@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: notebook-stablediffusion-webui
+  namespace: frederik-coquelet
+spec:
+  hosts:
+    - notebook.kubefrog.ai
+  http:
+    - route:
+      - destination:
+          host: imagegen-webui-frontend
+          port:
+            number: 8188
+  gateways:
+    - apps-network/apps-gateway-cloud-notebook

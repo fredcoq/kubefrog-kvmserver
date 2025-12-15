@@ -1,0 +1,16 @@
+#!/bin/bash
+
+
+if [ -z "$1" ]
+    then
+        echo "no repo URL provided, using upstream"
+    else
+        yq e -i ".spec.source.repoURL = \"$1\"" kubeflow.yaml
+        for filename in ./argocd-applications/*.yaml; do
+            if [ $(yq e ".spec.source | has (\"helm\")" $filename) == false ]
+                then
+                    yq e -i ".spec.source.repoURL = \"$1\"" $filename
+            fi
+        done
+fi
+

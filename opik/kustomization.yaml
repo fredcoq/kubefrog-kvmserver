@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: opik
+helmCharts:
+  - name: opik
+    repo: https://comet-ml.github.io/opik/
+    version: 1.7.43
+    valuesInline:
+      global:
+        argocd: true
+      minio:
+        enabled: false
+      zookeeper:
+        enabled: false
+    #valuesFile: values.yaml
+    namespace: opik
+

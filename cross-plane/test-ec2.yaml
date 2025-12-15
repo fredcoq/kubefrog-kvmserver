@@ -1,0 +1,12 @@
+apiVersion: ec2.aws.upbound.io/v1beta1
+kind: Instance
+metadata:
+  name: sample-instance
+spec:
+  forProvider:
+    region: eu-west-3
+    imageId: ami-0ecc74eca1d66d8a6
+    instanceType: t2.micro
+    keyName: ssh-test-kubefrog
+  providerConfigRef:
+    name: default

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ml-pipeline
+  name: ml-pipeline
+  namespace: kubeflow
+spec:
+  selector:
+    matchLabels:
+      app: ml-pipeline
+  template:
+    metadata:
+      labels:
+        app: ml-pipeline
+    spec:
+      containers:
+      - name: ml-pipeline-api-server
+        env:
+        - name: TOKEN_REVIEW_AUDIENCE
+          value:  ml-pipeline

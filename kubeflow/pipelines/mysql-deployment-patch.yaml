@@ -1,0 +1,22 @@
+# mysql deployment patch to add volume from configmap
+# the configmap name is mysql-patch.cnf
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: kubeflow
+spec:
+  template:
+    spec:
+      containers:
+      - name: mysql
+        securityContext:
+          runAsUser: 999
+        volumeMounts:
+        - name: mysql-config
+          mountPath: /etc/mysql/conf.d
+      volumes:
+      - name: mysql-config
+        configMap:
+          name: mysql-conf
+          

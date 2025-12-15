@@ -1,0 +1,85 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: etcd-backup
+  namespace: kube-system
+spec:
+  schedule: "0 * * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 5
+  concurrencyPolicy: Allow
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          initContainers:
+          - name: fix-ownership
+            image: alpine:3.6
+            command: ["chown", "-R", "1000:1000", "/tmp","/data/etcd-backup"]
+            securityContext:
+              runAsUser: 0
+            volumeMounts:
+                - name: etcd-certs
+                  mountPath: /tmp
+                - mountPath: /data/etcd-backup
+                  name: etcd-backup
+          containers:
+          - name: etcd-backup
+            image: bitnami/etcd:3.5.6-debian-11-r10
+            env:
+            - name: ETCDCTL_API
+              value: "3"
+            - name: ETCDCTL_ENDPOINTS
+              value: "https://127.0.0.1:2379"
+            - name: ETCDCTL_CACERT
+              value: "/etc/kubernetes/pki/etcd/ca.crt"
+            - name: ETCDCTL_CERT
+              value: "/etc/kubernetes/pki/etcd/healthcheck-client.crt"
+            - name: ETCDCTL_KEY
+              value: "/etc/kubernetes/pki/etcd/healthcheck-client.key"
+            command: ["/bin/bash","-c"]
+            args: ["etcdctl snapshot save /data/etcd-backup/etcd-snapshot-$(date +%Y-%m-%dT%H:%M).db  && \
+                    cd /data/etcd-backup && \
+                    ls | grep -v $(date  +%Y-%m-%d) | grep -v $(date -d \"now - 1 day\"  +%Y-%m-%d) | xargs -r rm" ]
+
+            securityContext:
+              runAsUser: 1000
+              runAsGroup: 1000
+            volumeMounts:
+            - mountPath: /etc/kubernetes/pki/etcd
+              name: etcd-certs
+              readOnly: true
+            - mountPath: /data/etcd-backup
+              name: etcd-backup
+          affinity:
+            podAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                    - key: component
+                      operator: In
+                      values:
+                      - etcd
+                  topologyKey: kubernetes.io/hostname
+              
+          restartPolicy: OnFailure
+          preemptionPolicy: PreemptLowerPriority
+          priority: 2000001000
+          priorityClassName: system-node-critical
+          securityContext:
+            seccompProfile:
+              type: RuntimeDefault
+          hostNetwork: true
+          tolerations:
+            - key: node.kubernetes.io/memory-pressure
+              effect: NoSchedule
+              operator: Exists
+          volumes:
+          - name: etcd-certs
+            hostPath:
+              path: /etc/kubernetes/pki/etcd
+              type: Directory
+          - name: etcd-backup
+            hostPath:
+              path: /opt/etcd-backup
+              type: DirectoryOrCreate

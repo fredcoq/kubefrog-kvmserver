@@ -1,0 +1,10 @@
+# a configmap that configure knative domain mapping
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-features
+  namespace: knative-serving
+data:
+  kubernetes.podspec-affinity: "enabled"
+  kubernetes.podspec-nodeselector: "enabled"
+  kubernetes.podspec-tolerations: "enabled"

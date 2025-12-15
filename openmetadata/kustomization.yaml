@@ -1,0 +1,118 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: openmetadata
+resources:
+  - postgres-manifest.yaml
+helmCharts:
+  - name: openmetadata-dependencies
+    repo: https://helm.open-metadata.org/
+    version: 1.9.0
+    releaseName: openmetadata-dependencies
+    namespace: openmetadata
+    valuesInline:
+      replicaCount: 0
+      mysql:
+        enabled: false
+      airflow:
+        logs:
+          persistence:
+            enabled: true
+            storageClass: nfs-csi
+            size: 1Gi
+            accessMode: ReadWriteMany
+            cleanup:
+              enabled: true
+              schedule: "0 4 * * *"
+              retainDays: 180
+        mysql:
+          enabled: false        
+        externalDatabase:
+          type: postgres
+          host: postgres-airflow
+          port: 5432
+          database: airflow_db
+          user: airflow-user
+          passwordSecret: airflow-user.postgres-airflow.credentials.postgresql.acid.zalan.do
+          passwordSecretKey: password
+        dags:
+          persistence:
+            enabled: true
+            storageClass: nfs-csi
+            size: 1Gi
+            accessMode: ReadWriteMany
+
+  - name: openmetadata
+    repo: https://helm.open-metadata.org/
+    version: 1.9.0
+    releaseName: openmetadata
+    namespace: openmetadata
+    valuesInline:
+        openmetadata:
+          config:
+            # replicaCount: 0
+            database:
+              host: postgres-airflow
+              port: 5432
+              driverClass: org.postgresql.Driver
+              dbScheme: postgresql
+              databaseName: airflow_db
+              auth:
+                username: airflow-user
+                password:
+                  secretRef: airflow-user.postgres-airflow.credentials.postgresql.acid.zalan.do
+                  secretKey: password
+
+
+            authorizer:
+              className: "org.openmetadata.service.security.DefaultAuthorizer"
+              containerRequestFilter: "org.openmetadata.service.security.JwtFilter"
+              initialAdmins:  # john.doe from john.doe@example.com
+              - "omd-admin"
+
+              principalDomain: "kubefrog.ai"  # Update with your Domain,The primary domain for the organization (example.com from john.doe@example.com).
+
+
+            authentication:
+              clientType: confidential
+              provider: "custom-oidc"
+              publicKeys:
+              - "https://openmetadata.kubefrog.ai/api/v1/system/config/jwks" # Update with your Domain and Make sure this "/api/v1/system/config/jwks" is always configured to enable JWT tokens
+              - "https://auth-local.kubefrog.fr/realms/kubeflow/protocol/openid-connect/certs"
+              authority: "auth-local.kubefrog.fr/realms/kubeflow/protocol/openid-connect/auth"
+              clientId: "openmetadata-ID"                                        # Update your Client ID
+              callbackUrl: "https://openmetadata.kubefrog.ai/callback"
+              oidcConfiguration:
+                enabled: true
+                oidcType: "Keycloak"
+                clientId:
+                  secretRef: oidc-secrets
+                  secretKey: openmetadata-oidc-client-id
+                clientSecret:
+                  secretRef: oidc-secrets
+                  secretKey: openmetadata-oidc-client-secret
+                discoveryUri: "https://auth-local.kubefrog.fr/realms/kubeflow/.well-known/openid-configuration"  # Keycloak's discovery URI Update your Keycloak's Domain and Realm
+                callbackUrl: "https://openmetadata.kubefrog.ai/callback"
+                serverUrl: https://openmetadata.kubefrog.ai
+        service:
+          type: LoadBalancer
+          port: 8585
+          adminPort: 8586
+
+
+patchesStrategicMerge:
+  - roles-airflow.yaml
+
+
+
+
+
+
+
+
+
+      
+
+
+   
+

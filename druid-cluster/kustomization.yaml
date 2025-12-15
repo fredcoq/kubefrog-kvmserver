@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  # infra-postgres-secret.yaml
+  - postgres-manifest.yaml
+  - postgres-secret.yaml
+  - druid-cluster-01-k8s-mm.yaml
+  - rbac.yaml
+  # localffs-pvc.yaml
+  

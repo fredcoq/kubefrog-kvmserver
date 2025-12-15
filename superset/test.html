@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        html, head {
+        width: 100%;
+        margin: 0px;
+        }
+        .container {
+        width: 100%;
+        background: rgb(16, 116, 16);
+        }
+        iframe {
+        height: 100vh;
+        width: 100vw;
+        border: none;
+        }
+    </style>
+    <head>
+        <div id="super"></div>
+        
+        <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://unpkg.com/@superset-ui/embedded-sdk"></script>
+        <script>
+            supersetEmbeddedSdk.embedDashboard({
+                id:"249bbcdf-026c-4c7a-bc51-276bde30a2ad", 
+                supersetDomain: "https://superset.82.66.198.32.nip.io",
+                mountPoint: document.getElementById("super"), 
+                fetchGuestToken: () => getToken(),
+                dashboardUiConfig: { 
+                    hideTitle: true,
+                    filters: {
+                    expanded: false,
+                    visible: false
+                    }
+                },   
+            });
+            // var container = document.getElementById("super");
+            // var iframe = container.find('iframe');  // get iframe
+            // iframe.width(700); // set width
+            // iframe.height(300); // set heigh
+            async function getToken() {
+                const { data: token } = await axios.post(
+                    'https://superset.82.66.198.32.nip.io/api/v1/security/login',
+                    {
+                        username: 'admin',
+                        password: 'admin',
+                        provider: 'db',
+                        refresh: true,
+                    }
+                );
+                console.log('access token here');
+                console.log(token.access_token);            
+                try {
+                    var data = await axios.post(
+                        'https://superset.82.66.198.32.nip.io/api/v1/security/guest_token/',
+                        {
+                            user: {
+                                username: 'admin',
+                                first_name: '',
+                                last_name: '',
+                            },
+                            rls: [],
+                            resources: [
+                                {
+                                    type: 'dashboard',
+                                    id: '249bbcdf-026c-4c7a-bc51-276bde30a2ad',
+                                },
+                            ],
+                        },
+                        {
+                            headers: {                           
+                                Authorization: `Bearer ${token.access_token}`,
+                            },
+                        },
+                    );            
+                    return data.data.token;
+                } catch (e) {
+                    console.error(e.message);
+                    console.error(e);
+                    return e;
+                }
+            }
+        </script>
+    </head>
+
+</html>

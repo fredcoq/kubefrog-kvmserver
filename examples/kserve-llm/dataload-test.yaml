@@ -1,0 +1,19 @@
+apiVersion: data.fluid.io/v1alpha1
+kind: DataLoad
+metadata:
+  name: load-test
+  namespace: frederik-coquelet
+spec:
+  dataset:
+    name: s3-data-llm-models
+    namespace: frederik-coquelet
+  # loadMetadata: true
+  target:
+    # # please update it accordingly
+    - path: /test
+      replicas: 1
+
+  tolerations:
+    - key: "local-node"
+      operator: "Exists"
+      effect: "NoSchedule"

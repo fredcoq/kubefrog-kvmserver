@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: nginx-server
+  namespace: default
+  labels:
+    app: nginx
+spec:
+  gateways:
+  - nginx-gateway
+  hosts:
+  - nginx.82.66.198.32.nip.io
+  http:
+  - route:
+    - destination:
+        host: nginx
+        port:
+          number: 80

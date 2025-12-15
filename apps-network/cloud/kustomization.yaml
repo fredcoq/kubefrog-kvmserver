@@ -1,0 +1,44 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+# namespace
+# - namespace.yaml
+# gateway
+  - apps-gateway.yaml
+  - apps-gateway-notebook.yaml
+  - apps-gateway-ollama.yaml
+  - apps-gateway-minio-tenant.yaml
+# virtual services
+# kafka-gateway.yaml
+# virtual services
+  - minio-tenant-virtualservice.yaml
+  - superset-virtualservice.yaml
+  - grafana-virtualservice.yaml
+  - harbor-virtualservice.yaml
+  - kiali-virtualservice.yaml
+  - druid-virtualservice.yaml
+  - druid-tooljet-virtualservice.yaml
+  - trino-virtualservice.yaml
+  - tooljet-virtualservice.yaml
+  - kubefrog-virtualservice.yaml
+  - kubefrog-web-virtualservice.yaml
+  - wekan-virtualservice.yaml
+  - argo-workflow-virtualservice.yaml
+  - prometheus-virtualservice.yaml
+  - jaeger-virtualservice.yaml
+  # - kafka-virtualservice.yaml
+   # - wordpress-virtualservice.yaml
+  - odoo-virtualservice.yaml
+  #  superset-dashboard-virtualservice-super.yaml
+  - superset-dashboard-virtualservice.yaml
+  - feast-virtualservice.yaml
+  - notebook-stablediffusion-webui-virtualservice.yaml
+  - notebook-texgen-api-virtualservice.yaml
+  - database-virtualservice.yaml
+  - api-virtualservice.yaml
+  - ollama-virtualservice.yaml
+  - ollama-webui-virtualservice.yaml
+  - opik-virtualservice.yaml
+  - n8n-virtualservice.yaml
+  # - conjur-virtualservice.yaml

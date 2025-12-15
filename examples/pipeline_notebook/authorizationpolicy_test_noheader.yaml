@@ -1,0 +1,19 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  annotations:
+  labels:
+    app.kubernetes.io/component: ml-pipeline
+    app.kubernetes.io/name: kubeflow-pipelines
+  name: ml-pipeline-users
+  namespace: kubeflow
+spec:
+  rules:
+  - from:
+    - source:
+        principals:
+        - cluster.local/ns/kubeflow-frederik/sa/default-editor
+  - {}
+  selector:
+    matchLabels:
+      app: ml-pipeline

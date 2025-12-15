@@ -1,0 +1,36 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio-loadbalancer
+  labels:
+    v1.min.io/tenant: minio-ai
+spec:
+  ports:
+    - name: https-minio
+      port: 443
+      targetPort: 9000
+    - name: http-minio
+      port: 80
+      targetPort: 9000
+  selector:
+    v1.min.io/tenant: minio-ai
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: console-loadbalancer
+  labels:
+    v1.min.io/console: minio-ai-console
+spec:
+  ports:
+    - name: http-console
+      port: 80
+      targetPort: 9090
+    - name: https-console
+      port: 443
+      targetPort: 9443
+  selector:
+    v1.min.io/tenant: minio-ai
+  type: LoadBalancer

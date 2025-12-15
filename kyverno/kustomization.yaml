@@ -1,0 +1,33 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+helmCharts:
+  - name: kyverno
+    repo: https://kyverno.github.io/kyverno/
+    version: 3.2.5
+    valuesFile: values.yaml
+    releaseName: "kyverno-policies"
+    namespace: kyverno
+resources:
+- namespace-kubeflow-policy.yaml
+- bitnamirepo-patch.yaml
+# - pod-resources-victoria.yaml
+#- namespace-knative-policy.yaml
+# - namespace-users-policy.yaml
+# - gpu-toleration-daemonset.yaml
+# - gpu-toleration-request.yaml
+# - gpu-toleration.yaml
+# - ztunnel-annotation.yaml
+# gpu-remove-limits.yaml
+# - gpu-node-selector.yaml
+# - clone-certs-secret-elastic.yaml
+# - add-env-pod-jaeger.yaml
+# - add-pvc-annotation-reclaimjob.yaml
+# - mutate-node-label-nvidia.yaml
+#- trivy-pod-bandwith-limit.yaml
+
+
+
+
+
+

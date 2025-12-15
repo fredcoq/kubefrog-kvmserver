@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: psql
+  namespace: default
+spec:
+  containers:
+  - name: psql
+    image: docker.io/postgres:14
+    command:
+      - sleep
+      - "infinity"
+    imagePullPolicy: IfNotPresent
+  restartPolicy: Always

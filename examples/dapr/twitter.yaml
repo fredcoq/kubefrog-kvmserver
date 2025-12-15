@@ -1,0 +1,20 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: tweets
+spec:
+  type: bindings.twitter
+  metadata:
+  - name: consumerKey
+    value: "emBitb0tVnlaQC2VJhwPdnukQ"
+  - name: consumerSecret
+    value: "2TPK2DsAFVJtBXt0DtqN9ASl98JK9IB50oVACBmQJeeZJ0Wa9y"
+  - name: accessToken
+    value: "722715965998428160-NFb2d5CddFdy6AmS44RpRKQVmRG2ZO0"
+  - name: accessSecret
+    value: "GdQW2WJy7U7WwFH5F7gH83dVcUTyBJTEeeert98uxR0yZ"
+  - name: query
+    value: "serverless"  
+
+
+

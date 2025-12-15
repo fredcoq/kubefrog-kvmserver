@@ -1,0 +1,12 @@
+kind: Kustomization
+
+namespace: istio-control
+helmCharts:
+
+       
+  - name: cni
+    repo: https://istio-release.storage.googleapis.com/charts
+    releaseName: "istio-cni"
+    namespace: istio-control
+    version: 1.26.2
+    valuesFile: values.yaml

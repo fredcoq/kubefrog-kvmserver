@@ -1,0 +1,163 @@
+---
+apiVersion: "rbac.authorization.k8s.io/v1"
+kind: "RoleBinding"
+metadata:
+  name: "karavan-role-binding"
+  namespace: "karavan"
+roleRef:
+  kind: "Role"
+  apiGroup: "rbac.authorization.k8s.io"
+  name: "karavan"
+subjects:
+- kind: "ServiceAccount"
+  apiGroup: ""
+  name: "karavan"
+  namespace: "karavan"
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  labels:
+    app.kubernetes.io/part-of: "karavan"
+    app: "karavan"
+    app.kubernetes.io/name: "karavan"
+    app.kubernetes.io/version: "4.1.0"
+  name: "karavan"
+  namespace: "karavan"
+spec:
+  ports:
+  - name: "http"
+    port: 80
+    protocol: "TCP"
+    targetPort: 8080
+  selector:
+    app: "karavan"
+  type: "ClusterIP"
+---
+apiVersion: "v1"
+kind: "ServiceAccount"
+metadata:
+  labels:
+    app.kubernetes.io/part-of: "karavan"
+    app: "karavan"
+    app.kubernetes.io/name: "karavan"
+    app.kubernetes.io/version: "4.1.0"
+  name: "karavan"
+  namespace: "karavan"
+---
+apiVersion: "rbac.authorization.k8s.io/v1"
+kind: "Role"
+metadata:
+  name: "karavan"
+  namespace: "karavan"
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - "secrets"
+  - "configmaps"
+  verbs:
+  - "*"
+- apiGroups:
+  - ""
+  resources:
+  - "persistentvolumes"
+  - "persistentvolumeclaims"
+  verbs:
+  - "*"
+- apiGroups:
+  - ""
+  resources:
+  - "pods"
+  - "services"
+  - "replicationcontrollers"
+  verbs:
+  - "*"
+- apiGroups:
+  - "route.openshift.io"
+  resources:
+  - "routes"
+  verbs:
+  - "*"
+- apiGroups:
+  - "apps"
+  resources:
+  - "deployments"
+  verbs:
+  - "*"
+- apiGroups:
+  - ""
+  - "image.openshift.io"
+  resources:
+  - "imagestreams/layers"
+  verbs:
+  - "get"
+  - "update"
+---
+apiVersion: "rbac.authorization.k8s.io/v1"
+kind: "RoleBinding"
+metadata:
+  name: "karavan-cluster-role-binding"
+  namespace: "karavan"
+roleRef:
+  kind: "ClusterRole"
+  apiGroup: "rbac.authorization.k8s.io"
+  name: "view"
+subjects:
+- kind: "ServiceAccount"
+  apiGroup: ""
+  name: "karavan"
+  namespace: "karavan"
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  labels:
+    app.kubernetes.io/runtime: "quarkus"
+  name: "karavan"
+  namespace: "karavan"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "karavan"
+  template:
+    metadata:
+      labels:
+        app: "karavan"
+    spec:
+      containers:
+      - env:
+        - name: "KARAVAN_ENVIRONMENT"
+          value: "dev"
+        - name: "KARAVAN_CONTAINER_STATUS_INTERVAL"
+          value: "disabled"
+        - name: "KARAVAN_CONTAINER_STATISTICS_INTERVAL"
+          value: "disabled"
+        - name: "KARAVAN_CAMEL_STATUS_INTERVAL"
+          value: "3s"
+        - name: "KARAVAN_DEVMODE_IMAGE"
+          value: "ghcr.io/apache/camel-karavan-devmode"
+        - name: "INFINISPAN_HOSTS"
+          value: "infinispan.karavan:11222"
+        - name: "INFINISPAN_PASSWORD"
+          valueFrom:
+            secretKeyRef:
+              key: "password"
+              name: "infinispan-secret"
+              optional: false
+        - name: "KUBERNETES_NAMESPACE"
+          valueFrom:
+            fieldRef:
+              apiVersion: ""
+              fieldPath: "metadata.namespace"
+        image: "ghcr.io/apache/camel-karavan:4.1.0"
+        imagePullPolicy: "Always"
+        name: "karavan"
+        ports:
+        - containerPort: 8080
+          name: "karavan"
+        resources:
+          requests:
+            memory: "512Mi"
+      serviceAccount: "karavan"

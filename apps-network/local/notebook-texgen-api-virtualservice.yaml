@@ -1,0 +1,27 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: notebook-texgen
+  namespace: frederik-coquelet
+spec:
+  hosts:
+    - notebook-llm.kubefrog.ai
+  http:
+    - match:
+        - uri:
+            prefix: /api/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: textgen-webui-frontend
+            port:
+              number: 5000
+    
+    - route:
+        - destination:
+            host: textgen-webui-frontend
+            port:
+              number: 7860
+  gateways:
+    - apps-network/apps-gateway-cloud-notebook

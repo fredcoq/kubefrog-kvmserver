@@ -1,0 +1,33 @@
+apiVersion: serving.kubeflow.org/v1beta1
+kind: InferenceService
+metadata:
+  name: mnist
+  namespace: kubeflow-frederik
+  annotations:
+    sidecar.istio.io/inject: "false"
+spec:
+  predictor:
+    serviceAccountName: default
+    minReplicas: 1
+    tensorflow:
+      resources:
+        limits:
+          cpu: 100m
+          memory: 1Gi
+        requests:
+          cpu: 100m
+          memory: 1Gi
+      runtimeVersion: 1.14.0
+      storageUri: s3://mnist
+  transformer:
+    containers:
+    - image: 192.168.1.41:30003/library/mnist-transformer:latest
+      name: transformer
+      resources:
+        limits:
+          cpu: 100m
+          memory: 1Gi
+        requests:
+          cpu: 100m
+          memory: 1Gi
+    minReplicas: 1

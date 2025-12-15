@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: stablediffusion-webui-frontend
+  namespace: frederik-coquelet
+spec:
+  selector:
+    app: stablediffusion-webui
+  ports:
+    - protocol: TCP
+      name: http-webui
+      port: 7860
+      targetPort: 7860
+
+# authorizations policy
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: stablediffusion-webui-frontend
+  namespace: frederik-coquelet
+spec:
+  action: ALLOW
+  rules:
+  - {}
+  selector:
+    matchLabels:
+      app: stablediffusion-webui
+  
+
+
+

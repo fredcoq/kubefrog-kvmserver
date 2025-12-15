@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minio
+  labels:
+    app: minio
+spec:
+  selector:
+    matchLabels:
+      app: minio
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: minio
+    spec:
+      containers:
+      - command:
+        - "/bin/sh"
+        - "-ce"
+        - "/usr/bin/docker-entrypoint.sh minio server /data{1..4} --console-address :9001"
+        env:
+        - name: MINIO_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: mlpipeline-minio-artifact
+              key: accesskey
+        - name: MINIO_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: mlpipeline-minio-artifact
+              key: secretkey
+        image: quay.io/minio/minio:RELEASE.2022-01-28T02-28-16Z
+
+        securityContext:
+          runAsUser: 0
+          runAsNonRoot: false
+          seccompProfile: 
+            type: Unconfined
+        name: minio
+        ports:
+        - containerPort: 9000
+        - containerPort: 9001
+        volumeMounts:
+        - mountPath: /data1
+          name: data
+        - mountPath: /data2
+          name: data2
+        - mountPath: /data3
+          name: data3
+        - mountPath: /data4
+          name: data4
+
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: minio-pvc
+      - name: data2
+        persistentVolumeClaim:
+          claimName: minio-pvc-2
+      - name: data3
+        persistentVolumeClaim:
+          claimName: minio-pvc-3
+      - name: data4
+        persistentVolumeClaim:
+          claimName: minio-pvc-4

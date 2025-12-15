@@ -1,0 +1,8 @@
+[
+  {"op": "replace",
+   "path": "/spec/dnsNames/0",
+   "value": "jaeger-operator-webhook-service.monitoring.svc"},
+  {"op": "replace",
+   "path": "/spec/dnsNames/1",
+   "value": "jaeger-operator-webhook-service.monitoring.svc.cluster.local"}
+]

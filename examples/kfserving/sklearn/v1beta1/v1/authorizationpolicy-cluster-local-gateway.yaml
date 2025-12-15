@@ -1,0 +1,16 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-cluster-local-gateway
+  namespace: frederik-coquelet
+spec:
+  selector:
+    matchLabels:
+      component: predictor
+  rules:
+    - from:
+        - source:
+            principals:
+              - >-
+                cluster.local/ns/istio-system/sa/cluster-local-gateway-service-account
+  

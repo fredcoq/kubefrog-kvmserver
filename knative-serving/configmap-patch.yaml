@@ -1,0 +1,9 @@
+# a configmap that configure knative domain mapping
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-domain
+  namespace: knative-serving
+data:
+  example.com: null
+  serving.kubefrog.ai: ""

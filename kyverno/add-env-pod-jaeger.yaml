@@ -1,0 +1,30 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: add-env-pod-jaeger
+  annotations:
+    policies.kyverno.io/title: Add Environment Variables
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/category: Other
+   
+spec:
+  generateExistingOnPolicyUpdate: true
+  rules:
+  - name: add-env-pod-jaeger
+    match:
+      resources:
+        kinds:
+        - Deployment
+        namespaces:
+        - monitoring
+        names: 
+        - "simple-prod-*"
+    mutate:
+      patchesJson6902: |-
+        - op: add
+          path: "/spec/template/spec/containers/0/env/-"
+          value: {"name": "METRICS_STORAGE_TYPE","value":"prometheus"}
+        - op: add
+          path: "/spec/template/spec/containers/0/env/-"
+          value: {"name":"PROMETHEUS_SERVER_URL","value":"http://kube-prometheus-stack-prometheus.monitoring:9090"}
+

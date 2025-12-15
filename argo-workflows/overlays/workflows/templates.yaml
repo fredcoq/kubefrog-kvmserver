@@ -1,0 +1,158 @@
+---
+
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  name: container-image
+spec:
+  serviceAccountName: workflow
+  templates:
+  - name: build-kaniko-git
+    inputs:
+      parameters:
+      - name: repo_url
+      - name: repo_ref
+        value: refs/heads/master
+      - name: repo_commit_id
+        value: HEAD
+      - name: container_image
+      - name: container_tag
+    container:
+      image: gcr.io/kaniko-project/executor:debug
+      command:
+      - /kaniko/executor
+      args:
+      - --context={{inputs.parameters.repo_url}}#{{inputs.parameters.repo_ref}}#{{inputs.parameters.repo_commit_id}}
+      - --destination={{inputs.parameters.container_image}}:{{inputs.parameters.container_tag}}
+      - --verbosity=debug
+      # - --skip-tls-verify
+      volumeMounts:
+        - name: regcred
+          mountPath: /kaniko/.docker/
+      env:
+        - name: GIT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: github-access
+              key: token
+---
+
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  name: promote
+spec:
+  serviceAccountName: workflow
+  templates:
+  - name: promote
+    inputs:
+      parameters:
+      - name: environment
+      - name: repo_owner
+      - name: repo_name
+      - name: image_owner
+      - name: image_name
+      - name: tag
+      - name: argocd_apps
+    script:
+      image: vfarcic/kustomize:3.9.2
+      command: [sh]
+      source: |
+        set -e
+        git clone https://$(cat /.github/token)@github.com/{{inputs.parameters.repo_owner}}/{{inputs.parameters.repo_name}}
+        cd {{inputs.parameters.repo_name}}/{{inputs.parameters.environment}}
+        sleep 2
+        echo BEFORE:
+        cat {{inputs.parameters.argocd_apps}}.yaml
+        echo AFTER:
+        echo {{inputs.parameters.tag}}
+        cat {{inputs.parameters.argocd_apps}}.yaml | sed -e "s@defaultAirflowTag:.*@defaultAirflowTag: {{inputs.parameters.tag}}@g" | tee {{inputs.parameters.argocd_apps}}.yaml
+        git config user.name "$(cat /.github/user)"
+        git config user.email "$(cat /.github/email)"
+        git add {{inputs.parameters.argocd_apps}}.yaml
+        git commit -m "Upgraded {{inputs.parameters.environment}}/{{inputs.parameters.argocd_apps}}.yaml with the tag {{inputs.parameters.tag}}"
+        echo "Pushing to the repo" {{inputs.parameters.repo_owner}}/{{inputs.parameters.repo_name}}
+        git push
+      volumeMounts:
+      - name: github-access
+        mountPath: /.github/
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  name: promote-inference-service
+spec:
+  serviceAccountName: workflow
+  templates:
+  - name: promote-inference-service
+    inputs:
+      parameters:
+      - name: environment
+      - name: repo_owner
+      - name: repo_name
+      - name: image_owner
+      - name: image_name
+      - name: tag
+      - name: inference-service
+    script:
+      image: core.harbor.82.66.198.32.nip.io/library/kustomize-yq:latest
+      command: [sh]
+      source: |
+        set -e
+        git clone https://$(cat /.github/token)@github.com/{{inputs.parameters.repo_owner}}/{{inputs.parameters.repo_name}}
+        cd {{inputs.parameters.repo_name}}/{{inputs.parameters.environment}}
+        sleep 2
+        echo BEFORE:
+        cat {{inputs.parameters.inference-service}}.yaml
+        echo AFTER:
+        export IMAGE="{{inputs.parameters.image_owner}}/{{inputs.parameters.image_name}}:{{inputs.parameters.tag}}"
+        yq -i '.spec.transformer.containers[0].image = strenv(IMAGE) ' {{inputs.parameters.inference-service}}.yaml
+        git config user.name "$(cat /.github/user)"
+        git config user.email "$(cat /.github/email)"
+        git add {{inputs.parameters.inference-service}}.yaml
+        git commit -m "Upgraded {{inputs.parameters.environment}}/{{inputs.parameters.inference-service}}.yaml with the tag {{inputs.parameters.tag}}"
+        echo "Pushing to the repo" {{inputs.parameters.repo_owner}}/{{inputs.parameters.repo_name}}
+        git push
+      volumeMounts:
+      - name: github-access
+        mountPath: /.github/
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  name: promote-qgis
+spec:
+  serviceAccountName: workflow
+  templates:
+  - name: promote-inference-service
+    inputs:
+      parameters:
+      - name: environment
+      - name: repo_owner
+      - name: repo_name
+      - name: image_owner
+      - name: image_name
+      - name: tag
+      - name: inference-service
+    script:
+      image: core.harbor.82.66.198.32.nip.io/library/kustomize-yq:latest
+      command: [sh]
+      source: |
+        set -e
+        git clone https://$(cat /.github/token)@github.com/{{inputs.parameters.repo_owner}}/{{inputs.parameters.repo_name}}
+        cd {{inputs.parameters.repo_name}}/{{inputs.parameters.environment}}
+        sleep 2
+        echo BEFORE:
+        cat {{inputs.parameters.inference-service}}.yaml
+        echo AFTER:
+        export IMAGE="{{inputs.parameters.image_owner}}/{{inputs.parameters.image_name}}:{{inputs.parameters.tag}}"
+        yq -i '.spec.transformer.containers[0].image = strenv(IMAGE) ' {{inputs.parameters.inference-service}}.yaml
+        git config user.name "$(cat /.github/user)"
+        git config user.email "$(cat /.github/email)"
+        git add {{inputs.parameters.inference-service}}.yaml
+        git commit -m "Upgraded {{inputs.parameters.environment}}/{{inputs.parameters.inference-service}}.yaml with the tag {{inputs.parameters.tag}}"
+        echo "Pushing to the repo" {{inputs.parameters.repo_owner}}/{{inputs.parameters.repo_name}}
+        git push
+      volumeMounts:
+      - name: github-access
+        mountPath: /.github/

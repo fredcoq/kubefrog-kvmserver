@@ -1,0 +1,41 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: auth-cloud
+  namespace: auth
+  labels:
+    app: auth
+spec:
+  gateways:
+  - auth-gateway-cloud
+  hosts:
+  - auth-local.kubefrog.fr
+  http:
+  - match:
+      - uri:
+          prefix: /admin
+    route:
+      - destination:
+          host: keycloak
+          port:
+            number: 80
+  - match:
+      - uri:
+          prefix: /realms/master
+    route:
+      - destination:
+          host: keycloak
+          port:
+            number: 80
+  - route:
+    - destination:
+        host: keycloak
+        port:
+          number: 80
+      headers:
+            response:
+              set:
+                Content-Security-Policy: "frame-ancestors https://kubeflow.kubefrog.fr https://kubefrog-web.kubefrog.fr http://192.168.0.47:31664"
+              remove:
+                - X-Frame-Options
+

@@ -1,0 +1,29 @@
+apiVersion: kyverno.io/v1
+kind: Policy
+
+metadata:
+  name: add-bandwith-annotations
+  namespace: trivy-system
+  annotations:
+    policies.kyverno.io/title: Add cni bandwith Annotations
+    policies.kyverno.io/category: Network Policies
+    policies.kyverno.io/subject: Pod,Annotation
+    kyverno.io/kyverno-version: 1.10.0
+    kyverno.io/kubernetes-version: "1.25"
+    pod-policies.kyverno.io/autogen-controllers: none
+    policies.kyverno.io/description: >-
+      limit the traffic from trivy pod  
+spec:
+  rules:
+  - name: trivy-pod-bandwith-limit
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    mutate:
+      patchStrategicMerge:
+        metadata:
+          annotations:
+            kubernetes.io/ingress-bandwidth: "100M"
+            kubernetes.io/egress-bandwidth: "100M"

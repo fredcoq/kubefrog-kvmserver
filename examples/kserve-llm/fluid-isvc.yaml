@@ -1,0 +1,39 @@
+apiVersion: "serving.kserve.io/v1beta1"
+kind: "InferenceService"
+metadata:
+  name: "kserve-llm-code-llama"
+  namespace: frederik-coquelet
+  labels:
+ #  serverless.fluid.io/inject: "true"
+spec:
+  predictor:
+    terminationGracePeriodSeconds: 60
+    timeout: 600
+    minReplicas: 1
+    containers:
+      - name: kserve-container
+        image: 192.168.0.200:45000/kserve/hf-llm:1.0.11
+         # below are for running bloom-7b1 using cpu
+        resources:
+           limits:
+             cpu: "8"
+             memory: 8Gi
+           requests:
+             cpu: "100m"
+             memory: 1Gi
+        env:
+          - name: STORAGE_URI
+            # please update it accordingly
+            value: "pvc://s3-data-llm-models/TheBloke_Llama-2-7b-Chat-GPTQ"
+            # value: "pvc://s3-data/bloom-7b1"
+          - name: MODEL_NAME
+            value: "code-llama"
+            # set to "True" if you are using GPU, update the resources as well
+          - name: GPU_ENABLED
+            value: "True"
+    nodeSelector:
+        kubernetes.io/hostname: ubuntu-gpu-wk
+    tolerations:
+    - key: "local-node"
+      operator: "Exists"
+      effect: "NoSchedule"

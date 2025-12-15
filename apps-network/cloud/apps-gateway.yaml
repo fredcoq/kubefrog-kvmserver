@@ -1,0 +1,90 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: apps-gateway-cloud
+  namespace: apps-network
+  annotations: {}
+    #external-dns.alpha.kubernetes.io/hostname: "*.kubefrog.fr"
+    #external-dns.alpha.kubernetes.io/target: "172.22.80.100"
+    #external-dns.alpha.kubernetes.io/target: "176.185.193.54"
+    #external-dns.alpha.kubernetes.io/ttl: "120"
+    #external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+ 
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        name: http
+        number: 80
+        protocol: HTTP
+      hosts:
+        - ollama.kubefrog.fr
+        - ollama-webui.kubefrog.fr
+        - grafana.kubefrog.fr
+        - superset.kubefrog.fr
+        - harbor-core.kubefrog.fr
+        - notary.kubefrog.fr
+        - kiali.kubefrog.fr
+        - prometheus.kubefrog.fr
+        - loki.kubefrog.fr
+        - druid.kubefrog.fr
+        - trino.kubefrog.fr
+        - argo-workflow.kubefrog.fr
+        - kubefrog.kubefrog.fr
+        - tooljet.kubefrog.fr
+        - jaeger.kubefrog.fr
+        - wekan.kubefrog.fr
+        - wordpress.kubefrog.fr
+        - odoo.kubefrog.fr
+        - api.kubefrog.fr
+        - kubefrog-web.kubefrog.fr
+        - opik.kubefrog.fr
+        - models.kubefrog.fr
+        - n8n.kubefrog.fr
+        #- notebook.kubefrog.fr
+      # Upgrade HTTP to HTTPS
+      tls:
+        httpsRedirect: true
+    - port:
+        name: https
+        number: 443
+        protocol: HTTPS
+      hosts:
+        - ollama.kubefrog.fr
+        - ollama-webui.kubefrog.fr
+        - grafana.kubefrog.fr
+        - superset.kubefrog.fr
+        - harbor-core.kubefrog.fr
+        - notary.kubefrog.fr
+        - kiali.kubefrog.fr
+        - prometheus.kubefrog.fr
+        - loki.kubefrog.fr
+        - druid.kubefrog.fr
+        - trino.kubefrog.fr
+        - argo-workflow.kubefrog.fr
+        - kubefrog.kubefrog.fr
+        - tooljet.kubefrog.fr
+        - jaeger.kubefrog.fr
+        - wekan.kubefrog.fr
+        - wordpress.kubefrog.fr
+        - odoo.kubefrog.fr
+        - api.kubefrog.fr
+        - kubefrog-web.kubefrog.fr
+        - opik.kubefrog.fr
+        - models.kubefrog.fr
+        - n8n.kubefrog.fr
+        # - notebook.kubefrog.fr
+      tls:
+        mode: SIMPLE
+        credentialName: kubeflow-ingressgateway-certs-kubefrog-fr
+       
+    - port:
+        name: postgres
+        number: 5432
+        protocol: TLS
+      hosts:
+        - database.kubefrog.fr
+      tls:
+        mode: SIMPLE
+        credentialName: kubeflow-ingressgateway-certs-kubefrog-fr

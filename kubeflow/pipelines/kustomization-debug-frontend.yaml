@@ -1,0 +1,101 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- github.com/kubeflow/manifests/apps/pipeline/upstream/env/cert-manager/platform-agnostic-multi-user/?ref=v1.10.0-rc.0 # tag=2.1.0
+- minio-pvc-erasure-coded.yaml
+- minio-service-console.yaml
+- awscred.yaml
+# - minio-ingress.yaml
+
+configMapGenerator:
+- name: kubeflow-pipelines-profile-controller-code
+  namespace: kubeflow
+  behavior: replace
+  files:
+  - sync.py
+- name: k8s-server-patches
+  namespace: frederik-coquelet
+  behavior: create
+  options:
+    disableNameSuffixHash: true
+  files:
+  - k8s-helper.js
+- name: kfp-launcher
+  namespace: kubeflow
+  behavior: replace
+  options:
+   disableNameSuffixHash: true
+  literals:
+  - defaultPipelineRoot=minio://mlpipeline/v2/artifacts
+  files:
+   - providers
+- name: mysql-conf
+  namespace: kubeflow
+  behavior: create
+  options:
+    disableNameSuffixHash: true
+  files:
+  - mysql-patch.cnf
+patchesJson6902:
+
+#- target:
+#    group: rbac.authorization.k8s.io
+#    version: v1
+#    kind: ClusterRoleBinding
+#    name: argo-binding
+#  path: workflow-controller-clusterrolebinding-patch.json
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: minio
+  path: minio-deployment-patch.json
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: ml-pipeline-ui
+  patch: |-
+    - op: add
+      path: /spec/template/metadata/labels/app.architecture
+      value: kubeflow-front-end
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: ml-pipeline
+  patch: |-
+   - op: add
+     path: /spec/template/metadata/labels/app.architecture
+     value: kubeflow-front-end
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: ml-pipeline-visualizationserver
+  patch: |-
+    - op: add
+      path: /spec/template/metadata/labels/app.architecture
+      value: kubeflow-front-end
+      
+patchesStrategicMerge:
+# - ml-pipeline-patch-token.yaml
+# - patch-authorization-pipeline.yaml
+- clusterrole-metacontroller.yaml
+- minio-pv-claim-patch.yaml
+- mysql-pv-claim-patch.yaml
+- minio-deployment-patch.yaml
+- ml-pipeline-ui-patch.yaml
+- ml-pipeline-ui-patch-GKE.yaml
+# - ml-pipeline-patch-GKE.yaml
+
+# - ml-pipeline-ui-configmap-patch.yaml
+# - workflow-controller-patch.yaml
+- mysql-deployment-patch.yaml
+
+images:
+- name: ghcr.io/metacontroller/metacontroller
+  #newName: docker.io/metacontrollerio/metacontroller
+  #newTag: v2.0.4
+

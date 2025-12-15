@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flowise
+spec:
+  selector:
+    matchLabels:
+      app: flowise
+  template:
+    metadata:
+      labels:
+        app: flowise
+    spec:
+      containers:
+        - image: docker.io/exdatic/flowise:24.3.1
+          name: flowise
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "4"
+              memory: "1Gi"

@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: trivy-operator
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://aquasecurity.github.io/helm-charts/
+    targetRevision: 0.31.0
+    chart: trivy-operator
+    helm:
+      parameters:
+        - name: serviceMonitor.enabled
+          value: "false"
+        - name: ignoreUnfixed
+          value: "false"
+        - name: operator.scanJobsConcurrentLimit
+          value: "2"
+        - name: trivy.dbRepositoryUsername
+          value: "admin"
+        - name: trivy.dbRepositoryPassword
+          value: "Harbor12345"
+        - name: trivy.dbRegistry
+          value: "harbor-core-local.kubefrog.fr/docker_proxy"
+        - name: trivy.javaDbRegistry
+          value: "harbor-core-local.kubefrog.fr/docker_proxy"
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: trivy-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+  ignoreDifferences:
+  - group: apps
+    kind: Deployment
+    jqPathExpressions:
+    - .spec.template.spec.containers[]?.resources
+  - group: apps
+    kind: Deployment
+    jqPathExpressions:
+    - .spec.template.spec.initContainers[]?.resources

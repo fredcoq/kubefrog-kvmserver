@@ -1,0 +1,14 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  annotations:
+  labels:
+  name: kafka
+  namespace: kafka
+spec:
+  rules:
+  - from:
+    - source:
+        principals:
+        - cluster.local/ns/frederik-coquelet/sa/default
+

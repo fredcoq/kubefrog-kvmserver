@@ -1,0 +1,10 @@
+- route:
+    from:
+      uri: kamelet:timer-source
+      parameters:
+        period: 10000
+        message: "test"
+      steps:
+        - to:
+            uri: kamelet:log-sink
+             

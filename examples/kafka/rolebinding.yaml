@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: allow-kafkasource
+  namespace: frederik-coquelet
+subjects:
+- kind: ServiceAccount
+  name: default-editor
+  namespace: kubeflow-frederik
+roleRef:
+  kind: ClusterRole
+  name: eventing-sources-kafka-controller
+  apiGroup: rbac.authorization.k8s.io

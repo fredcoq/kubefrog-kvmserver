@@ -1,0 +1,16 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: cloudflare-api-key
+  namespace: kube-system
+spec:
+  encryptedData:
+    apiKey: AgBcPhcFRmS02prYOix3rGg6YE7TlcHbRoBJKeKZ9tSnSDzRkmkD23uAr+6JwABnXk6OwCFos+73eYNz6gLy0l3E8Dtm+czgzCLNwL3cXx50PEvkA4cuK/wg29l9+8a5I90w2NabCJBcirydc3bKEz66vMNweQHhA4BIij5FwYnSAOIj86SJ9NH0kQMxY6cCEkADfHJ3E5FwUDXDDblGejq2Iv5mnrTjLFLZY+lnY+9/cup0AFKPldZit1KwEUHhvfH17oitN2rtslpBQnEmNQJU/KrJVd0oX5+urMu6DaxXZAKU0RWM2OfS4+Mpu0m+31ENz3Q8J8MRMy4DjiKGgOtk0+UkuKD4rETbFNuAXLFX7zO6gD2+Omlay+AUIACZ5ea5AzXYc4HeedXbCAjbGA1mtzX9my/n+mTU7Y2o3uhsxke6fs8NLzMuQQBqzUnAvbBAqOB458CWBa0/E1YRxnBBfEehmJR167NODGujl4rqUZIIcZAWF0+sH6bhcTMmNiO2OulYJYcPSPfNOD4uLOHP66YVA2FHasF4aNU/jjxp9eblqAr8dvZPOu38Tb3KdVhA8Gy8SrdXIrTKSzagFWM+aODWCkLNDyRd/b3aypE2DoW2/i4OpI494rHjeGaHHrzCkynuTrJSNddYsbAPuvaw8DkzDL/ff/rZtNx+lfKg9G8x6k7w9V15xr39skYbICp2PHN3RluFcffE4W8n3A60GSVOQ3sgj71nI9idhyYn7z3LqLEY+Wpu
+  template:
+    metadata:
+      creationTimestamp: null
+      name: cloudflare-api-key
+      namespace: kube-system
+    type: Opaque

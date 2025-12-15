@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: openebs
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://openebs.github.io/charts
+    targetRevision: 2.12.1
+    chart: openebs
+    helm: 
+     parameters:
+     - name: ndm.includePaths
+       value: "vd[b]"
+     - name: cstor.enabled
+       value: "true"
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: open-ebs
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,11 @@
+apiVersion: csiaddons.openshift.io/v1alpha1
+kind: ReclaimSpaceJob
+metadata:
+  name: stable-diff
+  namespace: druid-cluster
+spec:
+  target:
+    persistentVolumeClaim:  data-volume-druid-druid-cluster-01-k8s-mm-historicals-0 
+  backOffLimit: 10
+  retryDeadlineSeconds: 900
+  timeout: 600

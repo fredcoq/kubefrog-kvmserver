@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-pipeline-ui
+  namespace: kubeflow
+spec:
+  template:
+    spec:
+      containers:
+      - name: ml-pipeline-ui
+        env:
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              key: AWS_ACCESS_KEY_ID
+              name: aws-secret
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              key: AWS_SECRET_ACCESS_KEY
+              name: aws-secret
+        - name: AWS_REGION
+          valueFrom:
+            secretKeyRef:
+              key: AWS_DEFAULT_REGION
+              name: aws-secret
+        - name: S3_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              key: S3_ENDPOINT
+              name: aws-secret
+        - name: AWS_S3_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              key: AWS_S3_ENDPOINT
+              name: aws-secret
+        - name: AWS_S3_SSL
+          valueFrom:
+            secretKeyRef:
+              key: AWS_S3_SSL
+              name: aws-secret              
+        - name: S3_USE_HTTPS
+          valueFrom:
+            secretKeyRef:
+              key: S3_USE_HTTPS
+              name: aws-secret
+        - name: S3_VERIFY_SSL
+          valueFrom:
+            secretKeyRef:
+              key: S3_VERIFY_SSL
+              name: aws-secret
+              
+      volumeMounts:
+        - name: config-volume-aws
+          mountPath: /server/dist/minio-helper.js
+          subPath: minio-helper.js
+        - name: config-volume-aws
+          mountPath: /server/dist/server.js
+          subPath: server.js
+        - name: config-volume-aws
+          mountPath: /server/dist/configs.js
+          subPath: configs.js
+      volumes:
+      - name: config-volume-aws
+        configMap:
+          name: ml-pipeline-ui-s3-configmap
+

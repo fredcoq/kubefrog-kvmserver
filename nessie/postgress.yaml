@@ -1,0 +1,21 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: nessie-postgres-cluster
+  namespace: nessie
+spec:
+  # enableMasterLoadBalancer : true
+  teamId: "nessie"
+  volume:
+    size: 1Gi
+  numberOfInstances: 1
+  users:
+    nessie:
+    - superuser
+    - createdb
+  databases:
+    nessie: nessie  # dbname: owner
+    nessie_gc: nessie
+  postgresql:
+    version: "14"
+  spiloFSGroup: 103

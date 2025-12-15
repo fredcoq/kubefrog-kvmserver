@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: dapr
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://dapr.github.io/helm-charts/
+    targetRevision: 1.9.5
+    chart: dapr
+    helm:
+      version: v3
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dapr-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

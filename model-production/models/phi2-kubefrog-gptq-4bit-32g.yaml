@@ -1,0 +1,37 @@
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: phi2-kubefrog
+  namespace: model-production
+spec:
+  predictor:
+    serviceAccountName: sa-s3
+    minReplicas: 0
+    containers:
+      - args:
+          - --model_name
+          - "phi2-kubefrog"
+          - --gpu_memory_utilization
+          - "0.9"
+          - --trust_remote_code
+          - "True"
+        env:
+          - name: STORAGE_URI
+            value: s3://model/TheBloke_phi-2-GPTQ_gptq-4bit-32g-actorder_True
+        image: 192.168.0.200:45000/serving/vllm:0.0.23
+        name: kserve-container
+        resources:
+          limits:
+            cpu: "4"
+            memory: 8Gi
+            # nvidia.com/gpu: "1"
+          requests:
+            cpu: "100m"
+            memory: 4Gi
+            # nvidia.com/gpu: "1"
+    nodeSelector:
+      kubernetes.io/hostname: kubefrog
+    tolerations:
+      - key: "local-node"
+        operator: "Exists"
+        effect: "NoSchedule"

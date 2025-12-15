@@ -1,0 +1,20 @@
+apiVersion: data.fluid.io/v1alpha1
+kind: DataLoad
+metadata:
+  name: s3-dataload
+spec:
+  dataset:
+    name: s3-data
+    namespace: fluid
+  # loadMetadata: true
+  target:
+    # # please update it accordingly
+    - path: /bloom-560
+    # - path: /bloom-7b1
+      replicas: 1
+  nodeSelector:
+    kubernetes.io/hostname: ubuntu-gpu-wk
+  tolerations:
+    - key: "local-node"
+      operator: "Exists"
+      effect: "NoSchedule"

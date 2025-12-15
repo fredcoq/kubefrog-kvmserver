@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+# - github.com/kubeflow/kubeflow/components/notebook-controller/config/overlays/kubeflow?ref=428dc9cfe1af53fcbcdae4e5597860a13cadac57 #tag=v1.5.0
+- github.com/kubeflow/manifests/apps/jupyter/notebook-controller/upstream/overlays/kubeflow?ref=v1.10.0
+
+images:
+- name: docker.io/kubeflownotebookswg/notebook-controller
+  newName: docker.io/kubeflownotebookswg/notebook-controller
+  newTag: v1.10.0

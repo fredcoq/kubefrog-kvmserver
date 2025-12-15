@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: kiali-cloud
+  namespace: monitoring
+spec:
+  hosts:
+    - kiali.kubefrog.ai
+  http:
+    - route:
+        - destination:
+            host: kiali
+            port:
+              number: 20001
+  gateways:
+    - apps-network/apps-gateway-cloud

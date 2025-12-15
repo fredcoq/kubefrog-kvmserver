@@ -1,0 +1,39 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+# envoy-filters
+# - envoy-filter-anonymous.yaml
+- envoy-filter-ingressgateway-settings.yaml
+#- envoy-filter-proxy-protocol.yaml
+#- envoy-filter-kubeflow-userid.yaml
+
+#  authorization policies ip
+- gateway-authorizationpolicy-local-ip.yaml
+# gateway-authorizationpolicy_allow.yaml
+- ingress-class.yaml
+- kubeflow-cluster-roles.yaml
+- cluster-local-gateway.yaml
+- cluster-local-gateway-authorizationpolicy.yaml
+- deny-all-authorizationpolicy.yaml
+# authentication through jwt 
+- request-authentication/
+# - ../monitoring/
+
+patches:
+# patch the 'm2m-token-issuer' RequestAuthentication with correct `issuer` and `jwksUri`
+# NOTE: we are using kustomize components, so we can't use the outer `configMapGenerator` to
+#       patch the inner one, so we are stuck with using a `patch` instead
+- patch: |-
+    - op: replace
+      path: /spec/jwtRules/0/issuer
+      value: https://kubernetes.default.svc.cluster.local
+    - op: replace
+      path: /spec/jwtRules/0/jwksUri
+      value: http://cluster-jwks-proxy.istio-system.svc.cluster.local/openid/v1/jwks
+  target:
+    group: security.istio.io
+    version: v1beta1
+    kind: RequestAuthentication
+    name: m2m-token-issuer
+    namespace: istio-system

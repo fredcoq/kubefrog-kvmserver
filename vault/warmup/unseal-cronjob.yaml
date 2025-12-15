@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: vault-bootstrap
+  namespace: vault
+spec:
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - command:
+            - /vault-bootstrap/vault-bootstrap.sh
+            image: bitnami/kubectl:1.22-debian-10
+            imagePullPolicy: IfNotPresent
+            name: vault-bootstrap
+            volumeMounts:
+            - mountPath: /vault-bootstrap
+              name: vault-bootstrap
+          restartPolicy: OnFailure
+          serviceAccountName: vault-bootstrap
+          volumes:
+          - configMap:
+              defaultMode: 493
+              name: vault-bootstrap-kb2cg72675
+            name: vault-bootstrap
+  schedule: '*/2 * * * *'

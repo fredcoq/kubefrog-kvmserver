@@ -1,0 +1,16 @@
+apiVersion: kubeflow.org/v1alpha1
+kind: PodDefault
+metadata:
+  name: local-node
+  namespace: frederik-coquelet
+spec:
+  selector:
+    matchLabels:
+      gpu-runtime: "true"
+  desc: Set the pod runtime to nvidia
+  runtimeClassName: nvidia
+  tolerations:
+    - key: "nvidia/gpu"
+      operator: "Exists"
+      value: ""
+      effect: "NoSchedule"

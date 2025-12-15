@@ -1,0 +1,27 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- github.com/kubeflow/kubeflow/components/crud-web-apps/jupyter/manifests/overlays/istio?ref=v1.10.0 #1.5
+
+patchesJson6902:
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: jupyter-web-app-deployment
+  patch: |-
+    - op: add
+      path: /spec/template/metadata/labels/app.architecture
+      value: kubeflow-front-end
+configMapGenerator:
+- name: config
+  behavior: replace
+  files:
+  - spawner_ui_config.yaml
+
+    
+images:
+- name: docker.io/kubeflownotebookswg/jupyter-web-app
+  newName: docker.io/kubeflownotebookswg/jupyter-web-app
+  newTag: v1.10.0

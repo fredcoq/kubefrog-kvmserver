@@ -1,0 +1,15 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: regcred
+  namespace: camel-k
+spec:
+  encryptedData:
+    config.json: AgAOVafJY6dYvx0V2am2ZkL6yF6qVy7Gpd9U2AKSBVhqxXaXlYm9d2b1hqPaCIuczQADa+c48tBfWi/2A6OAeh5xzYtLTS6hJsmQGvsPYrgBUv3AV0tCLduMpHBLa9j+EPnM+Kk+dm5WIWChOof8nXpXKjfszGKoYFCv7CdLSSMLXEghuvAVZFsjIySXJNimXMqSpOcwJzGLSX3CbH5Er2Ocq8NB+ezzght0aQULsLVAuCgfciOJB+/TKIGZbiZ/epg0AKmW0tokBjuqs+nr57ON01HNRTEymxwmTiVefW/t1PLlDAWUurPoKPuM1/rSo2z2NC0RZy33TizxsMYmbQyRWeCQZtUiK1Ec2ToAfr5nvhaf6o4nPPPoHuqdjzRJ/udi/iugwKT4fVYfdc3FpfJhY/bC1mk5RX5FFCJqYBTw3eKaNM8IuWph9pwLx2FP+Gko1ItECP3odzXv6yIj1UPwIwXdiFA+sSf2kk8GIEzQelDJX7IELu30jbrWL21fjK0YmF9CzlSObTFLg2deVGSYCPafv9b452ZcQKNZRXZ7QZh06gb0IRSUJ8/l25mdjoq74YrEQbCtxq7pXE0sOMrFlpISRPZgSO8lrQVd5/ywkKA+riU8yXjntS7wn0XA5+UybLWD3nwj3D2iSJgGHk4zcK/86n3qc70lmLNqZchMsqaF47q4UPDA0OipCmQIKNESF14L2HB5mK+Z7Lxr38XvLpK8DtnvfYEwWHnUutXcbSei0Tc447DBVsRhrCMVbKVMbSrHuauIDji9bJOXoYjs2JI64DCb7wklighXjwKE3wmCQUzeDNqq5j6Nrosq7MC+r/cqmJCqCcT1dGHsFfkylFethwvBO0fq1tjaAWYtN+Ga+uPdWqIewqutvlou6MzvToi5Ye8GtfaM4sCf5kpB/qyIXsMd0FQclR/pKbAZXxPkSwUEkg0jpKn31zzp4SQI/5ujYT81mrPX6oNo4CSCGIbYCxGPCbP2FI3Zew==
+  template:
+    metadata:
+      creationTimestamp: null
+      name: regcred
+      namespace: camel-k
+

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: katib-mysql
+  namespace: kubeflow
+  # modify probes to accomodate slow hdd.
+  labels:
+    app: katib-mysql
+spec:
+  selector:
+    matchLabels:
+      app: katib-mysql
+  template:
+    spec:
+      containers:
+        - name: katib-mysql
+          readinessProbe:
+            exec:
+              command:
+                - "/bin/bash"
+                - "-c"
+                - "mysql -D ${MYSQL_DATABASE} -u root -p${MYSQL_ROOT_PASSWORD} -e 'SELECT 1'"
+            periodSeconds: 2
+            failureThreshold: 10
+          livenessProbe:
+            exec:
+              command:
+                - "/bin/bash"
+                - "-c"
+                - "mysqladmin ping -u root -p${MYSQL_ROOT_PASSWORD}"
+            periodSeconds: 2
+            failureThreshold: 10
+          startupProbe:
+            exec:
+              command:
+                - "/bin/bash"
+                - "-c"
+                - "mysqladmin ping -u root -p${MYSQL_ROOT_PASSWORD}"
+            periodSeconds: 15
+            failureThreshold: 60

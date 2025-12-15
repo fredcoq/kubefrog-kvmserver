@@ -1,0 +1,16 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: docker-regcred
+  namespace: camel-k
+spec:
+  encryptedData:
+    .dockerconfigjson: AgCpVCJENnabaT7vuMjnmtZJuJ59jG8L6Uj5rl+OgR3jxgyAgNRu50Zet82RgqjHZ44fwXK4ZZFieeDvSmZuWZBJ7L9ccOjw2OoeCAfGXxOiS+TFOUu4vkmWyqw1Uhb9RDP6125gAPYm2Hmoc0q3ERoAVehAoHVlNVqeV9DoqCMOuu5jrlsLYo9L1NUW0NINWJtyCIywwYoZzyqSqxgtRT6o3BWcfJWcNebAMPRxPVtksozPLAu/3AKMrTMYmArrR3l3ixv4gFVaqVThDJLBqpScZljCUPicmz2hHhcRu/HmU06WCgA5lsQadhbyoKzD8QjOr54Hb/XSPOQTync0VKXJvEK50yXoG0SYYskpjzdIRpVNRFJRRWumQJbdhC5xwQ49lv/MiwQ4UX6zasx2tnUYBUdvnxdloE2WZFzrF0SRgTKzWnT7vWZGL/iPev38D7Yr1NCQanNRAthlk1yPTYRGS4k5A4GdXGWurVrqLBh+TXXL0Baqsrc0u5ZD7l+y7yfRtGglHGSkAkQcmX6AW996fkZw7dP7TspyHYNOaisGHiozI/dT/xgK1D6xwdfNqgWt4rp1BrdSWs7G+wpcxrXQ2xrmrWoaIIdQxab9ZwOduFgulUTUKKfPAcIRYHLsLU2x7aTAqYgZARFwOS9gQfC/hVi/Q/2iudI8e6TVOmoqfC78NVRWj9uIGNaqve5yISYFzhOdq7GE0DvcL74ORCdfsG7qdlJuVXHWKgk5FMqM6nOk8smQEIB6Apzu6wT/mCiyfH8/MQUTBO6iEXf9Jd19AgxyXe0kYTMrBSCYI4oPZxffNjzF0DZNuV5oUaw36OwnfFvwxMphD5PTSPuzgRYSNEAzJ/eHYAXEpWLx8aAgTrUtA0UB3Oqet500zzoHF00Jx73mTpBX1r7ixiIdSoeoMOtnPz+dTc6GFCA=
+  template:
+    metadata:
+      creationTimestamp: null
+      name: docker-regcred
+      namespace: camel-k
+    type: kubernetes.io/dockerconfigjson
+

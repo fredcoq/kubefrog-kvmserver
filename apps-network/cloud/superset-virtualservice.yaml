@@ -1,0 +1,35 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: superset-cloud
+  namespace: superset
+spec:
+  hosts:
+    - superset.kubefrog.ai
+  http:
+  - match:
+    - uri:
+        prefix: /web-dashboard
+    route:
+    - destination:
+        host: superset-dashboard-web-nginx
+        port:
+          number: 80
+    rewrite:
+      uri: /
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: superset
+        port:
+          number: 8088
+      headers:
+            response:
+              set:
+                Content-Security-Policy: "frame-ancestors https://tooljet.kubefrog.ai https://odoo.kubefrog.ai https://kubefrog-web.kubefrog.ai http://192.168.0.47:31664"
+              remove:
+                - X-Frame-Options
+  gateways:
+    - apps-network/apps-gateway-cloud

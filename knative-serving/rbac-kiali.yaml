@@ -1,0 +1,110 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  annotations:
+    operator-sdk/primary-resource: monitoring/kiali
+    operator-sdk/primary-resource-type: Kiali.kiali.io
+  labels:
+    app: kiali
+    app.kubernetes.io/instance: kiali
+    app.kubernetes.io/name: kiali
+    app.kubernetes.io/part-of: kiali
+    app.kubernetes.io/version: v1.48.0
+    version: v1.48.0
+  name: kiali
+  namespace: knative-serving
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  - endpoints
+  - pods/log
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  - pods
+  - replicationcontrollers
+  - services
+  verbs:
+  - get
+  - list
+  - watch
+  - patch
+- apiGroups:
+  - ""
+  resources:
+  - pods/portforward
+  verbs:
+  - create
+  - post
+- apiGroups:
+  - extensions
+  - apps
+  resources:
+  - daemonsets
+  - deployments
+  - replicasets
+  - statefulsets
+  verbs:
+  - get
+  - list
+  - watch
+  - patch
+- apiGroups:
+  - batch
+  resources:
+  - cronjobs
+  - jobs
+  verbs:
+  - get
+  - list
+  - watch
+  - patch
+- apiGroups:
+  - networking.istio.io
+  - security.istio.io
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - delete
+  - patch
+- apiGroups:
+  - authentication.k8s.io
+  resources:
+  - tokenreviews
+  verbs:
+  - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations:
+    operator-sdk/primary-resource: monitoring/kiali
+    operator-sdk/primary-resource-type: Kiali.kiali.io
+  labels:
+    app: kiali
+    app.kubernetes.io/instance: kiali
+    app.kubernetes.io/name: kiali
+    app.kubernetes.io/part-of: kiali
+    app.kubernetes.io/version: v1.48.0
+    version: v1.48.0
+  name: kiali
+  namespace: knative-serving
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: kiali
+subjects:
+- kind: ServiceAccount
+  name: kiali-service-account
+  namespace: monitoring

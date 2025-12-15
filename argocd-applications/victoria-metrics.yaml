@@ -1,0 +1,54 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: victoria-metrics
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/fredcoq/kubefrog-local
+    path: victoria-metrics
+    targetRevision: HEAD
+    
+      
+  destination:
+    server: https://kubernetes.default.svc
+    # namespace: victoria-metrics
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      # - CreateNamespace=true
+    # https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/#respect-ignore-difference-configs
+    # argocd must also ignore difference during apply stage
+    # otherwise it ll silently override changes and cause a problem
+      - RespectIgnoreDifferences=true
+      - ServerSideApply=true
+  ignoreDifferences:
+    - group: ""
+      kind: Secret
+      name: operator-victoria-metrics-operator-validation
+      namespace: victoria-metrics
+      jsonPointers:
+        - /data
+    - group: admissionregistration.k8s.io
+      kind: ValidatingWebhookConfiguration
+      name: operator-victoria-metrics-operator-admission
+      jqPathExpressions:
+      - '.webhooks[]?.clientConfig.caBundle'
+    - group: apps
+      kind: Deployment
+      jqPathExpressions:
+      - .spec.template.spec.initContainers[]?.resources
+      - .spec.template.spec.containers[]?.resources
+    - group: apps
+      kind: DaemonSet
+      jqPathExpressions:
+      - .spec.template.spec.initContainers[]?.resources
+      - .spec.template.spec.containers[]?.resources
+
+
+       
+
+

@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cmd-params-cm
+  labels:
+    app.kubernetes.io/name: argocd-cmd-params-cm
+    app.kubernetes.io/part-of: argocd
+data:
+
+  ## Server properties
+  # Run server without TLS
+  server.insecure: "true"
+  reposerver.git.request.timeout: "3m"
+  controller.operation.processors: "20"
+  controller.repo.server.timeout.seconds: "120"
+  controller.status.processors: "300"
+  reposerver.git.attempts.count: "3"
+  reposerver.parallelism.limit: "6"
+  server.k8sclient.retry.base.backoff: "200"
+  server.webhook.parallelism.limit: "5"
+ 

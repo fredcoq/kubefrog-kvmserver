@@ -1,0 +1,67 @@
+pilot:
+  cni:
+    enabled: true
+
+autoscaleEnabled: false
+autoscaleMin: 1
+autoscaleMax: 5
+autoscaleBehavior: {}
+replicaCount: 1
+resources:
+  requests:
+    cpu: 10m
+    memory: 128Mi
+  limits:
+    cpu: 2000m
+    memory: 1024Mi
+meshID: mesh-default
+network: mesh
+gateways:
+  seccompProfile:
+    type: RuntimeDefault
+proxy: 
+  resources:
+    requests:
+      cpu: 10m
+      memory: 128Mi
+    limits:
+      cpu: 2000m
+      memory: 1024Mi
+multiCluster:
+  clusterName: cluster-local
+sidecarInjectorWebhook:
+  neverInjectSelector:
+  # kube-prometheus-stack
+  ## Admission Webhook jobs do not terminate as expected with istio-proxy
+  - matchExpressions:
+    - {key: app, operator: In, values: [kube-prometheus-stack-admission-create, kube-prometheus-stack-admission-patch, alertmanager]}
+meshConfig:
+  accessLogEncoding: TEXT
+  accessLogFile: /dev/stdout
+  enablePrometheusMerge: true
+  enableTracing: true
+  defaultConfig:
+    proxyMetadata:
+      ISTIO_META_ENABLE_HBONE: "true"
+    tracing:
+      sampling: 10.0
+      max_path_tag_length: 256
+      zipkin:
+        address: simple-prod-collector.monitoring.svc.cluster.local:9411
+    gatewayTopology:
+      numTrustedProxies: 3
+  extensionProviders:
+  - name: oauth2-proxy-cloud
+    envoyExtAuthzHttp:
+      service: oauth2-proxy-cloud.auth.svc.cluster.local
+      port: '4180'
+      includeHeadersInCheck:
+      - cookie
+      - authorization
+      headersToUpstreamOnAllow: [authorization, x-forwarded-for, path, x-auth-request-user, x-auth-request-email, x-auth-request-groups]
+      headersToDownstreamOnDeny: [content-type, set-cookie]
+env:
+  PILOT_ENABLE_STATUS: true # see https://istio.io/latest/docs/reference/config/config-status/
+  PILOT_ENABLE_CONFIG_DISTRIBUTION_TRACKING: true
+  PILOT_ENABLE_AMBIENT: true
+  PILOT_JWT_PUB_KEY_REFRESH_INTERVAL: "1m"

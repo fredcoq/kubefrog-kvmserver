@@ -1,0 +1,43 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kubeflow-ingressgateway-certs-kubefrog-ai
+  namespace: istio-system
+spec:
+  secretName: kubeflow-ingressgateway-certs-kubefrog-ai
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "knative-serving,superset"  # Control destination namespaces
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true" # Auto create reflection for matching namespaces
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "knative-serving,superset" # Control auto-reflection namespaces
+  issuerRef:
+    name: kubeflow-self-signing-issuer
+    kind: ClusterIssuer
+  commonName: "*.kubefrog.ai"
+  
+  dnsNames:
+  - "*.kubefrog.ai"
+  - kubefrog.ai
+  - ollama-webui.kubefrog.ai
+  - grafana.kubefrog.ai
+  - superset.kubefrog.ai
+  - harbor-core.kubefrog.ai
+  - notary.kubefrog.ai
+  - kiali.kubefrog.ai
+  - prometheus.kubefrog.ai
+  - loki.kubefrog.ai
+  - druid.kubefrog.ai
+  - trino.kubefrog.ai
+  - argo-workflow.kubefrog.ai
+  - kubefrog.kubefrog.ai
+  - tooljet.kubefrog.ai
+  - jaeger.kubefrog.ai
+  - wekan.kubefrog.ai
+  - wordpress.kubefrog.ai
+  - odoo.kubefrog.ai
+  - api.kubefrog.ai
+  - kubefrog-web.kubefrog.ai
+  - kubeflow.kubefrog.ai
+  - serving.kubefrog.ai
+  - '*.serving.kubefrog.ai'

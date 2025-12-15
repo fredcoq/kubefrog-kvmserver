@@ -1,0 +1,41 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+helmCharts:
+  - name: istio/base
+    repo: https://istio-release.storage.googleapis.com/charts
+    version: 1.22.3
+    valuesFile: base/values.yaml
+    releaseName: base
+    namespace: istio-system
+  - name: istio/cni
+    repo: https://istio-release.storage.googleapis.com/charts
+    version: 1.22.3
+    valuesFile: cni/values.yaml
+    releaseName: cni
+    namespace: istio-system
+  - name: istio/istiod
+    repo: https://istio-release.storage.googleapis.com/charts
+    version: 1.22.3
+    valuesFile: istiod/values.yaml
+    releaseName: istiod
+    namespace: istio-system
+  - name: istio/ztunnel
+    repo: https://istio-release.storage.googleapis.com/charts
+    version: 1.22.3
+    valuesFile: ztunnel/values.yaml
+    releaseName: ztunnel
+    namespace: istio-system
+  - name: istio/gateway
+    repo: https://istio-release.storage.googleapis.com/charts
+    version: 1.22.3
+    valuesFile: gateway/values.yaml
+    releaseName: ingressgateway
+    namespace: istio-system
+  - name: istio/gateways/istio-ingress
+    repo: https://istio-release.storage.googleapis.com/charts
+    version: 1.22.3
+    valuesFile: gateways/cluster-local-gateway/values.yaml
+    releaseName: clusterlocalgateway
+    namespace: istio-system
+  

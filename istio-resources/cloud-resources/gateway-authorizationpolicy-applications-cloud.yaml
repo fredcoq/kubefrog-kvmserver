@@ -1,0 +1,44 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: istio-ingressgateway-applications-cloud
+  namespace: istio-system
+spec:
+  action: ALLOW
+  selector:
+    matchLabels:
+      app: istio-ingressgateway
+      istio: ingressgateway
+  rules:
+    - to:
+        - operation:
+            hosts:
+              - superset.kubefrog.fr
+              - ollama.kubefrog.fr
+              - ollama-webui.kubefrog.fr
+              - harbor-core.kubefrog.fr
+              - notary.kubefrog.fr
+              - grafana.kubefrog.fr
+              - kiali.kubefrog.fr
+              - prometheus.kubefrog.fr
+              - loki.kubefrog.fr
+              - druid.kubefrog.fr
+              - trino.kubefrog.fr
+              - argo-workflow.kubefrog.fr
+              - tooljet.kubefrog.fr
+              - kubefrog.kubefrog.fr
+              - jaeger.kubefrog.fr
+              - argocd.kubefrog.fr
+              - webhook.kubefrog.fr
+              - webhook-gh.kubefrog.fr
+              - wekan.kubefrog.fr
+              - wordpress.kubefrog.fr
+              - odoo.kubefrog.fr
+              - feast.kubefrog.fr
+              - notebook.kubefrog.fr
+              - notebook-llm.kubefrog.fr
+              - models.kubefrog.fr
+              - kubefrog-web.kubefrog.fr
+              - opik.kubefrog.fr
+              - minio.kubefrog.fr   
+              - n8n.kubefrog.fr          # - serving.kubefrog.fr

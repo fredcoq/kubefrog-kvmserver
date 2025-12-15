@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: certs-test
+  namespace: cert-manager
+spec:
+  secretName: certs-test
+  issuerRef:
+    name: kubeflow-acme-issuer
+    kind: Issuer
+  commonName:  kubefrog.fr
+  dnsNames:
+   - kubefrog.fr
+   - "*.kubefrog.fr"

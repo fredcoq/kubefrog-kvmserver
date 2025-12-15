@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: flowise
+  namespace: flowiseai
+spec:
+  hosts:
+    - flowise.kubefrog.ai
+  http:
+    - route:
+        - destination:
+            host: release-name-flowise
+            port:
+              number: 3000
+  gateways:
+    - apps-network/apps-gateway-cloud

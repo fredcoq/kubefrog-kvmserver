@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: wordpress-cloud
+  namespace: wordpress
+spec:
+  hosts:
+    - wordpress.kubefrog.ai
+  http:
+    - route:
+        - destination:
+            host: wordpress
+            port:
+              number: 80
+  gateways:
+    - apps-network/apps-gateway-cloud

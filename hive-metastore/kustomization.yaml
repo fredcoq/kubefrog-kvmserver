@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- metastore.yaml
+- mysql.yaml
+- pvc.yaml
+- init-schema.yaml
+configMapGenerator:
+- namespace: hive
+  name: metastore-cfg
+  files: 
+  - metastore-site.xml
+  - core-site.xml
+secretGenerator:
+- namespace: hive
+  name: my-s3-keys
+  literals:
+  - access-key=minioadmin 
+  - secret-key=minioadmin

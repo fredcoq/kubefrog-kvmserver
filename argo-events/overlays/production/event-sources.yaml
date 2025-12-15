@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: github
+spec:
+  service:
+    ports:
+    - port: 12000
+      targetPort: 12000
+  github:
+    airflow-custom:
+      owner: fredcoq
+      repository: airflow-custom
+      webhook:
+        endpoint: /airflow-custom
+        port: "12000"
+        method: POST
+        url: https://webhook-gh.kubefrog.fr
+      events:
+        - "*"
+      apiToken:
+        name: github-access
+        key: token
+      insecure: true
+      active: true
+      contentType: json
+    mnist-transformer:
+      owner: fredcoq
+      repository: mnist-transformer
+      webhook:
+        endpoint: /mnist-transformer
+        port: "12000"
+        method: POST
+        url: https://webhook-gh.kubefrog.fr
+      events:
+        - "*"
+      apiToken:
+        name: github-access
+        key: token
+      insecure: true
+      active: true
+      contentType: json
+
+

@@ -1,0 +1,11 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-camel-k-to-knative-serving
+  namespace: knative-serving
+spec:
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        namespaces: ["camel-k","default"]

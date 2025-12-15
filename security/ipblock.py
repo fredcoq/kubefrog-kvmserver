@@ -1,0 +1,1 @@
+# propose kubernetes ressource to filter blacklisted ip from an external provider 

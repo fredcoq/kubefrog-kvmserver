@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+helmCharts:
+- name: alluxio
+  repo: https://alluxio-charts.storage.googleapis.com/openSource/2.9.5
+  version: 0.6.54
+  valuesFile: values.yaml
+  releaseName: alluxio
+  namespace: alluxio
+

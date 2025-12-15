@@ -1,0 +1,4 @@
+# mysql configuration files
+# max_connection parameter patch to accomodate artifcats volume size
+[mysqld]
+max_connections = 1000

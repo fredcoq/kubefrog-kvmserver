@@ -1,0 +1,16 @@
+apiVersion: shipwright.io/v1alpha1
+kind: Build
+metadata:
+  name: buildpack-nodejs-build
+  namespace: shipwright-build
+spec:
+  source:
+    url: https://github.com/shipwright-io/sample-nodejs
+    contextDir: docker-build
+  strategy:
+    name: kaniko
+    kind: ClusterBuildStrategy
+  output:
+    image: 192.168.1.41:30003/library/sample-nodejs:latest
+    credentials:
+      name: push-secret

@@ -1,0 +1,29 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: mutate-cni-daemonset-image
+spec:
+  mutateExistingOnPolicyUpdate: true
+  rules:
+  - name: mutate-ztunnel-image
+    match:
+      # AND across resources and selector
+      any:
+      - resources:
+            # OR inside list of kinds
+            kinds:
+            - DaemonSet
+            names:
+            - "istio-cni-node"
+            namespaces:
+            - "istio-system"
+    mutate:
+      targets:
+      - apiVersion: apps/v1
+        kind: DaemonSet
+        namespace: istio-system
+        name: istio-cni-node
+      patchesJson6902: |-
+        - op: replace
+          path: "/spec/template/spec/containers/0/image"
+          value:  "gcr.io/istio-testing/install-cni:1.22-dev"

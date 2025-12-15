@@ -1,0 +1,28 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: superset-dashboard-cloud
+  namespace: superset
+spec:
+  gateways:
+    - apps-network/apps-gateway-cloud
+  hosts:
+    - tooljet.kubefrog.ai
+  http:
+    - match:
+        - uri:
+            prefix: /web-dashboard
+      route:
+        - destination:
+            host: superset-dashboard-web-nginx
+            port:
+              number: 80
+          headers:
+            response:
+              set:
+                Content-Security-Policy: "frame-ancestors https://tooljet.kubefrog.ai"
+              remove:
+                - X-Frame-Options
+      rewrite:
+        uri: /
+

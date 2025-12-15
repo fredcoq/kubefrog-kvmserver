@@ -1,0 +1,31 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: kubeflow-gateway-cloud
+  namespace: kubeflow
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - hosts:
+    - kubeflow.kubefrog.fr
+    - serving.kubefrog.fr
+    # - '*.serving.kubefrog.fr'
+    port:
+      name: http
+      number: 80
+      protocol: HTTP
+    # Upgrade HTTP to HTTPS
+    tls:
+      httpsRedirect: true
+  - hosts:
+    - kubeflow.kubefrog.fr
+    - serving.kubefrog.fr
+    # - '*.serving.kubefrog.fr'
+    port:
+      name: https
+      number: 443
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: kubeflow-ingressgateway-certs-kubefrog

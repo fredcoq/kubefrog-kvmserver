@@ -1,0 +1,30 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: mutate-pod-cpu-request
+spec:
+  rules:
+    - name: mutate-cpu-request
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - airbyte # Replace with your namespace
+      mutate:
+        patchStrategicMerge:
+          spec:
+            containers:
+              - (name): "*"
+                resources:
+                  requests:
+                    cpu: "10m"  # Set desired CPU request
+                    memory: "500Mi"  # Set desired memory request
+                  limits:
+                    cpu: "1500m" # Set desired CPU limit
+                    memory: "2048Mi" # Set desired memory limit
+
+
+
+                

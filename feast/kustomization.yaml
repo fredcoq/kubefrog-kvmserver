@@ -1,0 +1,33 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# resources:
+  # - postgres-manifest.yaml
+namespace: feast
+helmCharts:
+  - name: feast-feature-server
+    repo: https://feast-helm-charts.storage.googleapis.com
+    version: 0.37.1
+    valuesInline:
+      feature_store_yaml_base64: -|
+        cHJvamVjdDogZmVhc3Rfd29ya3Nob3AKcHJvdmlkZXI6IGxvY2FsCmVudGl0eV9rZXlfc2VyaWFs
+        aXphdGlvbl92ZXJzaW9uOiAyCnJlZ2lzdHJ5OgogIHJlZ2lzdHJ5X3R5cGU6IHNxbAogIHBhdGg6
+        IHBvc3RncmVzcWw6Ly9mZWFzdDppQmxFdWJCYU1OUmRzMW1GSGwzSDJBTnRDaHFUOTRpS204WEU3
+        Zm1XYXY5TFdzNXZ6SDJrR3hnZEJkZEI5MUFBQGZlYXN0LXBvc3RncmVzLWNsdXN0ZXIuZmVhc3Q6
+        NTQzMi9mZWFzdF9yZWdpc3RyeQogIGNhY2hlX3R0bF9zZWNvbmRzOiA2MApvbmxpbmVfc3RvcmU6
+        CiAgdHlwZTogcmVkaXMKICBjb25uZWN0aW9uX3N0cmluZzogImZlYXN0LXJlZGlzLW1hc3Rlci5m
+        ZWFzdDo2Mzc5LHBhc3N3b3JkPXM3Q0VpR29pekciCiAga2V5X3R0bF9zZWNvbmRzOiA2MDQ4MDAK
+        b2ZmbGluZV9zdG9yZToKICB0eXBlOiBwb3N0Z3JlcwogIGhvc3Q6IGZlYXN0LXBvc3RncmVzLWNs
+        dXN0ZXIuZmVhc3QKICBwb3J0OiA1NDMyCiAgZGF0YWJhc2U6IGZlYXN0X2RhdGEKICBkYl9zY2hl
+        bWE6IHB1YmxpYwogIHVzZXI6IGZlYXN0CiAgc3NsbW9kZTogTm9uZQogIHBhc3N3b3JkOiBpQmxF
+        dWJCYU1OUmRzMW1GSGwzSDJBTnRDaHFUOTRpS204WEU3Zm1XYXY5TFdzNXZ6SDJrR3hnZEJkZEI5
+        MUFB
+      # Add your Feast chart values here
+
+  - name: redis
+    repo: https://charts.bitnami.com/bitnami 
+    version: 17.8.2
+    valuesInline:
+      architecture: standalone
+      
+      # Add your Redis chart values here

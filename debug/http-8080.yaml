@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    test: http-8080
+  name: http-8080
+spec:
+  containers:
+  - name: liveness
+    image: registry.k8s.io/liveness
+    args:
+    - /server

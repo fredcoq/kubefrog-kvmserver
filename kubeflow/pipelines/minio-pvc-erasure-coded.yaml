@@ -1,0 +1,36 @@
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: minio-pvc-2
+  namespace: kubeflow
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: minio-pvc-3
+  namespace: kubeflow
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: minio-pvc-4
+  namespace: kubeflow
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi

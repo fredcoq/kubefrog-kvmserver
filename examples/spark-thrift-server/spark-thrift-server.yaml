@@ -1,0 +1,79 @@
+
+#
+# Copyright 2017 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: "sparkoperator.k8s.io/v1beta2"
+kind: SparkApplication
+metadata:
+  name: spark-thrift-server
+  namespace: spark-operator
+spec:
+  type: Scala
+  mode: cluster
+  image: 192.168.1.40:45000/spark-py:latest
+  imagePullPolicy: Always
+  mainClass: io.mykidong.hive.SparkThriftServerRunner
+  mainApplicationFile: s3a://spark/warehouse/spark-thrift-server-1.0.0-SNAPSHOT-spark-job.jar
+  sparkVersion: 3.0.1
+  restartPolicy:
+    type: Never
+  sparkConf:
+    "spark.kubernetes.file.upload.path": "s3a://spark"
+    "spark.sql.warehouse.dir": "s3a://spark/warehouse"
+  hadoopConf:
+    "hive.metastore.client.connect.tree.retry.delay": "5"
+    "hive.metastore.client.socket.timeout": "1800"
+    "hive.metastore.uris": "thrift://metastore.hive:9083"
+    "hive.server2.enable.doAs": "false"
+    "hive.server2.thrift.http.port": "10001"
+    "hive.server2.thrift.port": "10000"
+    "hive.server2.transport.mode": "binary"
+    "hive.server2.http.path" : "cliservice"
+    "metastore.catalog.default": "hive"
+    "hive.execution.engine": "spark"
+    "hive.input.format": "io.delta.hive.HiveInputFormat"
+    "hive.tez.input.format": "io.delta.hive.HiveInputFormat"
+    "fs.defaultFS": "s3a://spark"
+    "fs.s3a.access.key": "minioadmin"
+    "fs.s3a.secret.key": "minioadmin"
+    "fs.s3a.connection.ssl.enabled": "false"
+    "fs.s3a.endpoint": "http://192.168.0.200:9000"
+    "fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
+    "fs.s3a.fast.upload": "true"
+    "fs.s3a.path.style.access": "true"
+  volumes:
+    - name: "test-volume"
+      hostPath:
+        path: "/tmp"
+        type: Directory
+  driver:
+    cores: 1
+    coreLimit: "1200m"
+    memory: "2G"
+    labels:
+      version: 3.0.1
+    serviceAccount: spark-operator
+    volumeMounts:
+      - name: "test-volume"
+        mountPath: "/tmp"
+  executor:
+    cores: 1
+    instances: 1
+    memory: "2G"
+    labels:
+      version: 3.0.1
+    volumeMounts:
+      - name: "test-volume"
+        mountPath: "/tmp"

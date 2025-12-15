@@ -1,0 +1,64 @@
+apiVersion: data.fluid.io/v1alpha1
+kind: Dataset
+metadata:
+  name: s3-data
+spec:
+  mounts:
+    - mountPoint: "s3://model/bloom-560/"
+      name: bloom-560
+      path: /bloom-560
+      options:
+        alluxio.underfs.s3.secure.http.enabled: "false"
+        alluxio.underfs.s3.endpoint: "http://192.168.0.200:9000"
+        alluxio.underfs.s3.disable.dns.buckets: "true"
+        alluxio.underfs.s3.inherit.acl: "false"
+      encryptOptions:
+        - name: s3a.accessKeyId
+          valueFrom:
+            secretKeyRef:
+              name: s3creds
+              key: AWS_ACCESS_KEY_ID
+        - name: s3a.secretKey
+          valueFrom:
+            secretKeyRef:
+              name: s3creds
+              key: AWS_SECRET_ACCESS_KEY
+  accessModes:
+    - ReadOnlyMany
+  tolerations:
+    - key: "local-node"
+      operator: "Exists"
+      effect: "NoSchedule"
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - "ubuntu-gpu-wk"
+  placement: "Shared"
+---
+apiVersion: data.fluid.io/v1alpha1
+kind: AlluxioRuntime
+metadata:
+  name: s3-data
+spec:
+  replicas: 1
+  properties:
+    alluxio.user.ufs.block.read.location.policy: alluxio.client.block.policy.LocalFirstAvoidEvictionPolicy
+    alluxio.user.block.size.bytes.default: 256MB
+    alluxio.user.streaming.reader.chunk.size.bytes: 256MB
+    alluxio.user.local.reader.chunk.size.bytes: 256MB
+    alluxio.worker.network.reader.buffer.size: 256MB
+    alluxio.user.streaming.data.timeout: 300sec
+  tieredstore:
+    levels:
+      - mediumtype: SSD
+        path: /mnt/ssd0/cache
+        quota: 10Gi
+        high: "0.95"
+        low: "0.7"
+  master:
+    nodeSelector:
+      kubernetes.io/hostname: ubuntu-gpu-wk

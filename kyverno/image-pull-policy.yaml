@@ -1,0 +1,25 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: mutate-image-pull-policy
+spec:
+  mutateExistingOnPolicyUpdate: true
+  rules:
+    - name: mutate-image-pull-policy-container-0
+      match:
+        any:
+        - resources:
+            kinds:
+            - Pod
+      mutate:
+        targets:
+        - apiVersion: v1
+          kind: Pod
+        patchesJson6902: |-
+          - op: replace
+            path: "/spec/containers/0/imagePullPolicy"
+            value: "IfNotPresent"
+
+
+
+                

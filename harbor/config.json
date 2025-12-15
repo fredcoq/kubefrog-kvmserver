@@ -1,0 +1,9 @@
+{"auths":
+    {"harbor-core.kubefrog.fr":
+        {"username":"admin",
+        "password":"Harbor12345",
+        "email":"frederik.coquelet@gmail.com",
+        "auth":"YWRtaW46SGFyYm9yMTIzNDU="
+        }
+    }
+}

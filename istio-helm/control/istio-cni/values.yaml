@@ -1,0 +1,10 @@
+  seccompProfile:
+    type: RuntimeDefault
+  repair:
+    enabled: true
+    hub: ""
+    tag: ""
+    labelPods: false
+    deletePods: true
+    repairPods: false
+  priorityClassName: "high-priority-lower-1"

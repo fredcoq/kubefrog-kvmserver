@@ -1,0 +1,8 @@
+[
+  {"op": "replace",
+   "path": "/deletionPolicy",
+   "value": "Retain"},
+  {"op": "add",
+   "path": "/metadata/labels/0",
+   "value": "velero.io/csi-volumesnapshot-class: true"}
+]

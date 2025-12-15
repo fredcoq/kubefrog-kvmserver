@@ -1,0 +1,33 @@
+apiVersion: "serving.kserve.io/v1beta1"
+kind: "InferenceService"
+metadata:
+  name: "kserve-bloom"
+spec:
+  predictor:
+    terminationGracePeriodSeconds: 60
+    timeout: 600
+    minReplicas: 0
+    serviceAccountName: sa
+    containers:
+      - name: kserve-container
+        image: 192.168.0.200:45000/kserve/kserve-fluid:bloom-gpu-v1
+        # # below are for running bloom-7b1 using cpu
+        resources:
+          requests:
+            nvidia.com/gpu: 1
+        #   limits:
+        #     cpu: "12"
+        #     memory: 48Gi
+        #   requests:
+        #     cpu: "12"
+        #     memory: 48Gi
+        env:
+          - name: STORAGE_URI
+            # please update it accordingly
+            value: "s3://model/bloom-560m"
+            # value: "s3://${bucket}/models/bloom-7b1"
+          - name: MODEL_NAME
+            value: "bloom"
+            # set to "True" if you are using GPU, update the resources as well
+          - name: GPU_ENABLED
+            value: "True"

@@ -1,0 +1,15 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: require-jwt
+  namespace: model-production
+spec:
+  selector:
+    matchLabels:
+      serving.kserve.io/inferenceservice: mnist-production
+      component: transformer
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        requestPrincipals: ["ISSUER"]

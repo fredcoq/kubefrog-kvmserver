@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: odoo
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 23.2.4
+    chart: odoo
+    helm:
+      values: |
+        ## @param odooEmail Odoo user email
+        ## ref: https://github.com/bitnami/containers/tree/main/bitnami/odoo#configuration
+        ##
+        odooEmail: frederik.coquelet@gmail.com
+        ## @param odooPassword Odoo user password
+        ## Defaults to a random 10-character alphanumeric string if not set
+        ## ref: https://github.com/bitnami/containers/tree/main/bitnami/odoo#configuration
+        ##
+        odooPassword: "Fred_271987"
+        service:
+          type: NodePort
+        persistence:
+          enabled: true
+          size: 10Gi
+        
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: odoo
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

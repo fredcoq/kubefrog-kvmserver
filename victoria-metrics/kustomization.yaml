@@ -1,0 +1,44 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: kube-system
+helmCharts:
+  - name: victoria-metrics-operator
+    repo: https://victoriametrics.github.io/helm-charts/
+    version: 0.39.1
+    valuesInline:
+      admissionWebhooks:
+        certManager:
+        # -- Enables cert creation and injection by cert-manager.
+           enabled: true
+      crds:
+  # -- added temporary, till new operator version released
+        enabled: true
+        plain: false
+        cleanup:
+          enabled: true
+          image:
+            repository: bitnami/kubectl
+            pullPolicy: IfNotPresent
+      serviceMonitor:
+        enabled: true
+      operator:
+        # -- By default, operator converts prometheus-operator objects.
+        disable_prometheus_converter: false
+        # -- By default, operator converts kube-state-metrics objects.
+    releaseName: operator
+    namespace: kube-system
+  - name: victoria-metrics-k8s-stack
+    repo: https://victoriametrics.github.io/helm-charts/
+    version: 0.30.2
+    valuesFile: values.yaml
+    releaseName: k8s
+    namespace: kube-system
+resources:
+  - https://github.com/google/cadvisor/deploy/kubernetes/base
+patchesStrategicMerge:
+  - cadvisor-args.yaml
+images:
+  - name: gcr.io/cadvisor/cadvisor
+    newName: gcr.io/cadvisor/cadvisor
+    newTag: v0.47.0

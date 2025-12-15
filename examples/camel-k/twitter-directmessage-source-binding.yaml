@@ -1,0 +1,23 @@
+apiVersion: camel.apache.org/v1alpha1
+kind: KameletBinding
+metadata:
+  name: twitter-directmessage-source-binding
+  namespace: kafka
+spec:
+  source:
+    ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1alpha1
+      name: twitter-directmessage-source
+    properties:
+      accessToken: 722715965998428160-NFb2d5CddFdy6AmS44RpRKQVmRG2ZO0
+      accessTokenSecret: GdQW2WJy7U7WwFH5F7gH83dVcUTyBJTEeeert98uxR0yZ
+      apiKey: emBitb0tVnlaQC2VJhwPdnukQ
+      apiKeySecret: 2TPK2DsAFVJtBXt0DtqN9ASl98JK9IB50oVACBmQJeeZJ0Wa9y
+      user: "FrederikCoquel1"
+  sink:
+    ref:
+      kind: KafkaTopic
+      apiVersion: kafka.strimzi.io/v1beta1
+      name: fred
+      namespace: kafka

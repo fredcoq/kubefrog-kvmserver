@@ -1,0 +1,20 @@
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: taxi-tip-infer
+  namespace: frederik-coquelet
+  annotations:
+    sidecar.istio.io/inject: "false"
+spec:
+  predictor:
+    serviceAccountName: sa-inference
+    minReplicas: 1
+    tensorflow:
+      resources:
+        limits:
+          cpu: 100m
+          memory: 1Gi
+        requests:
+          cpu: 100m
+          memory: 1Gi
+      storageUri: s3://kubefrog/model_serving

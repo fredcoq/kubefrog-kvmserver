@@ -1,0 +1,14 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: allowlist-by-paths
+  namespace: admin
+spec:
+  action: ALLOW
+  rules:
+  - to:
+    - operation:
+        paths:
+        - /metrics   # The path to collect metrics by system pod.
+        - /healthz
+        - /wait-for-drain   # The path to probe by system pod.

@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: github-webhook
+  namespace: argo-events
+spec:
+  gateways:
+  - argo-events/argo-events-gateway
+  hosts:
+  - webhook-gh.kubefrog.fr
+  http:
+   - route:
+     - destination:
+         host: github-eventsource-svc.argo-events.svc.cluster.local
+         port:
+           number: 12000

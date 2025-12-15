@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: textgen-webui-frontend
+  namespace: frederik-coquelet
+spec:
+  selector:
+    app: pytorch-llm
+  ports:
+    - protocol: TCP
+      name: http-webui
+      port: 7860
+      targetPort: 7860
+    - protocol: TCP
+      name: http-api
+      port: 5000
+      targetPort: 5000
+
+# authorizations policy
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: textgen-webui-frontend
+  namespace: frederik-coquelet
+spec:
+  action: ALLOW
+  rules:
+  - {}
+  selector:
+    matchLabels:
+      app: pytorch-llm
+  
+
+
+

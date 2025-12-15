@@ -1,0 +1,16 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: neo4j-secrets
+  namespace: datahub
+spec:
+  encryptedData:
+    neo4j-password: AgBI1MZCvV8hiABe0EQ6e1A9UE88aianuYVw0DAEAgT2wdDmooraIojTOKaHh2O6uMdGmeiJyPXHlHZODUxzKWOCxEnZJzeDn1xOf7aVTzXJRdEffvN7wDc09DKYhD4CL+GN4XEjBGmPR2vQEmehectvv5q7kL/oEsQ7OSCS6mFeTqME3TzNlAlGO7bdtGI00w4oWZWxZbP3AvRB3Cy6tJzx24tjrAVa3LFuOOedrL2o/OfZaQO/v9amkmsJ5kmhUQavmekVpunjHj9vaDVB6CtGXhPLNjZOzjRNin7r9/1HOS0SvyUFf4aHJNngMM4wYMF/QT5twV432+qM72rANYuexi4YZEtHN7T5wX0GULWqOJFtUNWxqlWs/uSuBspkl29tpmTIzl36AGTEMponpWjcX8Y7wKFXXjiK30CfVc62F/v5aXhqjOfQ/beo14uF3sf2w6zIcKanJd7x97vPhwGixYx9dIMaeP+5+DRJ7Sow7XpE0Hgk4wLYr5esfFXOV1dQIHI0u5WqFEi/XGHiYmxBJuvGXW/Mea5XM9Ivg534DXkvxJ6PiS7bjpH77KGUtlb2Ive0EeebzoyL3t+ZMckhx7Vzj1ZrVl5+qYFOBFNef6jxcvRWZDr3ybXgIl9N0M453IzinGkTl5BiJHoIl1gTyRgCGrFylT2P6R/D4IXbT4Bvz79yIFH6UECdrN6++Q3Wi7AnavrnhlF9oUPx8HVjeAHo1XG2nlUyTiUVI43jRg==
+  template:
+    metadata:
+      creationTimestamp: null
+      name: neo4j-secrets
+      namespace: datahub
+    type: Opaque

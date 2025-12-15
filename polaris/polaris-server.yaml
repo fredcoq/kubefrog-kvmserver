@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: polaris-server
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/fredcoq/kubefrog-local
+    targetRevision: HEAD
+    path: polaris-server/chart
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: polaris
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

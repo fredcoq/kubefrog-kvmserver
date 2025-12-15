@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: controller
+  namespace: knative-serving
+spec:
+  template:
+    spec:
+      containers:
+        - name: controller
+          volumeMounts:
+            - name: custom-certs
+              mountPath: /path/to/custom/certs
+          env:
+            - name: SSL_CERT_DIR
+              value: /path/to/custom/certs
+      volumes:
+        - name: custom-certs
+          secret:
+            secretName: kubeflow-ingressgateway-certs
+

@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- https://github.com/jetstack/cert-manager/releases/download/v1.17.2/cert-manager.yaml
+
+ # - cert-host-injector.yaml
+# If you would like to setup a letsencrypt cluster issuer,
+# edit the `letsencrypt-cluster-issuer.yaml` with your details
+# see: https://cert-manager.io/docs/configuration/acme/#configuration
+# and uncomment the following line
+# - letsencrypt-cluster-issuer.yaml
+
+

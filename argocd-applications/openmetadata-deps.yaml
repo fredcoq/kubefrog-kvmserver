@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: openmetadata-dependencies
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://helm.open-metadata.org/
+    targetRevision: 1.6.5
+    chart: openmetadata-dependencies
+    helm:
+      values: |
+        airflow:
+          logs:
+            persistence:
+              enabled: true
+              storageClass: nfs-csi
+              size: 1Gi
+              accessMode: ReadWriteMany
+              cleanup:
+                enabled: true
+                schedule: "0 4 * * *"
+                retainDays: 180
+          dags:
+            persistence:
+              enabled: true
+              storageClass: nfs-csi
+              size: 1Gi
+              accessMode: ReadWriteMany
+          serviceAccount:
+            create: false
+            name: "airflow-patch"
+        
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openmetadata
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

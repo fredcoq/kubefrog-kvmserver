@@ -1,0 +1,32 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: add-env-to-container
+  annotations:
+    policies.kyverno.io/title: Add Environment Variable to Specific Container
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      This policy adds an environment variable to a specific container in a given namespace.
+spec:
+  rules:
+  - name: add-env-to-container
+    match:
+      resources:
+        kinds:
+        - Pod
+        namespaces:
+        - frederik-coquelet
+    preconditions:
+      all:
+      - key: "{{ request.object.spec.containers[].name }}"
+        operator: Equals
+        value: ml-pipeline-ui-artifact
+    mutate:
+      patchesJson6902: |-
+        - op: add
+          path: /spec/containers/0/env/-
+          value:
+            name: YOUR_ENV_VAR_NAME
+            value: YOUR_ENV_VAR_VALUE

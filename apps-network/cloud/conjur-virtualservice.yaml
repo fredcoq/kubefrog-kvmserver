@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: conjur
+  namespace: conjur
+spec:
+  hosts:
+    - conjur.kubefrog.ai
+  tls:
+    - match:
+      - port: 443
+        sniHosts:
+        - conjur.kubefrog.ai
+      route:
+      - destination:
+          host: conjur-conjur-oss
+          port:
+            name: https
+            number: 443
+  gateways:
+  - conjur-gateway

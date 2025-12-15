@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: feast-cloud
+  namespace: feast
+spec:
+  hosts:
+    - feast.kubefrog.ai
+  http:
+    - route:
+        - destination:
+            host: feast-feature-server
+            port:
+              number: 80
+  gateways:
+    - apps-network/apps-gateway-cloud

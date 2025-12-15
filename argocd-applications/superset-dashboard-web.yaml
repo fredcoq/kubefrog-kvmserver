@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: superset-dashboard-web
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 13.2.27
+    chart: nginx
+    helm: 
+     parameters:
+      - name: staticSiteConfigmap 
+        value: config-superset-dashboard-web
+      - name: service.type
+        value: ClusterIP
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: superset
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

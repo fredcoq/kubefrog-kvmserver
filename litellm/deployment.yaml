@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: litellm-deployment
+  labels:
+    app: litellm
+spec:
+  selector:
+    matchLabels:
+      app: litellm
+  template:
+    metadata:
+      labels:
+        app: litellm
+    spec:
+      containers:
+      - name: litellm
+        image: ghcr.io/berriai/litellm:main-stable # it is recommended to fix a version generally
+        args:
+          - "--config"
+          - "/app/proxy_server_config.yaml"
+        env: 
+          - name: OPIK_URL_OVERRIDE
+            value: "http://opik-frontend.opik:5173/api"
+          - name: OPIK_PROJECT_NAME
+            value: "n8n"
+          - name: OPIK_WORKSPACE_NAME
+            value: ""
+        ports:
+        - containerPort: 4000
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/proxy_server_config.yaml
+          subPath: config.yaml
+        envFrom:
+        - secretRef:
+            name: litellm-secrets
+        resources:
+          limits:
+            memory: "4Gi"
+            cpu: "2"
+          requests:
+            memory: "500Mi"
+            cpu: "100m"
+      volumes:
+        - name: config-volume
+          configMap:
+            name: litellm-config-file

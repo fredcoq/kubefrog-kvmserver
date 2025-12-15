@@ -1,0 +1,56 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: openebs
+helmCharts:
+  - name: openebs
+    repo: https://openebs.github.io/openebs
+    version: 4.0.0
+    valuesFile: values.yaml
+    releaseName: "prod"
+    namespace: openebs
+
+patchesJson6902:
+- target:
+    group: apps
+    version: v1
+    kind: StatefulSet
+    name: prod-etcd
+  path: etcd-patch.json
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: prod-agent-core
+  path: prod-busybox-1-patch.json
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: prod-api-rest
+  path: prod-busybox-2-patch.json
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: prod-csi-controller
+  path: prod-busybox-1-patch.json
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: prod-operator-diskpool
+  path: prod-busybox-2-patch.json
+- target:
+    group: apps
+    version: v1
+    kind: DaemonSet
+    name: prod-agent-ha-node
+  path: prod-busybox-1-patch.json
+- target:
+    group: apps
+    version: v1
+    kind: DaemonSet
+    name: prod-csi-node
+  path: prod-busybox-1-patch.json
+

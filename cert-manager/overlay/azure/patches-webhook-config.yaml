@@ -1,0 +1,6 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: cert-manager-webhook
+  annotations:
+    admissions.enforcer/disabled: "true"

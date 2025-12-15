@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: ozone-cloud
+  namespace: ozone
+spec:
+  hosts:
+    - ozone.kubefrog.ai
+  http:
+    - route:
+        - destination:
+            host: ozone
+            port:
+              number: 9078
+  gateways:
+    - apps-network/apps-gateway-cloud

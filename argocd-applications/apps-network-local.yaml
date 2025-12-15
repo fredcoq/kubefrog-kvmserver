@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: apps-network
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/fredcoq/kubefrog-local
+    targetRevision: HEAD
+    path: apps-network/local
+    
+      
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: apps-network
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

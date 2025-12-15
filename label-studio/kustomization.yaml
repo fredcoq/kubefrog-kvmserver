@@ -1,0 +1,26 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: label-studio
+
+helmCharts:
+  - name: label-studio
+    repo: https://charts.heartex.com/
+    namespace: label-studio
+    version: 1.9.7
+    valuesInline:
+      app:
+        service:
+          type: LoadBalancer
+        replicas: 1
+        resources:
+            requests:
+              memory: 1024Mi
+              cpu: 10m
+
+
+
+
+
+
+  

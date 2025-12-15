@@ -1,0 +1,7 @@
+[
+  {"op": "add", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"cpu": "10m", "memory": "100Mi"}}},
+  {"op": "add", "path": "/spec/template/spec/containers/1/resources", "value": {"requests": {"cpu": "10m", "memory": "100Mi"}}},
+
+  {"op": "add", "path": "/spec/template/spec/containers/0/imagePullPolicy", "value": "IfNotPresent"},
+  {"op": "add", "path": "/spec/template/spec/containers/1/imagePullPolicy", "value": "IfNotPresent"}
+]

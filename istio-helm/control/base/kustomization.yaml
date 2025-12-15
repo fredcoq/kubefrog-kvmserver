@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: istio-control
+helmCharts:
+  - name: base
+    repo: https://istio-release.storage.googleapis.com/charts
+    releaseName: "prod"
+    version: 1.26.2
+    namespace: istio-control
+    valuesInline:
+        global:
+           istioNamespace: istio-control

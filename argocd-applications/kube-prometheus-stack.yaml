@@ -1,0 +1,158 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prometheus-stack
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    targetRevision: 50.3.1
+    chart: kube-prometheus-stack
+    helm: 
+     parameters:
+      
+      - name: grafana.persistence.type
+        value: pvc
+      - name: grafana.persistence.enabled
+        value: "true"
+      - name: grafana.persistence.accessModes[0]
+        value: ReadWriteOnce
+      - name:  grafana.persistence.size
+        value: 8Gi
+      - name: grafana.persistence.storageClassName
+        value: rook-ceph-block-ssd
+      - name: grafana.grafana\.ini.server.domain
+        value: kubefrog.fr
+      - name: grafana.grafana\.ini.auth.signout_redirect_url
+        value: https://auth.kubefrog.fr/realms/kubeflow/protocol/openid-connect/logout?redirect_uri=https%3A%2F%2Fgrafana.kubefrog.fr
+      - name: grafana.grafana\.ini.server.root_url
+        value: https://grafana.kubefrog.fr
+      - name : grafana.grafana\.ini.auth\.generic_oauth.enabled
+        value: "true"
+      - name: grafana.grafana\.ini.auth\.generic_oauth.name
+        value: Keycloak-Oauth
+      - name: grafana.grafana\.ini.auth\.generic_oauth.allow_sign_up
+        value: "true"
+      - name: grafana.grafana\.ini.auth\.generic_oauth.client_id
+        value: grafana-client
+      - name: grafana.grafana\.ini.auth\.generic_oauth.client_secret
+        value: 379088bf850fe2316103eaf025d9a7e7829dedff754e1d609b016428bf391687
+      - name: grafana.grafana\.ini.auth\.generic_oauth.scopes
+        value: openid email profile roles
+      - name: grafana.grafana\.ini.auth\.generic_oauth.auth_url
+        value: https://auth.kubefrog.fr/realms/kubeflow/protocol/openid-connect/auth  
+      - name: grafana.grafana\.ini.auth\.generic_oauth.token_url
+        value: https://auth.kubefrog.fr/realms/kubeflow/protocol/openid-connect/token
+      - name: grafana.grafana\.ini.auth\.generic_oauth.api_url
+        value: https://auth.kubefrog.fr/realms/kubeflow/protocol/openid-connect/userinfo
+      - name: grafana.grafana\.ini.auth\.generic_oauth.role_attribute_path
+        value: "contains(roles[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || 'Viewer'"
+      - name: grafana.grafana\.ini.auth\.generic_oauth.email_attribute_path
+        value: email
+      - name: grafana.grafana\.ini.auth\.generic_oauth.name_attribute_path
+        value: username
+      - name: grafana.grafana\.ini.auth\.generic_oauth.login_attribute_path
+        value: full_name
+      - name: grafana.plugins[0]
+        value: vonage-status-panel
+      - name: grafana.resources.limits.cpu
+        value: "1"
+      - name: grafana.sidecar.dashboards.provider.foldersFromFilesStructure
+        value: "true"
+      - name: grafana.sidecar.dashboards.folderAnnotation
+        value: k8s-sidecar-target-directory
+      - name: grafana.sidecar.dashboards.annotations.k8s-sidecar-target-directory
+        value: /tmp/dashboards/kubernetes
+      - name: grafana.grafana\.ini.auth\.anonymous.enabled
+        value: "false"
+      - name: grafana.grafana\.ini.auth\.anonymous.org_name
+        value: "Main Org."
+      - name: grafana.grafana\.ini.auth\.anonymous.org_role
+        value: Viewer
+      - name: grafana.grafana\.ini.security.allow_embedding
+        value: "true"
+      - name: prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.accessModes[0]
+        value: ReadWriteOnce
+      - name: prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.resources.requests.storage
+        value: "50Gi"
+      - name: prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.storageClassName
+        value: rook-ceph-block-ssd
+      - name: prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues
+        value: "false"
+      - name: prometheus.prometheusSpec.podMonitorSelectorNilUsesHelmValues
+        value: "false"
+      - name: prometheus-node-exporter.hostRootFsMount.enabled
+        value: "false"
+        forceString: true
+# etcd service monitor set-up for prometheus
+      - name: prometheus.prometheusSpec.secrets[0]
+        value: "etcd-client-cert"
+      - name: kubeEtcd.service.port
+        value: "2379"
+      - name: kubeEtcd.service.targetPort
+        value: "2379"
+      - name: kubeEtcd.serviceMonitor.scheme
+        value: "https"
+      - name: kubeEtcd.serviceMonitor.serverName
+        value: "localhost"
+      - name: kubeEtcd.serviceMonitor.caFile
+        value: "/etc/prometheus/secrets/etcd-client-cert/server.crt"
+      - name: kubeEtcd.serviceMonitor.certFile
+        value: "/etc/prometheus/secrets/etcd-client-cert/healthcheck-client.crt"
+      - name: kubeEtcd.serviceMonitor.keyFile
+        value: "/etc/prometheus/secrets/etcd-client-cert/healthcheck-client.key"
+      - name: kubeEtcd.serviceMonitor.severName
+        value: kube-prometheus-stack-kube-etcd.kube-system.svc.cluster.local
+# kubecontroller manager service monitor set-up for prometheus
+      - name: kubeControllerManager.serviceMonitor.https
+        value: "true"
+      - name: kubeControllerManager.serviceMonitor.serverName
+        value: "localhost"
+      - name: kubeControllerManager.serviceMonitor.insecureSkipVerify
+        value: "true"
+      
+
+# kubescheduller manager service monitor set-up for prometheus
+      - name: kubeScheduler.serviceMonitor.scheme
+        value: "https"
+      - name: kubeScheduler.serviceMonitor.insecureSkipVerify
+        value: "true"
+#      - name: kubeScheduler.service.port
+#        value: "10259"
+#     - name: kubeScheduler.service.targetPort  
+#       value: "10259"
+
+# retention policy for prometheus
+      - name: prometheus.prometheusSpec.retention
+        value: 7d
+
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+  ignoreDifferences:
+  - group: monitoring.coreos.com
+    kind: ServiceMonitor
+    jqPathExpressions:
+    - .spec.endpoints[]?.relabelings[]?.action
+  - group: apps
+    kind: Deployment
+    jqPathExpressions:
+    - .spec.template.spec.containers[]?.resources
+  - group: apps
+    kind: Deployment
+    jqPathExpressions:
+    - .spec.template.spec.initContainers[]?.resources
+  - group: apps
+    kind: DaemonSet
+    jqPathExpressions:
+    - .spec.template.spec.containers[]?.resources
+      

@@ -1,0 +1,52 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prefect
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://prefecthq.github.io/server/
+    chart: prefect-server
+    targetRevision: 2021.09.02
+    helm:
+      version: v3
+      valueFiles:
+      - values.yaml
+      values: | 
+        agent:
+          enabled: True
+          prefectLabels: 
+            - "production"
+        jobs:
+          createTenant:
+            enabled: True
+        ui:
+          service:
+            type: ClusterIP
+          ingress:
+            enabled: True
+            ingressClassName: "nginx"
+            hosts: 
+              - prefect.192.168.0.101.nip.io
+            path: /
+          apolloApiUrl: http://apollo.192.168.0.101.nip.io/graphql
+        apollo:
+          service:
+            type: ClusterIP
+          ingress:
+            enabled: True
+            ingressClassName: "nginx"
+            hosts: 
+              - apollo.192.168.0.101.nip.io
+            path: /
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prefect
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

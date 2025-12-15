@@ -1,0 +1,34 @@
+apiVersion: "serving.kserve.io/v1beta1"
+kind: "InferenceService"
+metadata:
+  name: "llava-transform"
+  namespace: "frederik-coquelet"
+  labels:
+  #   serverless.fluid.io/inject: "true"
+spec:
+  predictor:
+    terminationGracePeriodSeconds: 60
+    timeout: 600
+    minReplicas: 1
+    containers:
+      - name: llava-transform-container
+        image: 192.168.0.200:45000/kserve/llava-transform:1.0.0
+        imagePullPolicy: Always
+         # below are for running bloom-7b1 using cpu
+        command:
+          - "python"
+          - "models.py"
+        args:
+          - --api_url
+          - "https://notebook-llm.kubefrog.fr"
+        resources:
+           limits:
+             cpu: "1"
+             memory: 2Gi
+           requests:
+             cpu: "100m"
+             memory: 500Mi
+    tolerations:
+    - key: "local-node"
+      operator: "Exists"
+      effect: "NoSchedule"

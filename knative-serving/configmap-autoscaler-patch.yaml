@@ -1,0 +1,8 @@
+# a configmap that configure knative domain mapping
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-autoscaler
+  namespace: knative-serving
+data:
+  target-burst-capacity: "0"

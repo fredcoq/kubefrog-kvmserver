@@ -1,0 +1,19 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: superset-postgres-cluster
+  namespace: superset
+spec:
+  teamId: "superset"
+  volume:
+    size: 5Gi
+    storageClass: rook-ceph-block-ssd
+  numberOfInstances: 2
+  users:
+    superset:
+    - superuser
+    - createdb
+  databases:
+    postgres: superset  # dbname: owner
+  postgresql:
+    version: "14"

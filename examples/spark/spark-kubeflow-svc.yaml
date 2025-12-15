@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: frederik-coquelet
+  name: spark-driver
+spec:
+  selector:
+    statefulset: spark
+  ports:
+    - name: spark-port
+      protocol: TCP
+      port: 29413
+  clusterIP: None

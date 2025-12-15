@@ -1,0 +1,19 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: polaris-postgres-cluster
+  namespace: polaris
+spec:
+  teamId: "polaris"
+  volume:
+    size: 5Gi
+  numberOfInstances: 1
+  users:
+    polaris:
+    - superuser
+    - createdb
+    druid_user: []
+  databases:
+    polaris: polaris  # dbname: owner
+  postgresql:
+    version: "14"

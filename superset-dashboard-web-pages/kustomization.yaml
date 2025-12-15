@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: superset
+
+
+configMapGenerator:
+
+- name: config-superset-dashboard-web
+  namespace: superset
+  behavior: create
+  files:
+  - index.html
+  options:
+      disableNameSuffixHash: true

@@ -1,0 +1,29 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: ollama-cloud
+  namespace: ollama
+spec:
+  hosts:
+    - ollama.kubefrog.ai
+  http:
+    - match:
+        - uri:
+            prefix: /v1/completions
+      rewrite:
+        uri: /api/generate 
+      route:
+        - destination:
+            host: prod-ollama
+            port:
+              number: 11434
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: prod-ollama
+            port:
+              number: 11434
+  gateways:
+    - ollama/apps-gateway-ollama-cloud

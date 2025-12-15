@@ -1,0 +1,12 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  annotations:
+  name: spark-driver-executor
+  namespace: frederik-coquelet
+spec:
+  rules:
+  - {}
+  selector:
+    matchLabels:
+      app: spark

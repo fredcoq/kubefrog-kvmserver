@@ -1,0 +1,21 @@
+# Allow all traffic to the istio-ingressgateway
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: istio-ingressgateway-api
+  namespace: istio-system
+spec:
+  action: CUSTOM
+  selector:
+    # Same as the istio-ingressgateway Service selector
+    matchLabels:
+      app: cluster-local-gateway
+      istio: cluster-local-gateway
+  provider:
+    name: oauth2-proxy-api
+  rules:
+    - to:
+        - operation:
+            hosts:
+              - "*"
+

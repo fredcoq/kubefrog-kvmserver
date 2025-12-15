@@ -1,0 +1,27 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging
+spec:
+  acme:
+    # You must replace this email address with your own.
+    # Let's Encrypt will use this to contact you about expiring
+    # certificates, and issues related to your account.
+    email: frederik.coquelet@gmail.com
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      # Secret resource that will be used to store the account's private key.
+      name: staging-issuer-account-key
+    # Add a single challenge solver, HTTP01 using nginx
+    solvers:
+    - selector:
+        dnsZones:
+          - kubecloud.fr.nf
+      dns01: 
+        route53:
+          hostedZoneID: Z03061233GIMP7GE8Y3A7
+          region: eu-west-3
+          accessKeyID: AKIA3FCSCE6T6SXE4W7X
+          secretAccessKeySecretRef:
+            name: aws-credentials
+            key: aws_secret_access_key

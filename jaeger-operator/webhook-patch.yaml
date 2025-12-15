@@ -1,0 +1,5 @@
+[
+  {"op": "replace",
+   "path": "/metadata/annotations/cert-manager.io~1inject-ca-from",
+   "value": "monitoring/jaeger-operator-serving-cert"}
+]

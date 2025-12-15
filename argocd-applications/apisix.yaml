@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: apisix
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://charts.apiseven.com
+    targetRevision: 1.9.0
+    chart: apisix
+    helm: 
+      parameters:
+      - name: dashboard.enabled
+        value: "true"
+      - name: serviceMonitor.enabled
+        value: "false"
+      - name: serviceMonitor.namespace
+        value: "monitoring"
+      - name: gateway.type
+        value: ClusterIP
+      - name: dashboard.service.type
+        value: LoadBalancer
+      - name:  affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].key
+        value: kubernetes.io/hostname
+      - name: affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].operator
+        value: NotIn
+      - name: affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions[0].values[0]
+        value: ip-192-168-0-251
+      - name: etcd.replicaCount
+        value: "1"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: apisix
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

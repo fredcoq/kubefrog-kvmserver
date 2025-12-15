@@ -1,0 +1,25 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: mutate-ztunnel-daemonset
+spec:
+  mutateExistingOnPolicyUpdate: true
+  rules:
+    - name: mutate-ztunnel-annotations
+      match:
+        # AND across resources and selector
+        any:
+        - resources:
+              # OR inside list of kinds
+              kinds:
+              - DaemonSet
+              names:
+              - ztunnel
+      mutate:
+        targets:
+        - apiVersion: v1
+          kind: Pod
+        patchesJson6902: |-
+          - op: add
+            path: "/spec/template/metadata/annotations/cni.projectcalico.org~1allowedSourcePrefixes"
+            value:  "10.0.0.0/22"

@@ -1,0 +1,24 @@
+apiVersion: "serving.kserve.io/v1beta1"
+kind: "InferenceService"
+
+metadata:
+  name: "sklearn-test-registry"
+  namespace: "frederik-coquelet"
+  annotations:
+    dummy: "logs"
+  labels:
+    modelregistry/registered-model-id: "8"
+    modelregistry/model-version-id: "9"
+spec:
+  predictor:
+    model:
+      modelFormat:
+        name: sklearn
+        version: "1"
+      storageUri: "model-registry://iris-mr/v1"
+      resources:
+          requests:
+            memory: "100Mi"
+            cpu: "10m"
+          limits:
+            memory: "2Gi"

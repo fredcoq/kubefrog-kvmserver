@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: spark-operator
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://kubeflow.github.io/spark-operator
+    targetRevision: "1.4.5"
+    chart: spark-operator
+    helm:
+      values: |
+        podSecurityContext:
+          # allowPrivilegeEscalation: false
+          # readOnlyRootFilesystem: true
+          runAsUser: 1000
+        resources:
+          limits:
+            cpu: 1
+            memory: 1Gi
+          requests:
+            cpu: 10m
+            memory: 0.1Gi
+    
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: spark-operator
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - Replace=true
+      - ServerSideApply=true
+

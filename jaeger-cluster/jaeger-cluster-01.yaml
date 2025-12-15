@@ -1,0 +1,34 @@
+apiVersion: jaegertracing.io/v1
+kind: Jaeger
+metadata:
+  name: simple-prod
+spec:
+  strategy: allinone
+  allInOne: 
+    image: jaegertracing/all-in-one:1.39.0
+    options:
+      prometheus:
+        server-url: http://kube-prometheus-stack-prometheus.monitoring:9090
+    metricsStorage:
+      type: prometheus
+  ingress:
+      enabled: false
+  collector:
+    maxReplicas: 1
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi  
+  storage:
+    type: cassandra
+    options:
+      cassandra:
+        servers: cassandra-bitnami-headless.cassandra-cluster
+        username: cassandra
+        password: jHkl44eC14
+   #    keyspace: jaeger_v1_dc1
+    cassandraCreateSchema:
+      datacenter: "dc1"
+      mode: "test"
+
+      

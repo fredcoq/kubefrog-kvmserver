@@ -1,0 +1,55 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: mutate-gpu-toleration
+spec:
+  mutateExistingOnPolicyUpdate: true
+  rules:
+    - name: mutate-gpu-toleration
+      match:
+        any:
+        # AND across resources and selector
+        - resources:
+            kinds:
+            - Pod
+            selector:
+              matchLabels:
+                notebook-name: laptop-gpu
+        - resources:
+            kinds:
+            - Pod
+            selector:
+              matchLabels:
+                notebook-name: langchain
+        - resources:
+            kinds:
+            - Pod
+            selector:
+              matchLabels:
+                notebook-name: laptop-torch-cuda
+        - resources:
+            kinds:
+            - Pod
+            selector:
+              matchLabels:
+                notebook-name: vision-torch-cuda
+        - resources:
+            kinds:
+            - Pod
+            selector:
+              matchLabels:
+                notebook-name: vision-torch-cuda-2
+        - resources:
+            kinds:
+            - Pod
+            selector:
+              matchLabels:
+                kubernetes.io/apps: vision-torch-cuda-2                   
+      mutate:
+        targets:
+        - apiVersion: v1
+          kind: Pod
+        patchesJson6902: |-
+          - op: add
+            path: "/spec/tolerations/-"
+            value: {"key":"local-node","operator":"Exists","effect":"NoSchedule"}        

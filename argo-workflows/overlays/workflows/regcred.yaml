@@ -1,0 +1,16 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: regcred
+  namespace: workflows
+spec:
+  encryptedData:
+    config.json: AgBbyDFZu4JQg/2yFl8k8w+MY/Pq28RAdG29XHLds2bXVQh5wMYvsanqVOeNQgBoc1/aEl9EnyvfxX3R95gsK1VyxGR6Y7hhhkKvWmN3kiV9x0KR+MU63DW/lpQktXkhQeJ7ETmt5IDu+IK7nwWaZA8uCMN6exg03WErb0gea418CSPKv4KnqYRxde9/sK2wvVIuVEfXJqUekgRHzGoRaINu2r8HMAqu7YdPLxEwySEs+h2HRRWuqVof1GVSYsvXCveP+1H6Kd+ZkFL4gsgEgquRszn2ZX0YPpO+4mWieVt4cUH+N2o8lMVofR6XzbUnnRk17iw8G3zbDer9RXkL1vBEueRBB1o9rQmYO8OTPIS074s6MjTLyHqEM2ahaRznhrsa/BVVN5gaFK+3gWkgDqJh2Ev4hwziCNmXjdg9YpjXemSlS0T0p8F/CSvWvNQJL6DeL42/dH26wDdolM0k9HbEOvp+3eBwrYzs7v3Dxlsy+mGpwO5XMWuWIXjsEPvSUOZu9mJyh87c6I1fRgJ1uhGygO9Eay0Fz12zh9FYLEEJZV/RY2GLNQavetmya9zOiLc6+YRRZlm7wx4M7Bhfy1kQ6rAHjbIu59JC2MRMiSmk021xAqC7lDp1xzlWP0JYrPfBTduX1pUY8Jgdv60lJgRXHsiOfhVzHp1YKnhmMnQwtPgE/a84DD992ROxX9saQoIpj00/RdLoknBUaQv9Kv37PuTAI0fI6jW91ptDY7E1Osv12Y/CrxnS+KZ45LaQzX5nqDO+C5zH3cvOAco3ujNj+79uu0/RKcE=
+  template:
+    data: null
+    metadata:
+      creationTimestamp: null
+      name: regcred
+      namespace: workflows
+

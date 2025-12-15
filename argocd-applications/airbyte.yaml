@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: airbyte
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://airbytehq.github.io/helm-charts
+    chart: airbyte
+    targetRevision: 1.4.1  
+    helm:
+      values: |
+        airbyteUrl: https://airbyte.kubefrog.ai
+        webapp:
+          service:  
+            type: LoadBalancer
+          replicaCount: 0
+        temporal:
+          replicaCount: 0
+        airbyte-bootloader:
+         replicaCount: 0
+        worker:
+          replicaCount: 0
+        cron:
+          replicaCount: 0
+        server:
+          replicaCount: 0
+        connector-builder-server:
+          replicaCount: 0
+        workload-api-server:
+          replicaCount: 0
+        workload-launcher:
+          replicaCount: 0
+        pod-sweeper:
+          replicaCount: 0
+        connector-builder-server:
+          replicaCount: 0
+       
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: airbyte
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

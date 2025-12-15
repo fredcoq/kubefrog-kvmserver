@@ -1,0 +1,15 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: harbor-ingress
+  namespace: harbor
+spec:
+  action: ALLOW
+  selector:
+    matchLabels:
+      app: harbor-gateway
+  rules:
+  - to:
+    - operation:
+        hosts:
+        - harbor-core-local.kubefrog.fr

@@ -1,0 +1,40 @@
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: mnist
+  namespace: frederik-coquelet
+  annotations:
+    sidecar.istio.io/inject: "false"
+spec:
+  predictor:
+    serviceAccountName: sa-s3
+    minReplicas: 1
+    model:
+      modelFormat:
+        name: tensorflow
+      name: ''
+      protocolVersion: v1
+      resources:
+        limits:
+          cpu: 100m
+          memory: 1Gi
+        requests:
+          cpu: 100m
+          memory: 1Gi
+      runtime: kserve-tensorflow-serving
+      runtimeVersion: 1.14.0
+      storageUri: 's3://mnist'
+  transformer:
+    containers:
+      - image: core.harbor.82.66.198.32.nip.io/library/mnist-transformer:e480d6286bf5dfc2ac372b56e621397e09992990
+        name: kserve-container
+        resources:
+          limits:
+            cpu: 100m
+            memory: 1Gi
+          requests:
+            cpu: 100m
+            memory: 1Gi
+    minReplicas: 1
+
+

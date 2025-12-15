@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: conjur
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/cyberark/conjur-oss-helm-chart
+    targetRevision: v2.0.7
+    path: conjur-oss
+    helm:
+      parameters:
+        - name: service.external.enabled
+          value: "true"
+        - name: service.internal.type
+          value: ClusterIP
+        - name: dataKey
+          value: PJ6EhPTCvu6Ua51Sw8xMx7c1YxYm2UcoSVY8lA6VMKM=
+        - name: account.create
+          value: "true"
+        - name: ssl.hostname
+          value: conjur.kubefrog.fr
+
+        
+        
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: conjur
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  ignoreDifferences:
+  - group: apps
+    kind: Deployment
+    jqPathExpressions:
+    - .spec.template.metadata.annotations."checksum/secrets"
+    - .spec.template.metadata.annotations."checksum/ssl-cert"
+  - group: apps
+    kind: StatefulSet
+    jqPathExpressions:
+    - .spec.template.metadata.annotations."checksum/secrets"
+  
