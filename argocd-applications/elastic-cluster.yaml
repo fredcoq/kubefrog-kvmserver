@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     path: elastic-cluster
-    repoURL: https://github.com/fredcoq/kubefrog-local
+    repoURL: https://github.com/fredcoq/kubefrog-kvmserver
     targetRevision: HEAD
     
       

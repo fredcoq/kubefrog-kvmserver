@@ -7,7 +7,7 @@ data:
   kustomize.buildOptions: --enable-helm
   timeout.reconciliation: "300s"
   repositories: |
-    - url: https://github.com/fredcoq/kubefrog-local
+    - url: https://github.com/fredcoq/kubefrog-kvmserver
       passwordSecret:
         name: github-access
         key: HTTPS_PASSWORD
