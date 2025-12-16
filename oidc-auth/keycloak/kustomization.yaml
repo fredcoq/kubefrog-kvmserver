@@ -2,7 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- ../../base
+- ../base
 # - ../../oidc-auth-m2m/oauth2-proxy/overlays/m2m-self-signed
 # - ../../api-gateway
 - keycloak-secret.yaml
@@ -15,10 +15,10 @@ resources:
 # - ./keycloak-themes-keywind
 # - ./cloud/virtual-service-cloud.yaml
 #- ./cloud/virtual-service.yaml
-- ./cloud/virtual-service-oauth.yaml
-- ./cloud/http-route-cloud.yaml
+- virtual-service-oauth.yaml
+- http-route-cloud.yaml
 # - ./cloud/virtual-service-cloud-cors.yaml
-- ./cloud/oauth2-proxy-signout-virtual-service-cloud.yaml
+- cloud/oauth2-proxy-signout-virtual-service-cloud.yaml
 - superset-client-secret.yaml
 - redis-secret.yaml
 - auth-gateway-cloud-api.yaml
@@ -26,5 +26,5 @@ resources:
 patchesStrategicMerge:
 #- oauth2-proxy-signout-virtual-service.yaml
 # - oauth2-proxy-patch-koidc.yaml
-- ./cloud/oauth2-proxy-patch-koidc-cloud.yaml
-- removals/oauth2-proxy-secret.yaml
+- oauth2-proxy-patch-koidc-cloud.yaml
+
