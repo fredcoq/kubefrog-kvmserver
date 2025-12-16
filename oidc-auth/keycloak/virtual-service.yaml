@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: auth
+  namespace: auth
+  labels:
+    app: auth
+spec:
+  gateways:
+  - auth-gateway
+  hosts:
+  - auth.82.66.198.32.nip.io
+  - auth.192.168.0.100.nip.io
+  http:
+  - route:
+    - destination:
+        host: keycloak
+        port:
+          number: 80

@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ../../base
+- keycloak-secret.yaml
+- kubeflow-realm-secret.yaml
+- oauth2-proxy-secret.yaml
+- postgresql-secret.yaml
+# - virtual-service.yaml
+- keycloak.yaml
+- ./keycloak-themes
+# - ./keycloak-themes-keywind
+- ./cloud/virtual-service-cloud.yaml
+- superset-client-secret.yaml
+- redis-secret.yaml
+
+patchesStrategicMerge:
+#- oauth2-proxy-signout-virtual-service.yaml
+# - oauth2-proxy-patch-koidc.yaml
+- ./cloud/oauth2-proxy-signout-virtual-service-cloud.yaml
+- ./cloud/oauth2-proxy-patch-koidc-cloud.yaml
+- removals/oauth2-proxy-secret.yaml

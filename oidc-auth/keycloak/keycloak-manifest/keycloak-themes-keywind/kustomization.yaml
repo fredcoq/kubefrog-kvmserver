@@ -1,0 +1,18 @@
+# kustomization file for keycloak themes
+# files login.ftl style.css theme.properties are stored in a genrated configmap
+kind: Kustomization
+
+configMapGenerator:
+  - name: keycloak-theme-keywind
+    namespace: auth
+    behavior: create
+    files:
+      - ./*
+      - ./assets/*
+      - ./components/*
+      - ./features/*
+      - ./resources/*
+    options:
+      disableNameSuffixHash: true
+
+
