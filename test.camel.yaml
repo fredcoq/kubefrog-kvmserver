@@ -1,6 +1,0 @@
-- route:
-    id: route-c9a5
-    nodePrefixId: route-765
-    from:
-      id: from-e44c
-      uri: google-mail

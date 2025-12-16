@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/fredcoq/kubefrog-kvmserver
     targetRevision: HEAD
-    path: oidc-auth/overlays/keycloak
+    path: oidc-auth/keycloak
   destination:
     server: https://kubernetes.default.svc
     namespace: auth
