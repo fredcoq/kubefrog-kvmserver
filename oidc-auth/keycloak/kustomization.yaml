@@ -18,7 +18,7 @@ resources:
 - virtual-service-oauth.yaml
 - http-route-cloud.yaml
 # - ./cloud/virtual-service-cloud-cors.yaml
-- cloud/oauth2-proxy-signout-virtual-service-cloud.yaml
+- oauth2-proxy-signout-virtual-service-cloud.yaml
 - superset-client-secret.yaml
 - redis-secret.yaml
 - auth-gateway-cloud-api.yaml
