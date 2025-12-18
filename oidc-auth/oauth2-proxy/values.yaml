@@ -20,18 +20,18 @@ config:
   # Add config annotations
   annotations: {}
   # OAuth client ID
-  clientID: "XXXXXXX"
+  clientID: ""
   # OAuth client secret
-  clientSecret: "XXXXXXXX"
+  clientSecret: ""
   # Create a new secret with the following command
   # openssl rand -base64 32 | head -c 32 | base64
   # Use an existing secret for OAuth2 credentials (see secret.yaml for required fields)
   # Example:
   # existingSecret: secret
-  cookieSecret: "XXXXXXXXXXXXXXXX"
+  cookieSecret: ""
   # The name of the cookie that oauth2-proxy will create
   # If left empty, it will default to the release name
-  cookieName: ""
+  cookieName: " _oauth2_proxy"
   google: {}
     # adminEmail: xxxx
     # useApplicationDefaultCredentials: true
@@ -57,7 +57,7 @@ config:
   # existingConfig: config
 
 alphaConfig:
-  enabled: false
+  enabled: true
   # Add config annotations
   annotations: {}
   # Arbitrary configuration data to append to the server section
@@ -72,7 +72,7 @@ alphaConfig:
   # Use an existing config map (see secret-alpha.yaml for required fields)
   existingConfig: ~
   # Use an existing secret
-  existingSecret: ~
+  existingSecret: oauth2-proxy
 
 image:
   registry: "quay.io"

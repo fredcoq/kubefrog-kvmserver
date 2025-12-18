@@ -162,6 +162,7 @@ resources:
 - argocd-applications/openmetadata.yaml
 - argocd-applications/label-studio.yaml
 - argocd-applications/etcd-backup.yaml
+- argocd-applications/olm.yaml
 
 # ------------------- priority classes -----------------------------
 - argocd-applications/priority-classes.yaml
