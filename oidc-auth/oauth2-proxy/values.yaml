@@ -91,9 +91,51 @@ imagePullSecrets: []
 # Set a custom containerPort if required.
 # This will default to 4180 if this value is not set and the httpScheme set to http
 # This will default to 4443 if this value is not set and the httpScheme set to https
-# containerPort: 4180
+#containerPort: 4180
 
-extraArgs: {}
+extraArgs: 
+  provider: keycloak-oidc
+  set-xauthrequest: "true"
+  cookie-secure: "true"
+  cookie-samesite: lax
+  cookie-csrf-per-request: "true"
+  cookie-csrf-expire: 5m
+  cookie-refresh: 30m
+  cookie-expire: 168h
+  cookie-name: _oauth2_proxy
+  ssl-upstream-insecure-skip-verify: "true"
+  ssl-insecure-skip-verify: "true"
+  email-domain: "*"
+  upstream: static://200
+  skip-provider-button: "true"
+  cookie-domain: .kubefrog.fr
+  whitelist-domain: .kubefrog.fr
+  redis:
+    enable: true
+    redis:
+      architecture:
+        standalone: true
+      auth: 
+        existingSecret: oauth2-proxy-redis
+        existingSecretPasswordKey: redis-password
+
+  api_routes:
+    - "/api/"
+    - "/apis/"
+    - "^/ml_metadata"
+  redirect-url: https://auth.kubefrog.fr/oauth2/callback
+  oidc-issuer-url: https://auth.kubefrog.fr/realms/kubeflow
+  scope: openid # email profile
+  user-id-claim: email
+  extra-jwt-issuers:
+    - issuer: https://auth.kubefrog.fr/realms/kubeflow
+  skip-jwt-bearer-tokens: "true"
+  initContainers: 
+    waitForRedis:
+      securityContext:
+        runAsUser: 1337
+        runAsGroup: 1337
+
 extraEnv: []
 
 envFrom: []
@@ -146,7 +188,7 @@ service:
   # loadBalancerSourceRanges: 203.0.113.0/24
   # when service.type is NodePort ...
   # nodePort: 80
-  portNumber: 80
+  portNumber: 4180
   # Protocol set on the service
   appProtocol: http
   annotations: {}
@@ -445,14 +487,13 @@ htpasswdFile:
   # example:
   # entries:
   #  - testuser:$2y$05$gY6dgXqjuzFhwdhsiFe7seM9q9Tile4Y3E.CBpAZJffkeiLaC21Gy
-
 # Configure the session storage type, between cookie and redis
 sessionStorage:
   # Can be one of the supported session storage cookie|redis
-  type: cookie
+  type: redis
   redis:
     # Name of the Kubernetes secret containing the redis & redis sentinel password values (see also `sessionStorage.redis.passwordKey`)
-    existingSecret: ""
+    existingSecret: "oauth2-proxy-redis"
     # Redis password value. Applicable for all Redis configurations. Taken from redis subchart secret if not set. `sessionStorage.redis.existingSecret` takes precedence
     password: ""
     # Key of the Kubernetes secret data containing the redis password value. If you use the redis sub chart, make sure
@@ -462,7 +503,7 @@ sessionStorage:
     clientType: "standalone"
     standalone:
       # URL of redis standalone server for redis session storage (e.g. `redis://HOST[:PORT]`). Automatically generated if not set
-      connectionUrl: ""
+      connectionUrl: "redis://redis:6379"
     cluster:
       # List of Redis cluster connection URLs. Array or single string allowed.
       connectionUrls: []
@@ -485,7 +526,11 @@ sessionStorage:
 # Enables and configure the automatic deployment of the redis-ha subchart
 redis:
   # provision an instance of the redis-ha sub-chart
-  enabled: false
+  enabled: true
+  auth: true
+  authKey: "redis-password"
+  existingSecret: "oauth2-proxy-redis"
+
   # Redis specific helm chart settings, please see:
   # https://artifacthub.io/packages/helm/dandydev-charts/redis-ha#general-parameters
   #
