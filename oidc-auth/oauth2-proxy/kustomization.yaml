@@ -9,3 +9,9 @@ helmCharts:
     namespace: oauth2-proxy
     version: 7.10.4
     valuesFile: values.yaml
+resources:
+  - redis.yaml
+  - redis-secret.yaml
+  - oauth2-proxy-service-account.yaml
+  - oauth2-proxy-sevret.yaml
+  
