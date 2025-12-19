@@ -1,0 +1,32 @@
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: auth-ingress
+  namespace: auth
+spec:
+  action: ALLOW
+  selector:
+    matchLabels:
+      app: auth-gateway-cloud
+  rules:
+  - to:
+    - operation:
+        hosts:
+        - auth-local.kubefrog.fr
+
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: auth-allow-access
+  namespace: auth
+spec:
+  action: ALLOW
+  rules:
+  - {}
+  # - from:
+  #   - source:
+  #       namespaces:
+  #       - auth
+  #       - istio-system
