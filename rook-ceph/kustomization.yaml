@@ -1,73 +1,14 @@
 kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 
-
+helmCharts:
+  - name: rook-ceph
+    repo: https://charts.rook.io/release
+    releaseName: rook-ceph
+    namespace: rook-ceph
+    version: 1.18.8
+    valuesFile: values.yaml
 resources:
-
-- https://raw.githubusercontent.com/rook/rook/v1.12.9/deploy/examples/common.yaml
-- https://raw.githubusercontent.com/rook/rook/v1.12.9/deploy/examples/crds.yaml
-- https://raw.githubusercontent.com/rook/rook/v1.12.9/deploy/examples/operator.yaml
-#- namespace.yaml
-- https://raw.githubusercontent.com/csi-addons/kubernetes-csi-addons/v0.7.0/deploy/controller/crds.yaml
-- https://raw.githubusercontent.com/csi-addons/kubernetes-csi-addons/v0.7.0/deploy/controller/rbac.yaml
-- https://raw.githubusercontent.com/csi-addons/kubernetes-csi-addons/v0.7.0/deploy/controller/setup-controller.yaml
-- https://raw.githubusercontent.com/csi-addons/kubernetes-csi-addons/v0.7.0/deploy/controller/csi-addons-config.yaml
-
-- https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/v6.1.0/client/config/crd/snapshot.storage.k8s.io_volumesnapshotclasses.yaml
-- https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/v6.1.0/client/config/crd/snapshot.storage.k8s.io_volumesnapshotcontents.yaml
-- https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/v6.1.0/client/config/crd/snapshot.storage.k8s.io_volumesnapshots.yaml
-- https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/v6.1.0/deploy/kubernetes/snapshot-controller/rbac-snapshot-controller.yaml
-- https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/v6.1.0/deploy/kubernetes/snapshot-controller/setup-snapshot-controller.yaml
-
-
-# - https://raw.githubusercontent.com/rook/rook/v1.9.12/deploy/examples/csi/rbd/storageclass.yaml
+- kvm-cluster.yaml
 - storageclass-ssd.yaml
-# - storageclass-hdd.yaml
-# - https://raw.githubusercontent.com/rook/rook/v1.9.12/deploy/examples/csi/rbd/snapshotclass.yaml
-- https://raw.githubusercontent.com/rook/rook/v1.12.9/deploy/examples/cluster-test.yaml
-
-#----------------------------------------object store------------------------------------------------
-#- https://raw.githubusercontent.com/rook/rook/v1.9.12/deploy/examples/object.yaml
-#- https://raw.githubusercontent.com/rook/rook/v1.9.12/deploy/examples/storageclass-bucket-delete.yaml
-
-
-#----------------------------------------ceph file system ------------------------------------------------
-# - https://raw.githubusercontent.com/rook/rook/v1.9.12/deploy/examples/filesystem-test.yaml
-#- https://raw.githubusercontent.com/rook/rook/v1.9.12/deploy/examples/csi/cephfs/storageclass.yaml
-#- https://raw.githubusercontent.com/rook/rook/v1.9.12/deploy/examples/csi/cephfs/snapshotclass.yaml
-
-- snapshotclass-rbd.yaml 
-# - rook-ceph-cert.yaml
-# - rook-rgw-cert.yaml
-# - dashboard-ingress.yaml
-# - rgw-external-ingress.yaml
 - monitoring/
-
-patchesStrategicMerge:
-- cluster-patch.yaml
-- csi-addons-manager-configm-patch.yaml
-# - fs-patch.yaml
-patchesJson6902:
-  - target:
-      version: v1
-      kind: ConfigMap
-      name: rook-ceph-operator-config
-    path: config-map-patch.yaml
-  - target:
-      group: rbac.authorization.k8s.io
-      version: v1
-      kind: ClusterRole
-      name: csi-addons-manager-role
-    path: csi-addons-cluster-role-patch.yaml
-  - target:
-      version: v1
-      group: apps
-      kind: Deployment
-      name: csi-addons-controller-manager
-    path: csi-addons-controller-manager-patch.yaml
-
-
-images:
-- name: rook/ceph
-  newName: rook/ceph
-  # digest: sha256:2ae80a20563f1d90ce6e312af284fb11b8b60b6721b7eb8e65f5a728ecc21e54
