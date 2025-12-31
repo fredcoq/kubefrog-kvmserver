@@ -1,7 +1,7 @@
 # GitHub organization or the username
 export GH_ORG=fredcoq
 
-export INFISICAL_TOKEN=$(infisical login --method=user --interactive --domain https://infisical.kubefrog.fr --plain --silent)
+# export INFISICAL_TOKEN=$(infisical login --method=user --interactive --domain https://infisical.kubefrog.fr --plain --silent)
 
 # ase host accessible through NGINX Ingress
 export BASE_HOST=kubefrog.fr # e.g., $INGRESS_HOST.nip.io
@@ -18,7 +18,7 @@ export REGISTRY_PASS=Harbor12345
 export REGISTRY_EMAIL=frederik.coquelet@gmail.com
 
 # GitHub token
-export GH_TOKEN=$(infisical secrets get REPO_FREDCOQ_TOKEN --path /ARGOCD/GITHUB_TOKEN --silent --plain)
+export GH_TOKEN=$(infisical secrets get --projectId 4be77193-423c-48d1-8a18-94902e4de7fc  REPO_FREDCOQ_TOKEN --path /ARGOCD/GITHUB_TOKEN --silent --plain)
 
 # GitHub email
 export GH_EMAIL=fredcoq@github.com
@@ -27,7 +27,7 @@ export HB_USER=admin
 
 export HB_PASSWORD=Harbor12345
 
-export CLOUDFLARE_API_TOKEN=$(infisical secrets get CLOUDFLARE_TOKEN --path /CLOUDFLARE/CLOUDFLARE_KUBEFROG --silent --plain)
+export CLOUDFLARE_API_TOKEN=$(infisical secrets get --projectId 4be77193-423c-48d1-8a18-94902e4de7fc CLOUDFLARE_TOKEN --path /CLOUDFLARE/CLOUDFLARE_KUBEFROG --silent --plain)
 # Wait for a while and repeat the previous command if the output contains `cannot fetch certificate` error message
 
 kubectl --namespace workflows create secret generic regcred  \
