@@ -15,6 +15,10 @@ export REGISTRY_PASS=Harbor12345
 # registry email
 export REGISTRY_EMAIL=frederik.coquelet@gmail.com
 
+<<<<<<< HEAD
+=======
+# GitHub token
+>>>>>>> 0e4a58a (ok)
 
 
 # GitHub email
