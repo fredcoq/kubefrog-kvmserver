@@ -30,19 +30,31 @@ spec:
         enabled: true
   dashboard:
     enabled: true
+  placement:
+    all:
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: role
+                  operator: In
+                  values:
+                    - storage-node
   crashCollector:
     disable: true
   storage:
     useAllNodes: false
     useAllDevices: false
+    deviceFilter: ^vd[b]
     allowDeviceClassUpdate: true
     allowOsdCrushWeightUpdate: false
     nodes:
-      - name: k8s-control-plane
-        devices:
-          - name: vdb
-            deviceClass: nvme
-    
+      - name: k8s-control-plane    
+
   monitoring:
     enabled: false
   healthCheck:

@@ -18,7 +18,8 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: rook-ceph-tools
-          image: quay.io/ceph/ceph:v17
+          image: quay.io/ceph/ceph:v20
+          imagePullPolicy: IfNotPresent
           command:
             - /bin/bash
             - -c
@@ -74,7 +75,6 @@ spec:
               write_endpoints
               # continuously update the mon endpoints if they fail over
               watch_endpoints
-          imagePullPolicy: IfNotPresent
           tty: true
           securityContext:
             runAsNonRoot: true

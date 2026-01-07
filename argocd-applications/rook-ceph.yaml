@@ -9,13 +9,12 @@ spec:
     repoURL: https://github.com/fredcoq/kubefrog-kvmserver
     targetRevision: HEAD
     path: rook-ceph
-    
-      
+  
   destination:
     server: https://kubernetes.default.svc
-
+    namespace: rook-ceph
   syncPolicy:
-  
+     
      automated:
        prune: true
        selfHeal: true
