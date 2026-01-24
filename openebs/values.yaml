@@ -6,7 +6,7 @@ localpv-provisioner:
   rbac:
     create: true
   hostpathClass:
-    isDefaultClass: true
+    isDefaultClass: false
 openebs-crds:
   csi:
     volumeSnapshots:
