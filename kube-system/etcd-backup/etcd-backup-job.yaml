@@ -25,7 +25,7 @@ spec:
                   name: etcd-backup
           containers:
           - name: etcd-backup
-            image: bitnami/etcd:3.5.6-debian-11-r10
+            image: bitnamilegacy/etcd:3.5.6-debian-11-r10
             env:
             - name: ETCDCTL_API
               value: "3"
