@@ -1,16 +1,18 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+namespace: kyverno
 helmCharts:
   - name: kyverno
     repo: https://kyverno.github.io/kyverno/
-    version: 3.2.5
-    valuesFile: values.yaml
+    version: 3.6.2
+    # valuesFile: values.yaml
     releaseName: "kyverno-policies"
     namespace: kyverno
 resources:
 - namespace-kubeflow-policy.yaml
 - bitnamirepo-patch.yaml
+- set-image-pull-policy-IfNP.yaml
 # - pod-resources-victoria.yaml
 #- namespace-knative-policy.yaml
 # - namespace-users-policy.yaml
