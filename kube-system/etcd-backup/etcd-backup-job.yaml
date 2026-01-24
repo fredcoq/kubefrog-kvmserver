@@ -61,7 +61,6 @@ spec:
                       values:
                       - etcd
                   topologyKey: kubernetes.io/hostname
-              
           restartPolicy: OnFailure
           preemptionPolicy: PreemptLowerPriority
           priority: 2000001000
@@ -72,6 +71,9 @@ spec:
           hostNetwork: true
           tolerations:
             - key: node.kubernetes.io/memory-pressure
+              effect: NoSchedule
+              operator: Exists
+            - key: node-role.kubernetes.io/control-plane
               effect: NoSchedule
               operator: Exists
           volumes:
