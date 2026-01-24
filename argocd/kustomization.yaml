@@ -13,7 +13,7 @@ resources:
 - argocd-webhook-virtualservice.yaml
 - githubcred.yaml
 - harborcred.yaml
-- kubefrog-local-secret.yaml
+- kubefrog-kvm-secret.yaml
 - kubefrog-ovh-secret.yaml
 - fredcoq-secret.yaml
 # - argocd-service-monitor.yaml
