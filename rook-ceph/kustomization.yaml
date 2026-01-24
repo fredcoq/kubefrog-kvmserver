@@ -10,7 +10,7 @@ helmCharts:
     version: 1.18.8
     valuesFile: values.yaml
 resources:
-- https://github.com/csi-addons/kubernetes-csi-addons/releases/download/v0.13.0/crds.yaml
+# - https://github.com/csi-addons/kubernetes-csi-addons/releases/download/v0.13.0/crds.yaml
 - https://github.com/csi-addons/kubernetes-csi-addons/releases/download/v0.13.0/rbac.yaml
 - https://github.com/csi-addons/kubernetes-csi-addons/releases/download/v0.13.0/setup-controller.yaml
 - kvm-cluster.yaml
