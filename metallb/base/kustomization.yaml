@@ -3,7 +3,7 @@ kind: Kustomization
 namespace: metallb-system
 
 resources:
-  - https://github.com/metallb/metallb/config/native?ref=v0.15.3
+  - https://github.com/metallb/metallb/config/native?ref=v0.15.3&timeout=120
   - l2advertisement.yaml
   - secret.yaml
 patchesStrategicMerge:
