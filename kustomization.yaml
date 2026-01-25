@@ -163,6 +163,7 @@ resources:
 - argocd-applications/label-studio.yaml
 - argocd-applications/etcd-backup.yaml
 - argocd-applications/olm.yaml
+- argocd-applications/olm-operators.yaml
 
 # ------------------- priority classes -----------------------------
 - argocd-applications/priority-classes.yaml
