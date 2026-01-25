@@ -5,6 +5,6 @@ metadata:
   namespace: metallb-system
 spec:
   interfaces:
-  - eth0
+  - enp1s0
   ipAddressPools:
   - first-pool
