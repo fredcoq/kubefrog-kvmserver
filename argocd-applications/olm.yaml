@@ -9,14 +9,9 @@ spec:
     repoURL: https://github.com/fredcoq/kubefrog-kvmserver
     path: olm
     targetRevision: HEAD
-    
-      
   destination:
     server: https://kubernetes.default.svc
-    namespace: olm
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
