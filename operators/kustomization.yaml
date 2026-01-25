@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - ./keycloak
   - ./redis
-  - operator-group.yaml
+  # - operator-group.yaml
