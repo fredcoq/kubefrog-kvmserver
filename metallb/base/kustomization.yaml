@@ -3,13 +3,13 @@ kind: Kustomization
 namespace: metallb-system
 
 resources:
-  - https://github.com/metallb/metallb/config/rbac?ref=v0.13.12
-  - https://github.com/metallb/metallb/config/crd?ref=v0.13.12
-  - https://raw.githubusercontent.com/metallb/metallb/v0.13.12/config/controllers/controller.yaml
-  - https://raw.githubusercontent.com/metallb/metallb/v0.13.12/config/controllers/speaker.yaml
-  - https://raw.githubusercontent.com/metallb/metallb/v0.13.12/config/native/ns.yaml
-  - https://raw.githubusercontent.com/metallb/metallb/v0.13.12/config/native/exclude-l2-config.yaml
-  - https://github.com/metallb/metallb/config/webhook?ref=v0.13.12
+  - https://github.com/metallb/metallb/config/rbac?ref=v0.13.12&timeout=90
+  - https://github.com/metallb/metallb/config/crd?ref=v0.13.12&timeout=90
+  - https://raw.githubusercontent.com/metallb/metallb/v0.13.12/config/controllers/controller.yaml&timeout=90
+  - https://raw.githubusercontent.com/metallb/metallb/v0.13.12/config/controllers/speaker.yaml&timeout=90
+  - https://raw.githubusercontent.com/metallb/metallb/v0.13.12/config/native/ns.yaml&timeout=90
+  - https://raw.githubusercontent.com/metallb/metallb/v0.13.12/config/native/exclude-l2-config.yaml&timeout=90
+  - https://github.com/metallb/metallb/config/webhook?ref=v0.13.12&timeout=90
   
   - l2advertisement.yaml
   - secret.yaml
