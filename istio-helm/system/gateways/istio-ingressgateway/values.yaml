@@ -62,7 +62,7 @@ _internal_defaults_do_not_set:
     annotations:
       proxy.istio.io/config: '{"gatewayTopology" : { "numTrustedProxies": 2 } }'    
 
-    loadBalancerIP: "172.22.80.100"
+    loadBalancerIP: "192.168.0.199"
     loadBalancerSourceRanges: []
     externalTrafficPolicy: "Local"
     externalIPs: []
