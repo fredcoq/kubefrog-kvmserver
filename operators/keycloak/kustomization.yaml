@@ -4,3 +4,4 @@ namespace: keycloak
 resources:
   - keycloak.yaml
   - namespace.yaml
+  - operator-group.yaml
