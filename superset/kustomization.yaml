@@ -4,7 +4,7 @@ kind: Kustomization
 helmCharts:
   - name: superset
     repo: https://apache.github.io/superset/
-    version: 0.13.2
+    version: 0.15.2
     valuesFile: values.yaml
     namespace: superset
     
