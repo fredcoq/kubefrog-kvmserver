@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/fredcoq/kubefrog-kvmserver
+    repoURL: https://github.com/fredcoq/kubefrog-kvmserver&timeout=90
     targetRevision: HEAD
     path: metallb/ip-local
     
