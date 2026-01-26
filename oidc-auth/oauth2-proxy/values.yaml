@@ -523,7 +523,7 @@ redis:
   enabled: true
   architecture: standalone
   auth: 
-    existingSecret: oauth2-proxy-redis
+    existingSecret: oauth2-proxy
     existingSecretPasswordKey: redis-password
 
 
