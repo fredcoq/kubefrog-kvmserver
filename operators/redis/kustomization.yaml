@@ -10,7 +10,7 @@ helmCharts:
     namespace: operators
     valuesInline:
       redisOperator:
-        webhook: false
+        webhook: true
       certmanager:
-        enabled: false
+        enabled: true
     # valuesFile: values.yaml
