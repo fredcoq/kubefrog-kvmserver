@@ -2,7 +2,7 @@ kind: OperatorGroup
 apiVersion: operators.coreos.com/v1
 metadata:
   name: keycloak
-  namespace: keycloak
+  namespace: auth
 spec:
   targetNamespaces:
-  - keycloak
+  - auth
