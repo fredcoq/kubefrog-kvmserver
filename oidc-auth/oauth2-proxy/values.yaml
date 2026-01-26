@@ -112,12 +112,11 @@ extraArgs:
   whitelist-domain: .kubefrog.fr
   redis:
     enable: true
-    redis:
-      architecture:
-        standalone: true
-      auth: 
-        existingSecret: oauth2-proxy-redis
-        existingSecretPasswordKey: redis-password
+    architecture:
+      standalone: true
+    auth: 
+      existingSecret: oauth2-proxy-redis
+      existingSecretPasswordKey: redis-password
 
   api_routes:
     - "/api/"
