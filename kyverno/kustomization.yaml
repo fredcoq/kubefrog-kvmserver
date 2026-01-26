@@ -10,7 +10,7 @@ helmCharts:
     releaseName: "kyverno-policies"
     namespace: kyverno
 resources:
-- namespace-kubeflow-policy.yaml
+# - namespace-kubeflow-policy.yaml
 - bitnamirepo-patch.yaml
 - set-image-pull-policy-IfNP.yaml
 # - pod-resources-victoria.yaml
