@@ -11,6 +11,6 @@ helmCharts:
     valuesInline:
       redisOperator:
         webhook: true
-        certmanager:
-          enabled: true
+      certmanager:
+        enabled: true
     # valuesFile: values.yaml
