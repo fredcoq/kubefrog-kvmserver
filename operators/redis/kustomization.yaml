@@ -9,7 +9,8 @@ helmCharts:
     releaseName: redis-operator
     namespace: operators
     valuesInline:
-      webhook: true
-      certmanager:
-        enabled: true
+      redisOperator:
+        webhook: true
+        certmanager:
+          enabled: true
     # valuesFile: values.yaml
