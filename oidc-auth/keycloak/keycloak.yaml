@@ -16,7 +16,6 @@ spec:
     host: keycloak-postgres
     database: keycloak
     port: 5432
-    schema: keycloak
     poolInitialSize: 1
     poolMinSize: 1
     poolMaxSize: 3
