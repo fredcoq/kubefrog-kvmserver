@@ -72,7 +72,7 @@ alphaConfig:
   # Use an existing config map (see secret-alpha.yaml for required fields)
   existingConfig: ~
   # Use an existing secret
-  existingSecret: oauth2-proxy
+  existingSecret:
 
 image:
   # appVersion is used by default

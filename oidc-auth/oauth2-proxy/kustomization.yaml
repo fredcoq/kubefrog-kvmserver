@@ -9,7 +9,7 @@ helmCharts:
     version: 10.1.1
     valuesFile: values.yaml
 resources:
-  # - redis.yaml
+  - redis.yaml
   - redis-secret.yaml
   # - oauth2-proxy-serviceaccount.yaml
   - oauth2-proxy-secret.yaml
