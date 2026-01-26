@@ -93,6 +93,8 @@ imagePullSecrets: []
 
 extraArgs: 
   provider: keycloak-oidc
+  redirect-url: https://auth.kubefrog.fr/oauth2/callback
+  oidc-issuer-url: https://auth.kubefrog.fr/realms/kubeflow
   set-xauthrequest: "true"
   cookie-secure: "true"
   cookie-samesite: lax
@@ -112,8 +114,6 @@ extraArgs:
     - "/api/"
     - "/apis/"
     - "^/ml_metadata"
-  redirect-url: https://auth.kubefrog.fr/oauth2/callback
-  oidc-issuer-url: https://auth.kubefrog.fr/realms/kubeflow
   scope: openid # email profile
   user-id-claim: email
   extra-jwt-issuers:
