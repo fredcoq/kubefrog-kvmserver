@@ -8,4 +8,8 @@ helmCharts:
     repo: https://ot-container-kit.github.io/helm-charts/
     releaseName: redis-operator
     namespace: operators
+    valuesInline:
+      webhook: true
+      certmanager:
+        enabled: true
     # valuesFile: values.yaml
