@@ -11,6 +11,6 @@ helmCharts:
 resources:
   - redis.yaml
   - redis-secret.yaml
-  - oauth2-proxy-serviceaccount.yaml
+  # - oauth2-proxy-serviceaccount.yaml
   - oauth2-proxy-secret.yaml
   
