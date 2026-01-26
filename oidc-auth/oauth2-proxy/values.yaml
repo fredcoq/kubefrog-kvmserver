@@ -31,7 +31,6 @@ config:
   cookieSecret: ""
   # The name of the cookie that oauth2-proxy will create
   # If left empty, it will default to the release name
-  cookieName: "_oauth2_proxy"
   google: {}
     # adminEmail: xxxx
     # useApplicationDefaultCredentials: true
