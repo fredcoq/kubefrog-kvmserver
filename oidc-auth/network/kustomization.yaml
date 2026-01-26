@@ -5,5 +5,5 @@ resources:
 - auth-gateway-cloud-api.yaml
 - http-route.yaml
 - auth-allow-redirect.yaml
-- auth-authorization-policy.yaml
+- auth-authorizationpolicy.yaml
 - oauth2-proxy-signout-virtual-service.yaml

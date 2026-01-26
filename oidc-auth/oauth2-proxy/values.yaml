@@ -110,13 +110,7 @@ extraArgs:
   skip-provider-button: "true"
   cookie-domain: .kubefrog.fr
   whitelist-domain: .kubefrog.fr
-  redis:
-    enable: true
-    architecture:
-      standalone: true
-    auth: 
-      existingSecret: oauth2-proxy-redis
-      existingSecretPasswordKey: redis-password
+
 
   api_routes:
     - "/api/"
@@ -523,12 +517,15 @@ sessionStorage:
       # - "redis://127.0.0.1:8001"
 
 # Enables and configure the automatic deployment of the redis-ha subchart
+
 redis:
   # provision an instance of the redis-ha sub-chart
   enabled: true
-  auth: true
-  authKey: "redis-password"
-  existingSecret: "oauth2-proxy-redis"
+  architecture: standalone
+  auth: 
+    existingSecret: oauth2-proxy-redis
+    existingSecretPasswordKey: redis-password
+
 
   # Redis specific helm chart settings, please see:
   # https://artifacthub.io/packages/helm/dandydev-charts/redis-ha#general-parameters
