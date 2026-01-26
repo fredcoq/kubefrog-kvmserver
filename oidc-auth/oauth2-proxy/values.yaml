@@ -111,7 +111,7 @@ extraArgs:
   whitelist-domain: .kubefrog.fr
 
 
-  api-routes:
+  api-route:
     - "/api/"
     - "/apis/"
     - "^/ml_metadata"
