@@ -98,7 +98,7 @@ certmanager:
   # Whether to use cert-manager for certificate management
   # Only effective when webhook=true
   # If webhook=true and certmanager.enabled=false, you need to manually create certificate secret
-  enabled: false
+  enabled: true
   # API version of the cert-manager CRDs
   apiVersion: "cert-manager.io/v1"
 
@@ -122,7 +122,7 @@ securityContext: {}
 # Feature gates for alpha/experimental features
 featureGates:
   # Enable generating Redis configuration using an init container instead of a regular container
-  GenerateConfigInInitContainer: false
+  GenerateConfigInInitContainer: true
 
 manager:
   # config values for the operator manager
