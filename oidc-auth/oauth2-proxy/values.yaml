@@ -511,7 +511,7 @@ sessionStorage:
 
 redis:
   # provision an instance of the redis-ha sub-chart
-  enabled: true
+  enabled: false
   architecture: standalone
   auth: 
     existingSecret: oauth2-proxy-redis
