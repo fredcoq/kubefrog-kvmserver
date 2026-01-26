@@ -109,8 +109,6 @@ extraArgs:
   skip-provider-button: "true"
   cookie-domain: .kubefrog.fr
   whitelist-domain: .kubefrog.fr
-
-
   api-route:
     - "/api/"
     - "/apis/"
@@ -122,11 +120,7 @@ extraArgs:
   extra-jwt-issuers:
     - issuer: https://auth.kubefrog.fr/realms/kubeflow
   skip-jwt-bearer-tokens: "true"
-  initContainers: 
-    waitForRedis:
-      securityContext:
-        runAsUser: 1337
-        runAsGroup: 1337
+
 
 extraEnv: []
 
@@ -456,8 +450,8 @@ initContainers:
           - ALL
       readOnlyRootFilesystem: true
       runAsNonRoot: true
-      runAsUser: 65534
-      runAsGroup: 65534
+      runAsUser: 1337
+      runAsGroup: 1337
       seccompProfile:
         type: RuntimeDefault
     timeout: 180
