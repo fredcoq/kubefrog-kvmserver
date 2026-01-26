@@ -13,4 +13,4 @@ helmCharts:
         webhook: true
       certmanager:
         enabled: true
-    # valuesFile: values.yaml
+    valuesFile: values.yaml
