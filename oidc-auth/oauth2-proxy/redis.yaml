@@ -19,9 +19,9 @@ spec:
       limits:
         cpu: 101m
         memory: 128Mi
-        redisSecret:
-           name: oauth2-proxy-redis
-           key: redis-password
+    redisSecret:
+        name: oauth2-proxy-redis
+        key: redis-password
         # imagePullSecrets:
         #   - name: regcred
   redisExporter:
