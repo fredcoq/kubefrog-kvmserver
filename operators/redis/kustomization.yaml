@@ -4,8 +4,8 @@ kind: Kustomization
 namespace: operators
 helmCharts:
   - name: redis-operator
-    version: 0.22.2
+    version: 0.23.0
     repo: https://ot-container-kit.github.io/helm-charts/
     releaseName: redis-operator
     namespace: operators
-    valuesFile: values.yaml
+    # valuesFile: values.yaml
