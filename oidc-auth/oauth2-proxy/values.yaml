@@ -57,7 +57,7 @@ config:
   # existingConfig: config
 
 alphaConfig:
-  enabled: true
+  enabled: false
   # Add config annotations
   annotations: {}
   # Arbitrary configuration data to append to the server section
