@@ -75,8 +75,7 @@ alphaConfig:
   existingSecret: oauth2-proxy
 
 image:
-  registry: "quay.io"
-  repository: "oauth2-proxy/oauth2-proxy"
+  repository: "quay.io/oauth2-proxy/oauth2-proxy"
   # appVersion is used by default
   tag: ""
   pullPolicy: "IfNotPresent"
