@@ -16,12 +16,12 @@ spec:
         prefix: /oauth2/sign_out
     route:
     - destination:
-        host: oauth2-proxy-cloud.auth.svc.cluster.local
+        host: oauth2-proxy.auth.svc.cluster.local
         port:
           number: 4180
     headers:
       request:
         set:
-          X-Auth-Request-Redirect: https://auth-local.kubefrog.fr/realms/kubeflow/protocol/openid-connect/logout
+          X-Auth-Request-Redirect: https://auth-kvm.kubefrog.fr/realms/kubeflow/protocol/openid-connect/logout
 
 # X-Auth-Request-Redirect: https://auth.82.66.198.32.nip.io/realms/kubeflow/protocol/openid-connect/logout?post_logout_redirect_uri=https%%3A%%2F%%2Fkubeflow.82.66.198.32.nip.io
