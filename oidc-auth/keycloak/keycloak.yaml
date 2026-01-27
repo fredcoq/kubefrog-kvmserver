@@ -30,8 +30,6 @@ spec:
       secret: keycloak-secret # secret keys: username:password
   hostname:
     hostname: auth-kvm.kubefrog.fr
-    strict: false
-    backchannelDynamic: true
   features:
     enabled:
       - authorization
