@@ -15,6 +15,8 @@ spec:
         value: 18.0.2
       - name: auth.adminUser
         value: admin
+      - name: fullnameOverride
+        value: keycloak-old
       - name: auth.managementUser
         value: manager
       - name: proxyAddressForwarding
