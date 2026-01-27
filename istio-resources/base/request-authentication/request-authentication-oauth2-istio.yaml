@@ -14,8 +14,8 @@ spec:
     app: istio-ingressgateway
     istio: ingressgateway        
   jwtRules:
-  - issuer: https://auth-local.kubefrog.fr/realms/kubeflow
-    jwksUri: https://auth-local.kubefrog.fr/realms/kubeflow/protocol/openid-connect/certs
+  - issuer: https://auth-kvm.kubefrog.fr/realms/kubeflow
+    jwksUri: https://auth-kvm.kubefrog.fr/realms/kubeflow/protocol/openid-connect/certs
     # `forwardOriginalToken` is not strictly required to be true.
     # there are pros and cons to each value:
     #  - true: the original token is forwarded to the destination service
