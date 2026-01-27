@@ -108,7 +108,7 @@ extraArgs:
   upstream: static://200
   skip-provider-button: "true"
   cookie-domain: .kubefrog.ai
-  whitelist-domain: .kubefrog.fr
+  whitelist-domain: .kubefrog.ai
   api-route:
     - "/api/"
     - "/apis/"
