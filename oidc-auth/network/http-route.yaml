@@ -10,8 +10,8 @@ spec:
   - name: auth-gateway-cloud
     namespace: auth
   hostnames:
-  - auth-local.kubefrog.fr
+  - auth-kvm.kubefrog.fr
   rules:
   - backendRefs:
-    - name: keycloak
-      port: 80
+    - name: keycloak-service
+      port: 9000
