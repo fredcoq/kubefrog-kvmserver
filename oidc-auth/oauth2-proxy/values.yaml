@@ -92,8 +92,8 @@ imagePullSecrets: []
 
 extraArgs: 
   provider: keycloak-oidc
-  redirect-url: https://auth.kubefrog.fr/oauth2/callback
-  oidc-issuer-url: https://auth.kubefrog.fr/realms/kubeflow
+  redirect-url: https://auth-kvm.kubefrog.fr/oauth2/callback
+  oidc-issuer-url: https://auth-kvm.kubefrog.fr/realms/kubeflow
   set-xauthrequest: "true"
   cookie-secure: "true"
   cookie-samesite: lax
@@ -107,8 +107,8 @@ extraArgs:
   email-domain: "*"
   upstream: static://200
   skip-provider-button: "true"
-  cookie-domain: .kubefrog.fr
-  whitelist-domain: .kubefrog.fr
+  cookie-domain: .kubefrog.ai
+  whitelist-domain: .kubefrog.ai
   api-route:
     - "/api/"
     - "/apis/"
