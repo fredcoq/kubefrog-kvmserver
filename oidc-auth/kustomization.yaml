@@ -5,3 +5,4 @@ resources:
   - ./keycloak
   - ./oauth2-proxy
   - ./network
+  - ./keycloak-old
