@@ -18,7 +18,7 @@ spec:
     port: 5432
     poolInitialSize: 1
     poolMinSize: 1
-    poolMaxSize: 3
+    poolMaxSize: 50
   http:
     httpEnabled: true
     httpPort: 8180
