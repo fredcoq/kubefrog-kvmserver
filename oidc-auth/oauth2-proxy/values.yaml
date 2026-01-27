@@ -114,7 +114,7 @@ extraArgs:
   scope: openid # email profile
   extra-jwt-issuers: "https://kubernetes.default.svc.cluster.local=https://kubernetes.default.svc.cluster.local"
   skip-jwt-bearer-tokens: "true"
-  user-id-claim: email
+
 
 
 extraEnv: []
