@@ -13,5 +13,5 @@ spec:
   - auth-kvm.kubefrog.fr
   rules:
   - backendRefs:
-    - name: keycloak-old
-      port: 80
+    - name: keycloak-service
+      port: 8180
