@@ -110,6 +110,7 @@ extraArgs:
   skip-provider-button: "true"
   cookie-domain: .kubefrog.ai
   whitelist-domain: .kubefrog.ai
+  session-store-type: redis
   api-route:
     - "/api/"
     - "/apis/"
@@ -509,40 +510,6 @@ sessionStorage:
 
 # Enables and configure the automatic deployment of the redis-ha subchart
 
-redis:
-  # provision an instance of the redis-ha sub-chart
-  enabled: false
-  architecture: standalone
-  auth: 
-    existingSecret: oauth2-proxy-redis
-    existingSecretPasswordKey: redis-password
-
-
-  # Redis specific helm chart settings, please see:
-  # https://artifacthub.io/packages/helm/dandydev-charts/redis-ha#general-parameters
-  #
-  # Recommended:
-  #
-  # redisPassword: xxxxx
-  # replicas: 1
-  # persistentVolume:
-  #   enabled: false
-  #
-  # If you install Redis using this sub chart, make sure that the password of the sub chart matches the password
-  # you set in sessionStorage.redis.password (see above).
-  #
-  # If you want to use redis in sentinel mode see:
-  # https://artifacthub.io/packages/helm/dandydev-charts/redis-ha#redis-sentinel-parameters
-
-# Enables apiVersion deprecation checks
-checkDeprecation: true
-
-# Allows graceful shutdown
-# terminationGracePeriodSeconds: 65
-# lifecycle:
-#   preStop:
-#     exec:
-#       command: [ "sh", "-c", "sleep 60" ]
 
 metrics:
   # Enable Prometheus metrics endpoint
