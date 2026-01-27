@@ -229,7 +229,7 @@ _internal_defaults_do_not_set:
     extensionProviders:
     - name: oauth2-proxy-cloud
       envoyExtAuthzHttp:
-        service: oauth2-proxy-cloud.auth.svc.cluster.local
+        service: oauth2-proxy.auth.svc.cluster.local
         port: '4180'
         includeHeadersInCheck:
         - cookie
