@@ -3,7 +3,6 @@ kind: Keycloak
 metadata:
   name: keycloak
 spec:
-  DisableDefaultServiceMonitor: true
   instances: 1
   db:
     vendor: postgres
