@@ -14,4 +14,4 @@ spec:
   rules:
   - backendRefs:
     - name: keycloak-service
-      port: 9000
+      port: 8180
