@@ -116,7 +116,6 @@ extraArgs:
     - "/apis/"
     - "^/ml_metadata"
   scope: openid # email profile
-  user-id-claim: email
   extra-jwt-issuers: "https://kubernetes.default.svc.cluster.local=https://kubernetes.default.svc.cluster.local"
   skip-jwt-bearer-tokens: "true"
 
