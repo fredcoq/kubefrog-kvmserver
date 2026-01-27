@@ -95,6 +95,7 @@ extraArgs:
   redirect-url: https://kubeflow.kubefrog.ai/oauth2/callback
   oidc-issuer-url: https://auth-kvm.kubefrog.fr/realms/kubeflow
   set-xauthrequest: "true"
+  set-authorization-header: "true"
   cookie-secure: "true"
   cookie-samesite: lax
   cookie-csrf-per-request: "true"
