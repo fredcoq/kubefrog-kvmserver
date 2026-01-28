@@ -1,7 +1,7 @@
 apiVersion: "acid.zalan.do/v1"
 kind: postgresql
 metadata:
-  name: feast-postgres-cluster
+  name: feast-postgres
   namespace: feast
 spec:
   teamId: "feast"
@@ -16,4 +16,4 @@ spec:
     feast_data: feast  # dbname: owner
     feast_registry: feast
   postgresql:
-    version: "15"
+    version: "17"
