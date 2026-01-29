@@ -15,7 +15,7 @@ spec:
   - to:
     - operation:
         hosts:
-          - kubeflow.kubefrog.ai
+          - kubeflow.kubefrog.fr
           - kubecost.kubefrog.ai
           - serving.kubefrog.ai
           - '*.serving.kubefrog.ai'

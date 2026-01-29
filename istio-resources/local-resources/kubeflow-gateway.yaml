@@ -15,9 +15,9 @@ spec:
     istio: ingressgateway
   servers:
   - hosts:
-    - kubeflow.kubefrog.ai
-    - serving.kubefrog.ai
-    - '*.serving.kubefrog.ai'
+    - kubeflow.kubefrog.fr
+    - serving.kubefrog.fr
+    - '*.serving.kubefrog.fr'
     port:
       name: http
       number: 80
@@ -26,13 +26,13 @@ spec:
     tls:
       httpsRedirect: true
   - hosts:
-    - kubeflow.kubefrog.ai
-    - serving.kubefrog.ai
-    - '*.serving.kubefrog.ai'
+    - kubeflow.kubefrog.fr
+    - serving.kubefrog.fr
+    - '*.serving.kubefrog.fr'
     port:
       name: https
       number: 443
       protocol: HTTPS
     tls:
       mode: SIMPLE
-      credentialName: kubeflow-ingressgateway-certs-kubefrog-ai
+      credentialName: kubeflow-ingressgateway-certs-kubefrog

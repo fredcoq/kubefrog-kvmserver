@@ -56,6 +56,8 @@ spec:
         value: _oauth2_proxy
       - name: extraArgs.email-domain
         value: '*'
+      - name: extraArgs.cookie-httponly
+        value: 'true'
       - name: extraArgs.upstream
         value: static://200
       - name: extraArgs.skip-provider-button
@@ -65,7 +67,7 @@ spec:
       - name: extraArgs.ssl-insecure-skip-verify
         value: 'true'
       - name: extraArgs.cookie-domain
-        value: .kubefrog.ai
+        value: .kubefrog.fr
       - name: extraArgs.whitelist-domain
         value: .kubefrog.fr
       - name: extraArgs.session-store-type
