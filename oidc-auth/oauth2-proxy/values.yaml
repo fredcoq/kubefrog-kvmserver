@@ -110,7 +110,7 @@ extraArgs:
   skip-provider-button: "true"
   cookie-domain: .kubefrog.ai
   whitelist-domain: .kubefrog.fr
-  session-store-type: cookie
+  session-store-type: redis
   scope: openid # email profile
   extra-jwt-issuers: "https://kubernetes.default.svc.cluster.local=https://kubernetes.default.svc.cluster.local"
   skip-jwt-bearer-tokens: "true"
@@ -471,7 +471,7 @@ htpasswdFile:
 # Configure the session storage type, between cookie and redis
 sessionStorage:
   # Can be one of the supported session storage cookie|redis
-  type: cookie
+  type: redis
   redis:
     # Name of the Kubernetes secret containing the redis & redis sentinel password values (see also `sessionStorage.redis.passwordKey`)
     existingSecret: "oauth2-proxy-redis"
