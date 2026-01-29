@@ -110,7 +110,7 @@ extraArgs:
   skip-provider-button: "true"
   cookie-domain: .kubefrog.ai
   whitelist-domain: .kubefrog.fr
-  session-store-type: redis
+  session-store-type: cookie
   scope: openid # email profile
   extra-jwt-issuers: "https://kubernetes.default.svc.cluster.local=https://kubernetes.default.svc.cluster.local"
   skip-jwt-bearer-tokens: "true"
