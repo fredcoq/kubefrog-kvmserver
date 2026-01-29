@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
 # - github.com/kubeflow/manifests/experimental/seaweedfs/istio/?ref=v1.10.2 # tag=2.1.0
-- github.com/kubeflow/manifests/applications/pipeline/upstream/env/cert-manager/platform-agnostic-multi-user?ref=v1.11.0
+- github.com/kubeflow/manifests/applications/pipeline/upstream/env/cert-manager/platform-agnostic-multi-user?ref=v1.11.0&timeout=300
 - minio-service-console.yaml
 - awscred.yaml
 # - minio-ingress.yaml
