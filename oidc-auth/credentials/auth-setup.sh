@@ -17,7 +17,7 @@ REDIS_PASS=$(python3 -c 'import secrets; print(secrets.token_hex(16))')
 KEYCLOAK_ADMIN_PASS=Fred_271987
 KEYCLOAK_MANAGEMENT_PASS=Fred_271987
 
-kubectl create secret generic -n auth keycloak-secret --from-literal=password=${KEYCLOAK_ADMIN_PASS} --from-literal=admin-password=${KEYCLOAK_ADMIN_PASS} --from-literal=username=admin --dry-run=client -o yaml | kubeseal | yq eval -P > keycloak-secret.yaml
+kubectl create secret generic -n auth keycloak-secret --from-literal=admin-password=${KEYCLOAK_ADMIN_PASS} --from-literal=database-password=${DATABASE_PASS} --from-literal=management-password=${KEYCLOAK_MANAGEMENT_PASS} --dry-run=client -o yaml | kubeseal | yq eval -P > keycloak-secret.yaml
 
 kubectl create secret generic -n auth keycloak-postgresql --from-literal=password=${DATABASE_PASS} --from-literal=postgres-password=${POSTGRESQL_PASS} --dry-run=client -o yaml | kubeseal | yq eval -P > postgresql-secret.yaml
 
