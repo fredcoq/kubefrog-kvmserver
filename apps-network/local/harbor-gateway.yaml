@@ -13,7 +13,7 @@ spec:
   gatewayClassName: istio
   addresses:
   - type: IPAddress
-    value: 172.22.80.120
+    value: 192.168.0.120
   listeners:
   - name: http
     hostname: harbor-core-local
