@@ -1,0 +1,17 @@
+{
+    "web": {
+      "realm_public_key": "iN17RN0XAN4gUw5PwLZDcvAKA0zSW94OgbD0lX_ODLU",
+      "client_id": "superset-2021",
+      "client_secret": "",
+      "redirect_uris": [
+        "https://superset.kubefrog.ai/oidc_callback"
+      ],
+      "auth_uri": "https://auth-local.kubefrog.fr/realms/kubeflow/protocol/openid-connect/auth",
+      "token_uri": "https://auth-local.kubefrog.fr/realms/kubeflow/protocol/openid-connect/token",
+      "token_introspection_uri": "https://auth-local.kubefrog.fr/realms/kubeflow/protocol/openid-connect/token/introspect",
+      "userinfo_uri": "https://auth-local.kubefrog.fr/realms/kubeflow/protocol/openid-connect/userinfo",
+      "revocation_uri": "https://auth-local.kubefrog.fr/realms/kubeflow/protocol/openid-connect/token/revoke",
+      "jwks_uri": "https://auth-local.kubefrog.fr/realms/kubeflow/protocol/openid-connect/certs",
+      "issuer": "https://auth-local.kubefrog.fr/realms/kubeflow"
+     }
+    } 
