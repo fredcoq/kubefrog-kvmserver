@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
 - ./cloud
-- namespace.yaml
+# - namespace.yaml
 - auth-authorizationpolicy.yaml
 - auth-allow-redirect.yaml
 # - auth-gateway.yaml

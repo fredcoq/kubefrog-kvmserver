@@ -227,9 +227,18 @@ _internal_defaults_do_not_set:
       gatewayTopology:
         numTrustedProxies: 3
     extensionProviders:
-    - name: oauth2-proxy-cloud
+    - name: oauth2-proxy
       envoyExtAuthzHttp:
         service: oauth2-proxy.auth.svc.cluster.local
+        port: '4180'
+        includeHeadersInCheck:
+        - cookie
+        - authorization
+        headersToUpstreamOnAllow: [authorization, x-forwarded-for, path, x-auth-request-user, x-auth-request-email, x-auth-request-groups]
+        headersToDownstreamOnDeny: [content-type, set-cookie]
+    - name: oauth2-proxy-cloud
+      envoyExtAuthzHttp:
+        service: oauth2-proxy-cloud.auth.svc.cluster.local
         port: '4180'
         includeHeadersInCheck:
         - cookie
