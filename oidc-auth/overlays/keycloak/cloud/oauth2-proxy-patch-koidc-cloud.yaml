@@ -51,7 +51,7 @@ spec:
       - name: api_routes[2]
         value: "^/ml_metadata"
       - name: extraArgs.cookie-expire
-        value: 24h
+        value: 168h
       - name: extraArgs.cookie-name
         value: _oauth2_proxy
       - name: extraArgs.email-domain
