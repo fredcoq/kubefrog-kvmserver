@@ -73,7 +73,7 @@ spec:
       - name: extraArgs.redirect-url
         value: https://kubeflow.kubefrog.ai/oauth2/callback
       - name: extraArgs.oidc-issuer-url
-        value: https://auth-local.kubefrog.fr/realms/kubeflow    
+        value: https://auth-kvm.kubefrog.fr/realms/kubeflow    
       - name: extraArgs.scope
         value: "openid" # profile email groups"
       - name: sessionStorage.type
