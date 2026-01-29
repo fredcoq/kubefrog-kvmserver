@@ -37,7 +37,7 @@ spec:
       - name: extraArgs.cookie-secure
         value: 'true'
       - name: extraArgs.cookie-samesite
-        value: lax
+        value: none
       - name: extraArgs.cookie-csrf-per-request
         value: 'true'
       - name: extraArgs.cookie-csrf-expire
