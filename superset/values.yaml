@@ -250,14 +250,14 @@ extraConfigMountPath: "/app/configs"
 
 image:
   repository: 192.168.0.10:5000/apache/superset
-  tag: "6.0.0-prophet-clickhouse"
+  tag: "5.0.0-prophet-clickhouse"
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
 
 initImage:
   repository: apache/superset
-  tag: 6.0.0-dockerize
+  tag: 5.0.0-dockerize
   pullPolicy: Always
 
 service:
