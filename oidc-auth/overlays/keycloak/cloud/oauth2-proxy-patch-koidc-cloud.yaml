@@ -67,7 +67,7 @@ spec:
       - name: extraArgs.ssl-insecure-skip-verify
         value: 'true'
       - name: extraArgs.cookie-domain
-        value: .kubefrog.fr
+        value: .kubefrog.ai
       - name: extraArgs.whitelist-domain
         value: .kubefrog.fr
       - name: extraArgs.session-store-type
