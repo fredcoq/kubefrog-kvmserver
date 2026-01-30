@@ -195,64 +195,40 @@ configOverrides:
         AUTH_ROLE_ADMIN = 'Admin'
         AUTH_ROLE_PUBLIC = 'Public'
     enable_oidc_keycloak: |
-        from flask import redirect, request
-        from flask_appbuilder.security.manager import AUTH_OID
+        from flask_appbuilder.security.manager import AUTH_OAUTH
         from superset.security import SupersetSecurityManager
-        from flask_oidc import OpenIDConnect
-        from flask_oidc.views import logout_view
-        from flask_appbuilder.security.views import AuthOIDView
-        from flask_login import login_user
-        from flask_login import logout_user
-        from flask_login import confirm_login
-        from urllib.parse import quote
-        from flask_appbuilder.views import ModelView, SimpleFormView, expose
+        CLIENT_ID = d84fead7aa495041ccf018ff739ab8b8
+        CLIENT_SECRET = a78f862dd723ed7c308b32f5484446192e915270859aa4844ff907a384b29d38
         import logging
-        class AuthOIDCView(AuthOIDView):
-
-            @expose('/login/', methods=['GET', 'POST'])
-            def login(self, flag=True):
-                sm = self.appbuilder.sm
-                oidc = sm.oid
-
-                @self.appbuilder.sm.oid.require_login
-                def handle_login(): 
-                    user = sm.auth_user_oid(oidc.user_getfield('email'))
-
-                    if user is None:
-                        info = oidc.user_getinfo(['preferred_username', 'given_name', 'family_name', 'email'])
-                        user = sm.add_user(info.get('preferred_username'), info.get('given_name'), info.get('family_name'), info.get('email'), sm.find_role('Gamma')) 
-
-                    login_user(user, remember=False)
-                    return redirect(self.appbuilder.get_url_for_index)  
-
-                return handle_login()  
-
-            @expose('/logout/', methods=['GET', 'POST'])
-            def logout(self):
-
-                oidc = self.appbuilder.sm.oid
-
-                # oidc.logout()
-                logout_view()
-                # super(AuthOIDCView, self).logout()
-                # logout_user()        
-                redirect_url = request.url_root.strip('/') + self.appbuilder.get_url_for_login
-                print(oidc.client_secrets.get('issuer') + '/protocol/openid-connect/logout?redirect_uri=' + quote(redirect_url))
-
-                return redirect(oidc.client_secrets.get('issuer') + '/protocol/openid-connect/logout?redirect_uri=' + quote(redirect_url))
-
+        AUTH_PROVIDERS = [
+          {   'name':'keycloak',
+              'token_key':'access_token', # Name of the token in the response of access_token_url
+              'icon':'fa-address-card',   # Icon for the provider
+              'remote_app': {
+                  'client_id':'myClientId',  # Client Id (Identify Superset application)
+                  'client_secret':'MySecret', # Secret for this Client Id (Identify Superset application)
+                  'client_kwargs': {
+                      'scope': 'openid profile email',
+                  },
+                  'server_metadata_url': 'https://auth-kvm.kubefrog.fr/.well-known/openid-configuration'
+              }
+          }
+        ]
         class OIDCSecurityManager(SupersetSecurityManager):
-            # authoidview = AuthOIDCView
-            def __init__(self,appbuilder):
-                super(OIDCSecurityManager, self).__init__(appbuilder)
-                if self.auth_type == AUTH_OID:
-                    self.oid = OpenIDConnect(self.appbuilder.get_app)
-                self.authoidview = AuthOIDCView
+            auth_type = AUTH_OAUTH
+            oauth_providers = AUTH_PROVIDERS
 
-        AUTH_TYPE = AUTH_OID
-        OIDC_CLIENT_SECRETS = "/mnt/config/superset-client.json"
-        OIDC_ID_TOKEN_COOKIE_SECURE = False
-        # OIDC_REQUIRE_VERIFIED_EMAIL = False
+            def oauth_user_info(self, provider, response=None):
+                if provider == 'keycloak':
+                    idinfo = self.oauth_remotes[provider].parse_id_token(response)
+                    logging.warning(f"OIDC user info: {idinfo}")
+                    return {
+                        'username': idinfo.get('preferred_username'),
+                        'first_name': idinfo.get('given_name'),
+                        'last_name': idinfo.get('family_name'),
+                        'email': idinfo.get('email'),
+                    }
+        AUTH_TYPE = AUTH_OAUTH
         AUTH_USER_REGISTRATION = True
         AUTH_USER_REGISTRATION_ROLE = 'Gamma'
         CUSTOM_SECURITY_MANAGER = OIDCSecurityManager
