@@ -80,23 +80,6 @@ spec:
       tls:
         mode: SIMPLE
         credentialName: kubeflow-ingressgateway-certs-kubefrog-ai
-    - hosts:
-       - harbor-core-local.kubefrog.fr
-      port:
-        name: http-harbor
-        number: 80
-        protocol: HTTP
-      tls:
-        httpsRedirect: true
-    - hosts:
-       - harbor-core-local.kubefrog.fr
-      port:
-        name: https-harbor
-        number: 443
-        protocol: HTTPS
-      tls:
-        mode: SIMPLE
-        credentialName: kubeflow-ingressgateway-certs-kubefrog
     - port:
         name: postgres
         number: 5432
