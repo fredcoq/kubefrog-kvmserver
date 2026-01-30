@@ -258,7 +258,7 @@ imagePullSecrets: []
 initImage:
   repository: apache/superset
   tag: 6.0.0-dockerize
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 service:
   type: ClusterIP
