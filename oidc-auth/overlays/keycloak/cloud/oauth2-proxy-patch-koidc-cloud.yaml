@@ -73,7 +73,7 @@ spec:
       - name: extraArgs.session-store-type
         value: redis
       - name: extraArgs.redirect-url
-        value: https://kubeflow.kubefrog.fr/oauth2/callback
+        value: https://kubeflow.kubefrog.ai/oauth2/callback
       - name: extraArgs.oidc-issuer-url
         value: https://auth-kvm.kubefrog.fr/realms/kubeflow    
       - name: extraArgs.scope
