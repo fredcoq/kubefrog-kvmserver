@@ -197,8 +197,8 @@ configOverrides:
     enable_oidc_keycloak: |
         from flask_appbuilder.security.manager import AUTH_OAUTH
         from superset.security import SupersetSecurityManager
-        CLIENT_ID = d84fead7aa495041ccf018ff739ab8b8
-        CLIENT_SECRET = a78f862dd723ed7c308b32f5484446192e915270859aa4844ff907a384b29d38
+        CLIENT_ID = "d84fead7aa495041ccf018ff739ab8b8"
+        CLIENT_SECRET = "a78f862dd723ed7c308b32f5484446192e915270859aa4844ff907a384b29d38"
         import logging
         AUTH_PROVIDERS = [
           {   'name':'keycloak',
