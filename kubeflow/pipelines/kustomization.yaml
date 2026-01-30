@@ -85,7 +85,7 @@ patchesStrategicMerge:
 # - seaweedfs-pvc-patch.yaml
 
 images:
-- name: gcr.io/ml-pipeline/minio:RELEASE.2019-08-14T20-37-41Z-license-compliance
+- name: gcr.io/ml-pipeline/minio
   newName: docker.io/minio/minio:RELEASE.2019-08-14T20-37-41Z
 #- name: gcr.io/ml-pipeline/mysql
 #- name: ghcr.io/metacontroller/metacontroller
