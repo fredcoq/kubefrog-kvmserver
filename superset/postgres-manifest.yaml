@@ -18,9 +18,7 @@ spec:
   postgresql:
     version: "17"
   spiloFSGroup: 103
-  tls:
-    enable: true
-    secretName: superset-postgres-tls
+
   patroni:
     pg_hba:
     - hostssl all             +zalandos    0.0.0.0/0            md5
