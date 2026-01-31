@@ -197,16 +197,16 @@ configOverrides:
     enable_oidc_keycloak: |
         from flask_appbuilder.security.manager import AUTH_OAUTH
         from superset.security import SupersetSecurityManager
-        CLIENT_ID = "d84fead7aa495041ccf018ff739ab8b8"
-        CLIENT_SECRET = "a78f862dd723ed7c308b32f5484446192e915270859aa4844ff907a384b29d38"
+        CLIENT_ID = "210d7bb2382549be3fd37c3d8d9b1625"
+        CLIENT_SECRET = "24067a2105c6a61040d7abc259a9d53f526887f7b0343ef8724ee61dd730f9fa"
         import logging
         AUTH_PROVIDERS = [
           {   'name':'keycloak',
               'token_key':'access_token', # Name of the token in the response of access_token_url
               'icon':'fa-address-card',   # Icon for the provider
               'remote_app': {
-                  'client_id':'myClientId',  # Client Id (Identify Superset application)
-                  'client_secret':'MySecret', # Secret for this Client Id (Identify Superset application)
+                  'client_id':'CLIENT_ID',  # Client Id (Identify Superset application)
+                  'client_secret':'CLIENT_SECRET', # Secret for this Client Id (Identify Superset application)
                   'client_kwargs': {
                       'scope': 'openid profile email',
                   },
