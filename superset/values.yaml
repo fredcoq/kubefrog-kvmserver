@@ -220,7 +220,7 @@ configOverrides:
               if provider == 'keycloak':
           # As example, this line request a GET to base_url + '/' + userDetails with Bearer  Authentication,
           # and expects that authorization server checks the token, and response with user details
-                  me = self.appbuilder.sm.oauth_remotes[provider].get('userDetails').data
+                  me = self.appbuilder.sm.oauth_remotes[provider].get("openid-connect/userinfo").data
                   logging.debug("user_data: {0}".format(me))
                   return { 'name' : me['name'], 
                            'email' : me['email'],
