@@ -205,8 +205,8 @@ configOverrides:
               'token_key':'access_token', # Name of the token in the response of access_token_url
               'icon':'fa-address-card',   # Icon for the provider
               'remote_app': {
-                  'client_id':'CLIENT_ID',  # Client Id (Identify Superset application)
-                  'client_secret':'CLIENT_SECRET', # Secret for this Client Id (Identify Superset application)
+                  'client_id': CLIENT_ID,  # Client Id (Identify Superset application)
+                  'client_secret': CLIENT_SECRET, # Secret for this Client Id (Identify Superset application)
                   'client_kwargs': {
                       'scope': 'openid profile email',
                   },
