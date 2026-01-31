@@ -221,14 +221,17 @@ configOverrides:
               if provider == 'keycloak':
           # As example, this line request a GET to base_url + '/' + userDetails with Bearer  Authentication,
           # and expects that authorization server checks the token, and response with user details
-                  me = self.appbuilder.sm.oauth_remotes[provider].get("userinfo").data
-                  logging.debug("user_data: {0}".format(me))
-                  return { 'name' : me['name'], 
-                           'email' : me['email'],
-                           'id' : me['user_name'],
-                           'username' : me['user_name'],
-                           'first_name':'',
-                           'last_name':''}
+                  me = self.appbuilder.sm.oauth_remotes[provider].get("userinfo")
+                  me.raise_for_status()
+                  user_data = me.json()
+                  logging.debug("user_data: {0}".format(user_data))
+                  return { 'name' : user_data.get("name",""), 
+                           'email' : user_data.get("email",""),
+                           'id' : user_data.get("sub",""),
+                           'username' : user_data.get("preferred_username",""),
+                           'first_name':user_data.get("given_name",""),
+                           'last_name':user_data.get("family_name","")
+                          }
         AUTH_TYPE = AUTH_OAUTH
         AUTH_USER_REGISTRATION = True
         AUTH_USER_REGISTRATION_ROLE = 'Gamma'
