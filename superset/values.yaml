@@ -210,7 +210,7 @@ configOverrides:
                   'client_kwargs': {
                       'scope': 'openid',
                   },
-                  "api_base_url": "https://auth.kvm.kubefrog.fr/realms/kubeflow/protocol/openid-connect",
+                  "base_url": "https://auth.kvm.kubefrog.fr/realms/kubeflow/protocol/openid-connect",
                   'server_metadata_url': 'https://auth-kvm.kubefrog.fr/realms/kubeflow/.well-known/openid-configuration'
               }
           }
