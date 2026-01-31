@@ -200,7 +200,7 @@ configOverrides:
         CLIENT_ID = "210d7bb2382549be3fd37c3d8d9b1625"
         CLIENT_SECRET = "24067a2105c6a61040d7abc259a9d53f526887f7b0343ef8724ee61dd730f9fa"
         import logging
-        AUTH_PROVIDERS = [
+        OAUTH_PROVIDERS = [
           {   'name':'keycloak',
               'token_key':'access_token', # Name of the token in the response of access_token_url
               'icon':'fa-address-card',   # Icon for the provider
