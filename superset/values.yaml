@@ -208,7 +208,7 @@ configOverrides:
                   'client_id': CLIENT_ID,  # Client Id (Identify Superset application)
                   'client_secret': CLIENT_SECRET, # Secret for this Client Id (Identify Superset application)
                   'client_kwargs': {
-                      'scope': 'openid profile email',
+                      'scope': 'openid',
                   },
                   'server_metadata_url': 'https://auth-kvm.kubefrog.fr/realms/kubeflow/.well-known/openid-configuration'
               }
