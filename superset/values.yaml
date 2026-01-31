@@ -214,24 +214,24 @@ configOverrides:
               }
           }
         ]
-        class OIDCSecurityManager(SupersetSecurityManager):
-            auth_type = AUTH_OAUTH
-            oauth_providers = AUTH_PROVIDERS
-
-            def oauth_user_info(self, provider, response=None):
-                if provider == 'keycloak':
-                    idinfo = self.oauth_remotes[provider].parse_id_token(response)
-                    logging.warning(f"OIDC user info: {idinfo}")
-                    return {
-                        'username': idinfo.get('preferred_username'),
-                        'first_name': idinfo.get('given_name'),
-                        'last_name': idinfo.get('family_name'),
-                        'email': idinfo.get('email'),
-                    }
+        class KeycloakSecurityManager(SupersetSecurityManager):
+           def oauth_user_info(self, provider, response=None):
+              logging.debug("Oauth2 provider: {0}.".format(provider))
+              if provider == 'keycloak':
+          # As example, this line request a GET to base_url + '/' + userDetails with Bearer  Authentication,
+          # and expects that authorization server checks the token, and response with user details
+                  me = self.appbuilder.sm.oauth_remotes[provider].get('userDetails').data
+                  logging.debug("user_data: {0}".format(me))
+                  return { 'name' : me['name'], 
+                           'email' : me['email'],
+                           'id' : me['user_name'],
+                           'username' : me['user_name'],
+                           'first_name':'',
+                           'last_name':''}
         AUTH_TYPE = AUTH_OAUTH
         AUTH_USER_REGISTRATION = True
         AUTH_USER_REGISTRATION_ROLE = 'Gamma'
-        CUSTOM_SECURITY_MANAGER = OIDCSecurityManager
+        CUSTOM_SECURITY_MANAGER = KeycloakSecurityManager
         
     
     enable_CSV_upload: |
