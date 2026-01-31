@@ -178,7 +178,7 @@ configOverrides:
         SESSION_COOKIE_SAMESITE = None
         PUBLIC_ROLE_LIKE_GAMMA = True
         GUEST_ROLE_NAME = "Gamma"
-        ENABLE_CORS = True
+        ENABLE_CORS = False #True
         CORS_OPTIONS = {
         'supports_credentials': True,
         'allow_headers': ['*'],
