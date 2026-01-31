@@ -210,21 +210,21 @@ configOverrides:
                   'client_kwargs': {
                       'scope': 'openid',
                   },
-                  
+                  "api_base_url": "https://auth.kvm.kubefrog.fr/realms/kubeflow/protocol/openid-connect",
                   'server_metadata_url': 'https://auth-kvm.kubefrog.fr/realms/kubeflow/.well-known/openid-configuration'
               }
           }
         ]
         class KeycloakSecurityManager(SupersetSecurityManager):
            def oauth_user_info(self, provider, response=None):
-              logging.debug("Oauth2 provider: {0}.".format(provider))
+              logging.info("Oauth2 provider: {0}.".format(provider))
               if provider == 'keycloak':
                   # As example, this line request a GET to base_url + '/' + userDetails with Bearer  Authentication,
                   # and expects that authorization server checks the token, and response with user details
                   me = self.appbuilder.sm.oauth_remotes[provider].get("userinfo_endpoint")
                   me.raise_for_status()
                   user_data = me.json()
-                  logging.debug("user_data: {0}".format(user_data))
+                  logging.info("user_data: {0}".format(user_data))
                   return { 'name' : user_data.get("name",""), 
                            'email' : user_data.get("email",""),
                            'id' : user_data.get("sub",""),
